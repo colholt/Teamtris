@@ -17,7 +17,7 @@ namespace Teamtris
             game.board = new int[10, 29];
 
             // create localhost web socket server on port 5202
-            var wssv = new WebSocketServer("ws://localhost:5202");
+            var wssv = new WebSocketServer("ws://0.0.0.0:5202");
             wssv.Start();
             wssv.AddWebSocketService<Play>("/play", () => new Play(game));
 

@@ -2,3 +2,4 @@
 Backend/.vscode
 Backend/bin
 Backend/obj
+*.deb
