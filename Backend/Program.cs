@@ -20,7 +20,11 @@ namespace Teamtris
             var wssv = new WebSocketServer("ws://0.0.0.0:5202");
             wssv.Start();
             wssv.AddWebSocketService<Play>("/play", () => new Play(game));
+            
+            // Gonna need something like this for when a player clicks "Create token"
+            // wssv.AddWebSocketService<Play>("/creategame", () => new Game(game));
 
+            Console.WriteLine("Starting to check for sockets");
             // create thread to broadcast message every x milliseconds
             Thread thread = new Thread(() =>
             {
