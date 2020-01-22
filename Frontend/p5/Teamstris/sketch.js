@@ -11,13 +11,14 @@ function setup() {
   // socket.emit('play', playerPreferences);
   /* Tells us what screen we are in */
   gameState = 0;
+  mStartScreen = new StartScreen();
 }
 
 function draw() {
   background(0);
   switch (gameState) {
     case 0:
-
+      mStartScreen.draw();
       break;
     case 1:
 
