@@ -7,10 +7,26 @@ function setup() {
   /* Have all our text in center mode */
   textAlign(CENTER)
 
-  socket = io.connect("ws://0.0.0.0:5202/play");
+  // socket = io.connect("ws://0.0.0.0:5202/play");
   // socket.emit('play', playerPreferences);
+  /* Tells us what screen we are in */
+  gameState = 0;
 }
 
 function draw() {
   background(0);
+  switch (gameState) {
+    case 0:
+
+      break;
+    case 1:
+
+      break;
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+  }
 }
