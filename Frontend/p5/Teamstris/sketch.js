@@ -19,6 +19,7 @@ function draw() {
   switch (gameState) {
     case 0:
       mStartScreen.draw();
+      Buttonloop();
       break;
     case 1:
 
