@@ -1,7 +1,7 @@
 var buttonList = [];
 
 class Buttons {
-  // [x cord, y cord, width, height, gamestate number]
+  // [x cord, y cord, width, height, gamestate number, color]
   constructor(x, y, w, h, gs, color) {
     if (buttons_constructor) console.log("Creating Button");
     if (buttons_constructor) console.log("x: " + x + " y: " + y + " w: " + w + " h: " + h);
