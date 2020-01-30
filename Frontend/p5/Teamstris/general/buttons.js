@@ -40,7 +40,7 @@ class Buttons {
       fill(0);
       textSize(windowWidth/50);
       text(this.text, this.x, this.y);
-      if (buttons_draw) console.log(this.checkMouse());
+      // if (buttons_draw) console.log(this.checkMouse());
     }
     pop();
   }
