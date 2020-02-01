@@ -4,7 +4,7 @@ function keyPressed() {
       mStartScreen.keyPressedStart();
       break;
     case 1:
-      // mLobbyScreen.keyPressedLobby();
+      mLobbyScreen.keyPressedLobby();
       break;
     case 2:
       // mGameScreen.keyPressedGame();
