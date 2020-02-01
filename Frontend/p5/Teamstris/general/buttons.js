@@ -62,6 +62,8 @@ class Buttons {
         }
       }
     }
+    cursor(ARROW);
+    return false;
   }
 }
 

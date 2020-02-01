@@ -4,7 +4,7 @@ function mouseClicked() {
             mStartScreen.mouseClickedStart();
             break;
         case 1:
-            // mLobbyScreen.mouseClickedLobby();
+            mLobbyScreen.mouseClickedLobby();
             break;
         case 2:
 
