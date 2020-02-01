@@ -1,5 +1,9 @@
 class Team {
     constructor(){
-        console.log("Team created");
+        this.playersInTeam = [];
+        this.teamName = "";
+    }
+    addPlayer(player){
+        this.playersInTeam.push(player);
     }
 }
