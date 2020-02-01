@@ -1,5 +1,10 @@
 var socket;
-
+/**
+ * Global lobbyscreen object.
+ *  
+ * I do this because I want to make the object in the startscreen instead of here. 
+ */
+var mLobbyScreen;
 function setup() {
   /* Create our canvas with the max windowWidth and windowHeight */
   createCanvas(windowWidth, windowHeight)
@@ -11,11 +16,11 @@ function setup() {
   // socket = io.connect("ws://0.0.0.0:5202/play");
   // socket.emit('play', playerPreferences);
   /* Tells us what screen we are in */
-  gameState = 1;
+  gameState = 0;
   /* Creating my startscreen object */
   mStartScreen = new StartScreen();
   /* Creating my lobbyscreen object */
-  mLobbyScreen = new LobbyScreen();
+  // mLobbyScreen = new LobbyScreen();
   /* Createing my gamescreen object */
   // mGameScreen = new GameScreen();
 }
