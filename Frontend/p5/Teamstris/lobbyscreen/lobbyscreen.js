@@ -13,11 +13,11 @@ class LobbyScreen {
 
     draw() {
         this.drawTitle();
-        // if (this.player.owner && this.team.teamName == "") {
+        if (this.lobbyGameState == 0) {
             teamNameAsker(this.team);
-        // } else {
+        } else {
 
-        // }
+        }
     }
 
     /**
@@ -75,6 +75,12 @@ class LobbyScreen {
     }
 
     mouseClickedLobby() {
-        console.log("mouseclicked")
+        switch (this.lobbyGameState) {
+            case 0: //if owner is entering username
+                if(checkMouseTeamAccept()) {
+                    this.lobbyGameState = 1;
+                }
+                break;
+        }
     }
 }
