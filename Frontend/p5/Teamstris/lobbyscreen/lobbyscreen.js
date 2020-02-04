@@ -6,17 +6,20 @@ class LobbyScreen {
         this.team = new Team();
         this.team.addPlayer(this.player);
         this.lobbyGameState = 0;
+        this.playerCards = [];
+        this.playerCards.push(new PlayerCard(this.player, 0, windowHeight/10, windowWidth/3, windowHeight/1.4));
         /** @todo. Make the L in lobby fall with this thing! */
         // this.titleAnimation = [300, 500, 400, 700] //drops the peices 
-
     }
-
+ 
     draw() {
         this.drawTitle();
         if (this.lobbyGameState == 0) {
             teamNameAsker(this.team);
         } else {
-
+            this.playerCards.forEach(playerCard => {
+                playerCard.draw();
+            });
         }
     }
 
@@ -56,6 +59,11 @@ class LobbyScreen {
 
     newPlayerJoins() {
         console.log("New player joined!")
+        // add new player to playercard and team
+    }
+
+    PlayerLeaves() {
+        console.log("Player leaves!")
     }
 
     keyPressedLobby() {
