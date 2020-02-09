@@ -60,7 +60,32 @@ public class SingleBot : Bot {
 
         // go through each of the starting positions of the piece to find out the fit
         for(int i = 0; i < board.board.GetLength(1); i++) {
-            
+            // whether piece is compatible with other pieces
+            bool compatiblePiece = true;
+
+            int[,] shiftedOverPiece = new int[4,4];
+
+            // look at each of the positions on the piece and see if there is a conflict on the board
+            foreach(Tuple<int, int>  positionOfDot in dotPositions) {
+
+                // dot to be tested
+                int dotRowOnPiece = positionOfDot.Item1;
+                int dotColOnPiece = positionOfDot.Item2;
+
+                // shift over the dot to get rid of extra space
+                int modRowOnPiece = 3 - (dotRowOnPiece - bottomLeftRow);
+                int modDotCol = dotColOnPiece - bottomLeftCol;
+
+                // fill in new piece with this dot
+                shiftedOverPiece[dotRowOnPiece, dotColOnPiece] = 1;
+
+                // Console.WriteLine("New Piece ");
+                // print out the piece
+                botInfoPrinter.PrintMultiDimArr(shiftedOverPiece);
+
+                // NEED TO SHIFT EVERYTHING ON THE BOARD
+                
+            }
         }
 
     }
@@ -93,3 +118,35 @@ public class SingleBot : Bot {
         return "I AM RETURNING A BOARD";
     }
 }
+
+
+
+public class DoubleBot : Bot {
+    public override String GetMove(Board board, List<Block> blocks) {
+        return "";
+    }
+}
+
+
+
+public class TripleBot : Bot {
+    public override String GetMove(Board board, List<Block> blocks) {
+        return "";
+    }
+}
+
+
+
+ /* deprecated for more efficient algorithm
+                // go through all the parts of the data that we recieve starting at the bottom left corner and make sure it fits
+                // ---|--
+                // number of rows and the number of rows is fixed at 20
+                for(int j = data.Length - 1; j >= 0 && j < board[i] + ROWS; j--) {
+                    // number of columns to go through and only go as much as the board allows to
+                    for(int k = 0; k < data[0].Length && k + i < board.Length; k++) {
+                        // a dot exists there
+                        if(data[j][k]) {
+                        }
+                    }
+                }
+             */
