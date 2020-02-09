@@ -11,6 +11,8 @@ public class Board {
     // has the number of heights that are not 0 - meaning that they have already been filled
     public int numFilledFloor { get; set; }
 
+    public int[] maxHeights { get; set; }
+
     public Board(int n, int m) {
         this.board = new int[m,n];
     }
@@ -20,7 +22,7 @@ public class Board {
         @@return
             int[] heights - contains the height of each column on the board
      */
-     public int[] GetMaxHeights() {
+     public void FindMaxHeights() {
         // go through the heights of the columns backwards to see which one is the last one that shows up
         // go backwards till reaching the first one in the column
 
@@ -46,6 +48,6 @@ public class Board {
         }
 
         Console.WriteLine("[{0}]", string.Join(", ", heights));
-        return heights;
+        this.maxHeights = heights;
     }
 }
