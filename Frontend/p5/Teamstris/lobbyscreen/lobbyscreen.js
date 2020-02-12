@@ -7,7 +7,7 @@ class LobbyScreen {
         this.team.addPlayer(this.player);
         this.lobbyGameState = 0;
         this.playerCards = [];
-        this.playerCards.push(new PlayerCard(this.player, 0, windowHeight/10, windowWidth/3, windowHeight/1.4));
+        this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
         /** @todo. Make the L in lobby fall with this thing! */
         // this.titleAnimation = [300, 500, 400, 700] //drops the peices 
     }
