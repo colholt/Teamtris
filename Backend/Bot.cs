@@ -23,8 +23,13 @@ public class SingleBot : Bot {
             Board board - contains the the board that we want to make the move on
             Block block - contains the block that we want to fit
             int rotation - which roation we are trying to fit for
+        @@return
+            List<Tuple<int, List<Tuple<int, int>>, int, bool>> compatiblePieces - information about the pieces that are compatible on the board
      */
-    public void getFit(Board board, Block block, int rotation) {
+    public List<Tuple<int, List<Tuple<int, int>>, int, bool>> getFit(Board board, Block block, int rotation) {
+
+        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it has a tetris
+        List<Tuple<int, List<Tuple<int, int>>, int, bool>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, bool>>();
 
         // positions of where the piece exists in the data in a tuple with both the ints for row and column
         List<Tuple<int, int>> dotPositions = new List<Tuple<int, int>>();
@@ -33,7 +38,6 @@ public class SingleBot : Bot {
         for(int row = 0; row < block.data.Length; row++) {
             dotPositions.AddRange(block.data[row].Select((b,i) => b == 1 ? i : -1).Where(i => i != -1).Select(index => new Tuple<int, int>(row, index)));
         }
-
 
         // print out the board
         Console.WriteLine("BOARD");
@@ -67,6 +71,9 @@ public class SingleBot : Bot {
         // get the indicies of the piece that have the bottomLeftRow
         HashSet<int> colsWithHighestHeight = new HashSet<int>();
 
+        // shifted over dot positions
+        List<Tuple<int, int>> shiftedDotPositions = new List<Tuple<int, int>>();
+
         // look at each of the positions on the piece and see if there is a conflict on the board
         foreach(Tuple<int, int>  positionOfDot in dotPositions) {
 
@@ -85,6 +92,9 @@ public class SingleBot : Bot {
 
             // fill in new piece with this dot and this is the piece we have to fit on the board at this specific column
             shiftedOverPiece[modRowOnPiece, modDotCol] = 1;
+
+            // add to the list of shifted dot positions
+            shiftedDotPositions.Add(Tuple.Create(modRowOnPiece, modDotCol));
 
             // calculate the min and max of the columns
             minCol = Math.Min(minCol, dotColOnPiece);
@@ -105,20 +115,63 @@ public class SingleBot : Bot {
 
 
         // go through each of the starting positions of the piece to find out the fit
-        for(int i = 0; i < board.board.GetLength(1); i++) {
+        for(int i = 0; i < board.board.GetLength(1) - widthOfPiece + 1; i++) {
 
             // where should the dot starting spot be placed with this location of the column
-            int startingPieceHeightOnBoard = board.height - board.maxHeights[i] - 1;
-            Console.WriteLine("STARTING PIECE HEIGHT ON BOARD FOR COLUMN " + i + " IS " + startingPieceHeightOnBoard);
-
+            int startingPieceHeightOnBoard = board.height - board.maxHeights[colsWithHighestHeight.First()] - 1;
+            Console.WriteLine("\nSTARTING PIECE HEIGHT ON BOARD FOR COLUMN " + i + " IS " + startingPieceHeightOnBoard);
             // find the starting height for the pieces
             foreach(int j in colsWithHighestHeight) {
+                Console.WriteLine("COL ON BOARD " + (j+i) + " HEIGHT IS " + (board.height - board.maxHeights[j+i] - 1 ));
                 // see if that spot is okay with the max height and continue till it is okay with that height starting with
-                
+                while(board.height - board.maxHeights[j+i] - 1 < startingPieceHeightOnBoard) {
+                    startingPieceHeightOnBoard = board.height - board.maxHeights[j+i] - 1;
+                }
             }
-            
+            Console.WriteLine("MODIFIED PIECE HEIGHT ON BOARD FOR COLUMN " + i + " IS " + startingPieceHeightOnBoard + "\n");
+
+
+            // compatible board info
+            List<Tuple<int, int>> compatibleBoard = new List<Tuple<int, int>>();
+
+            // modified board with the pieces in position
+            int[,] modifiedBoard = new int[board.height,board.width];
+
+            // see if all dots can be placed on the board without indexing issues in the column space
+            foreach(Tuple<int, int> shiftedDotPosition in shiftedDotPositions) {
+                // column to check for the spacing
+                int shiftedDotRow = shiftedDotPosition.Item1;
+                int shiftedDotCol = shiftedDotPosition.Item2;
+
+                Console.WriteLine("SHIFTED DOT POSITION (" + shiftedDotRow + "," + shiftedDotCol + ")");
+
+                // check whether the 2 heights are more than height of the board
+                if(startingPieceHeightOnBoard - shiftedDotRow < 0) {
+                    compatibleBoard = null;
+                    break;
+                } 
+
+                // shifted on the board size
+                int shiftedForBoardRow = startingPieceHeightOnBoard - (3 - shiftedDotRow); 
+                int shiftedForBoardCol = i + shiftedDotCol;
+
+                // add to the tuples on the actual board
+                compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
+
+                // put it on the board as well
+                modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
+            }
+
+            Console.WriteLine("MODIFIED BOARD");
+            botInfoPrinter.PrintMultiDimArr(modifiedBoard);
+
+            // piece starting at this column and row is actually compatible then add its information
+            if (compatibleBoard != null) {
+                compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, 1, true));
+            }
         }
 
+        return compatiblePieces;
     }
 
 
