@@ -8,6 +8,7 @@ public class Prints {
             int[][] data - the data to be printed
      */
     public void PrintJaggedArr(int[][] data) {
+        Console.WriteLine();
         for (int n = 0; n < data.Length; n++) { 
   
             // Print the row number 
@@ -20,6 +21,7 @@ public class Prints {
             } 
             Console.WriteLine(); 
         } 
+        Console.WriteLine();
     }
 
 
@@ -28,6 +30,7 @@ public class Prints {
             int[,] data - the data to be printed
      */
     public void PrintMultiDimArr(int[,] data) {
+        Console.WriteLine();
         for (int n = 0; n < data.GetLength(0); n++) { 
   
             // Print the row number 
@@ -40,6 +43,7 @@ public class Prints {
             } 
             Console.WriteLine(); 
         } 
+        Console.WriteLine();
     }
 
 
@@ -48,8 +52,10 @@ public class Prints {
             List<Tuple<int, int>> positions - the data for the positions
      */
     public void PrintPositions(List<Tuple<int, int>> positions) {
+        Console.WriteLine();
         foreach (var tuple in positions) {
             Console.WriteLine("({0}, {1})", tuple.Item1, tuple.Item2);
         }
+        Console.WriteLine();
     }
 }

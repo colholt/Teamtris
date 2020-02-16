@@ -73,17 +73,20 @@ public class SingleBot : Bot {
                 int dotColOnPiece = positionOfDot.Item2;
 
                 // shift over the dot to get rid of extra space
-                int modRowOnPiece = 3 - (dotRowOnPiece - bottomLeftRow);
+                int modRowOnPiece = 3 - (bottomLeftRow - dotRowOnPiece);
                 int modDotCol = dotColOnPiece - bottomLeftCol;
 
-                // fill in new piece with this dot
-                shiftedOverPiece[dotRowOnPiece, dotColOnPiece] = 1;
+                // fill in new piece with this dot and this is the piece we have to fit on the board at this specific column
+                shiftedOverPiece[modRowOnPiece, modDotCol] = 1;
 
-                // Console.WriteLine("New Piece ");
+                Console.WriteLine("New Piece Getting Modified");
                 // print out the piece
                 botInfoPrinter.PrintMultiDimArr(shiftedOverPiece);
 
                 // NEED TO SHIFT EVERYTHING ON THE BOARD
+
+                // dot on the board and placement of the dot on the board
+
                 
             }
         }
