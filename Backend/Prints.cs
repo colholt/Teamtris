@@ -58,4 +58,20 @@ public class Prints {
         }
         Console.WriteLine();
     }
+
+
+    /**
+        @@param 
+            HashSet<int> data - data to be printed
+     */
+    public void PrintSet(HashSet<int> set) {
+        Console.WriteLine();
+        Console.Write("{");
+        foreach (int i in set)
+        {
+            Console.Write(" {0}", i);
+        }
+        Console.WriteLine(" }");
+        Console.WriteLine();
+    }
 }

@@ -14,6 +14,8 @@ namespace Teamtris
             // initialize game state
             GameState game = new GameState();
             game.players = new List<Player>();
+
+            // Board(rows, columns)
             game.board = new Board(6, 6);
 
             // currently just have a single bot
@@ -23,7 +25,7 @@ namespace Teamtris
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 1},
-                {1, 0, 0, 1, 1, 1},
+                {0, 0, 0, 1, 1, 1},
                 {1, 1, 1, 1, 1, 1}
             };
             // int[][] data = new int[][] {

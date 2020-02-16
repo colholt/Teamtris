@@ -13,8 +13,14 @@ public class Board {
 
     public int[] maxHeights { get; set; }
 
+    public int height { get; set; }
+
+    public int width { get; set; }
+
     public Board(int n, int m) {
-        this.board = new int[m,n];
+        this.board = new int[n,m];
+        this.height = n;
+        this.width = m;
     }
 
      /** 

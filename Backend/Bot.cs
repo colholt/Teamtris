@@ -57,38 +57,66 @@ public class SingleBot : Bot {
         Console.WriteLine("THE BOTTOM LEFT ROW OF PIECE: " + bottomLeftRow);
         Console.WriteLine("THE BOTTOM LEFT COLUMN OF PIECE: " + bottomLeftCol);
 
+        // piece with shifted over information
+        int[,] shiftedOverPiece = new int[4,4];
+
+        // to calculate the width of the piece
+        int minCol = 5;
+        int maxCol = -1;
+
+        // get the indicies of the piece that have the bottomLeftRow
+        HashSet<int> colsWithHighestHeight = new HashSet<int>();
+
+        // look at each of the positions on the piece and see if there is a conflict on the board
+        foreach(Tuple<int, int>  positionOfDot in dotPositions) {
+
+            // dot to be tested
+            int dotRowOnPiece = positionOfDot.Item1;
+            int dotColOnPiece = positionOfDot.Item2;
+
+            // shift over the dot to get rid of extra space
+            int modRowOnPiece = 3 - (bottomLeftRow - dotRowOnPiece);
+            int modDotCol = dotColOnPiece - bottomLeftCol;
+
+            // put into the list of indicies with the large heights
+            if (modRowOnPiece == 3) {
+                colsWithHighestHeight.Add(modDotCol);
+            }
+
+            // fill in new piece with this dot and this is the piece we have to fit on the board at this specific column
+            shiftedOverPiece[modRowOnPiece, modDotCol] = 1;
+
+            // calculate the min and max of the columns
+            minCol = Math.Min(minCol, dotColOnPiece);
+            maxCol = Math.Max(maxCol, dotColOnPiece);
+        }
+
+        int widthOfPiece = maxCol - minCol + 1;
+        Console.WriteLine("WIDTH OF PIECE " + widthOfPiece);
+
+        
+        Console.WriteLine("COLUMNS WITH THE LOWEST ROWS");
+        botInfoPrinter.PrintSet(colsWithHighestHeight);
+
+
+        Console.WriteLine();
+        Console.WriteLine("SHIFTED OVER PIECE");
+        botInfoPrinter.PrintMultiDimArr(shiftedOverPiece);
+
 
         // go through each of the starting positions of the piece to find out the fit
         for(int i = 0; i < board.board.GetLength(1); i++) {
-            // whether piece is compatible with other pieces
-            bool compatiblePiece = true;
 
-            int[,] shiftedOverPiece = new int[4,4];
+            // where should the dot starting spot be placed with this location of the column
+            int startingPieceHeightOnBoard = board.height - board.maxHeights[i] - 1;
+            Console.WriteLine("STARTING PIECE HEIGHT ON BOARD FOR COLUMN " + i + " IS " + startingPieceHeightOnBoard);
 
-            // look at each of the positions on the piece and see if there is a conflict on the board
-            foreach(Tuple<int, int>  positionOfDot in dotPositions) {
-
-                // dot to be tested
-                int dotRowOnPiece = positionOfDot.Item1;
-                int dotColOnPiece = positionOfDot.Item2;
-
-                // shift over the dot to get rid of extra space
-                int modRowOnPiece = 3 - (bottomLeftRow - dotRowOnPiece);
-                int modDotCol = dotColOnPiece - bottomLeftCol;
-
-                // fill in new piece with this dot and this is the piece we have to fit on the board at this specific column
-                shiftedOverPiece[modRowOnPiece, modDotCol] = 1;
-
-                Console.WriteLine("New Piece Getting Modified");
-                // print out the piece
-                botInfoPrinter.PrintMultiDimArr(shiftedOverPiece);
-
-                // NEED TO SHIFT EVERYTHING ON THE BOARD
-
-                // dot on the board and placement of the dot on the board
-
+            // find the starting height for the pieces
+            foreach(int j in colsWithHighestHeight) {
+                // see if that spot is okay with the max height and continue till it is okay with that height starting with
                 
             }
+            
         }
 
     }
