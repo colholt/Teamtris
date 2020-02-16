@@ -74,4 +74,20 @@ public class Prints {
         Console.WriteLine(" }");
         Console.WriteLine();
     }
+
+
+    /**
+        @@param 
+            HashSet<int, int> data - data to be printed
+     */
+    public void PrintSetTuples(HashSet<Tuple<int, int>> set) {
+        Console.WriteLine();
+        Console.Write("{");
+        foreach (var tuple in set)
+        {
+            Console.Write(" ({0},{1})", tuple.Item1, tuple.Item2);
+        }
+        Console.WriteLine(" }");
+        Console.WriteLine();
+    }
 }
