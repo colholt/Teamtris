@@ -8,6 +8,6 @@ public class GameState
         board = new int[m, n];
     }
     public long clock = 0;
-    public List<Player> players;
+    public Dictionary<int, Player> players;
     public int[,] board;
 }
