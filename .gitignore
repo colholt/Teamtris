@@ -3,3 +3,4 @@ Backend/.vscode
 Backend/bin
 Backend/obj
 *.deb
+.DS_Store
