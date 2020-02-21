@@ -5,6 +5,7 @@ var socket;
  * I do this because I want to make the object in the startscreen instead of here. 
  */
 var mLobbyScreen;
+var mStartScreen;
 function setup() {
   /* Create our canvas with the max windowWidth and windowHeight */
   createCanvas(windowWidth, windowHeight)
@@ -42,3 +43,5 @@ function draw() {
       break;
   }
 }
+
+module.exports = [setup, draw, mLobbyScreen, mStartScreen, socket];
