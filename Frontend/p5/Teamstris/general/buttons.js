@@ -88,3 +88,5 @@ function FindButtonbyID(id) {
     }
   }
 }
+
+module.exports = [buttonList, Buttons, Buttonloop, ClickedLoop, FindButtonbyID];
