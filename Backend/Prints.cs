@@ -90,4 +90,26 @@ public class Prints {
         Console.WriteLine(" }");
         Console.WriteLine();
     }
+
+
+    /**
+        @@param 
+            int[,] board - current state of board
+            List<Tuple<int, int>> dots - the dots that fill up the piece
+     */
+    public void PrintBoardWithPiece(int[,] board, List<Tuple<int, int>> dots) {
+       int[,] newBoard = new int[board.GetLength(0),board.GetLength(1)];
+
+       for(int i = 0; i < board.GetLength(0); i++){
+           for(int j = 0; j < board.GetLength(1); j++){
+               newBoard[i,j] = board[i,j];
+           }
+       }
+
+       foreach(Tuple<int, int> dot in dots) {
+           newBoard[dot.Item1, dot.Item2] = 2;
+       }
+
+       PrintMultiDimArr(newBoard);
+    }
 }

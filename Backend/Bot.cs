@@ -4,7 +4,7 @@ using System.Linq;
 
 public abstract class Bot {
 
-    public abstract String GetMove(Board board, List<Block> blocks);
+    public abstract List<Tuple<int, int>> GetMove(Board board, List<Block> blocks);
    
 }
 
@@ -26,10 +26,10 @@ public class SingleBot : Bot {
         @@return
             List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces - information about the pieces that are compatible on the board
      */
-    public List<Tuple<int, List<Tuple<int, int>>, int, int>> getFit(Board board, Block block, int rotation) {
+    public List<Tuple<int, List<Tuple<int, int>>, int, int, int>> getFit(Board board, Block block, int rotation) {
 
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it has a tetris
-        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
+        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear line and next line
+        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
 
         // positions of where the piece exists in the data in a tuple with both the ints for row and column
         List<Tuple<int, int>> dotPositions = new List<Tuple<int, int>>();
@@ -151,8 +151,10 @@ public class SingleBot : Bot {
 
                 Console.WriteLine("SHIFTED DOT POSITION (" + shiftedDotRow + "," + shiftedDotCol + ")");
 
+                Console.WriteLine("STARTING POSITION ON BOARD " + startingPieceHeightOnBoard +  " " + shiftedDotRow);
                 // check whether the 2 heights are more than height of the board
-                if(startingPieceHeightOnBoard - shiftedDotRow < 0) {
+                if((board.height - startingPieceHeightOnBoard - 1) + (4 - shiftedDotRow) >= board.height) {
+                    Console.WriteLine("\n\n\n\n\n\n\nI AM HEREHEHEH");
                     compatibleBoard = null;
                     break;
                 } 
@@ -164,6 +166,7 @@ public class SingleBot : Bot {
                 // add to the tuples on the actual board
                 compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
 
+                Console.WriteLine(" \n\n\n\n\n\n\n\n\n I AM HEREHEHEKLFJSKLJFLKSDJFKLJSDLFKJSDKLFJkl" + shiftedForBoardRow + " " + shiftedForBoardCol);
                 // put it on the board as well
                 modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
 
@@ -209,10 +212,10 @@ public class SingleBot : Bot {
                 if(dotsFillingFloor + board.numFilledFloor == board.height) {
                     // creates tetris
                     Console.WriteLine("CREATING TETRIS");
-                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1));
+                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1, 0));
                 } else {
                     // no tetris
-                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0));
+                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0, 0));
                 }
             }
         }
@@ -227,13 +230,13 @@ public class SingleBot : Bot {
             int[][] board - current enviornment
             List<Block> blocks - contains the list of all the blocks to try to fit in this location
      */
-    public override String GetMove(Board board, List<Block> blocks) {
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
         // get the max height of each column of the baord 
         board.FindMaxHeights();
 
         // compatible pieces
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it has a tetris
-        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
+        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear a line
+        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
 
         // test out each of the pieces
         foreach(Block block in blocks) {
@@ -241,48 +244,48 @@ public class SingleBot : Bot {
             // get the fit of the board with the area and whether a piece can clear a line
             compatiblePieces.AddRange(getFit(board, block, 1));
             block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 2));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 3));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 1));
+            compatiblePieces.AddRange(getFit(board, block, 2));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 3));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 1));
         }
 
-        // find the best piece of all
-        // see if any have a line done
-        bool anyLineDone = compatiblePieces.Any(a => a.Item4 == 1);
+        // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
+        compatiblePieces.Sort((x, y) => {
+            // sort by whether a line has been cleared and puts those first if there is
+            int result = y.Item4.CompareTo(x.Item4);
+            // sort by the area covered
+            return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
+        });
 
-        if(anyLineDone) {
-            Console.WriteLine("A line was done");
-            // order by the completion and then the area covered
-            compatiblePieces.Sort((x, y) => {
-                int result = y.Item4.CompareTo(x.Item4);
-                return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
-            });
-        } else {
-            compatiblePieces.Sort((x, y) => y.Item3.CompareTo(x.Item3));
-            Console.WriteLine("No line can be done, find the best piece");
-        }
+        // best piece to place with information to place on board
+        List<Tuple<int, int>> bestPiecePlacement = compatiblePieces[0].Item2;
 
-        Console.WriteLine(compatiblePieces[0]);
+        Console.WriteLine("BEST PIECE FOR BOARD");
+        botInfoPrinter.PrintPositions(bestPiecePlacement);
+        Console.WriteLine("BOARD");
+        botInfoPrinter.PrintMultiDimArr(board.board);
+        Console.WriteLine("BOARD WITH PIECE");
+        botInfoPrinter.PrintBoardWithPiece(board.board, bestPiecePlacement);
 
-        return "I AM RETURNING A BOARD";
+        return bestPiecePlacement;
     }
 }
 
 
 
 public class DoubleBot : Bot {
-    public override String GetMove(Board board, List<Block> blocks) {
-        return "";
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+        return null;
     }
 }
 
 
 
 public class TripleBot : Bot {
-    public override String GetMove(Board board, List<Block> blocks) {
-        return "";
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+        return null;
     }
 }
 
@@ -301,3 +304,23 @@ public class TripleBot : Bot {
                     }
                 }
              */
+
+
+// methodology for sorting appraoch - adopted different way to do this
+/*  find the best piece of all
+        // see if any have a line done
+        bool anyLineDone = compatiblePieces.Any(a => a.Item4 == 1);
+
+        if(anyLineDone) {
+            // a line was completed in one of the pieces, so need to lead with the pieces that lead to tye line being done
+            Console.WriteLine("A line was done");
+            // order by the completion and then the area covered
+            compatiblePieces.Sort((x, y) => {
+                int result = y.Item4.CompareTo(x.Item4);
+                return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
+            });
+        } else {
+            compatiblePieces.Sort((x, y) => y.Item3.CompareTo(x.Item3));
+            Console.WriteLine("No line can be done, find the best piece");
+        }
+*/
