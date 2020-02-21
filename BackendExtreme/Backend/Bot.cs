@@ -259,6 +259,10 @@ public class SingleBot : Bot {
             return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
         });
 
+        if(compatiblePieces.Length == 0) {
+            return null;
+        }
+
         // best piece to place with information to place on board
         List<Tuple<int, int>> bestPiecePlacement = compatiblePieces[0].Item2;
 
