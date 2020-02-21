@@ -60,14 +60,6 @@ function CheckSame( given, expect, name, debug = false ){
     }
 }
 
-function testRunnerSetupStartScreen() {
-    mStartScreen = new startScreen[0];
-    testDefaultUsername();
-    testDefaultTokenValue();
-    testCheckInitStartScreenValues();
-    testCheckTitlePosAfterTwoDraw();
-    changeUserUsername();
-}
 
 function testDefaultUsername() {
     CheckSame(mStartScreen.usernameText,"username","testDefaultUsername");
@@ -94,7 +86,7 @@ function testCheckTitlePosAfterTwoDraw() {
     CheckSame(mStartScreen.titleAnimation[3],680,"checkInitStartScreenValuesAfterTwoDraw.titleAnimation[3]");
 }
 
-function changeUserUsername() {
+function testChangeUserUsername() {
     global.keyCode = 65; // A
     mStartScreen.keyPressedStart();
     mStartScreen.drawUsernameBox();
@@ -105,5 +97,43 @@ function changeUserUsername() {
     mStartScreen.drawUsernameBox();
     CheckSame(mStartScreen.usernameText,"AB","testChangeUserUsername2");
 }
+
+function testChangeMaxUsername() {
+    mStartScreen.usernameText = "";
+    CheckSame(mStartScreen.usernameText,"","testUsernameTextReset");
+    global.keyCode = 65; // A
+    var str = "";
+    var strFull = "ABCDEFGHIJK"
+    for(var i = 0; i < 15; i++) {
+        mStartScreen.keyPressedStart();
+        str += strFull.charAt(i);
+        CheckSame(mStartScreen.usernameText,str,"testUsernameText" + str);
+        global.keyCode++;
+    }
+}
+
+function testDeleteUsername() {
+    // global.keyCode = 8; // delete
+    // mStartScreen.keyPressedStart();
+    // var str = mStartScreen.usernameText;
+    // for(var i = 0; i < 15; i++) {
+    //     mStartScreen.keyPressedStart();
+    //     str += str.charAt(i);
+    //     CheckSame(mStartScreen.usernameText,str,"testUsernameText" + str);
+    //     global.keyCode++;
+    // }
+}
+
+function testRunnerSetupStartScreen() {
+    mStartScreen = new startScreen[0];
+    testDefaultUsername();
+    testDefaultTokenValue();
+    testCheckInitStartScreenValues();
+    testCheckTitlePosAfterTwoDraw();
+    testChangeUserUsername();
+    testChangeMaxUsername();
+    testDeleteUsername();
+}
+
 
 console.log(mStartScreen);
