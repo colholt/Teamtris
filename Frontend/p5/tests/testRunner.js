@@ -8,7 +8,9 @@ const startScreen = require('../Teamstris/startscreen/startScreen.js');
 /* vars being used for testing */
 var mStartScreen;
 
-var lol = false;
+global.gameState = 0;
+
+var lol = true;
 
 /* p5 stuff */
 global.windowWidth = 2560;
@@ -152,6 +154,25 @@ async function testCheckSpecialChars() {
     CheckSame(mStartScreen.usernameText,"","testCheckSpecialChars");
 }
 
+async function testHighScoreButton() {
+    global.mouseX = mStartScreen.RightX + 1;
+    global.mouseY = mStartScreen.TopY + 1;
+    CheckSame(mStartScreen.gameStateStartScreen,0,"testCheckInitGameState");
+    CheckSame(mStartScreen.drawHighScoreButtonCheckMouse(),true,"testDrawHighScoreButtonCheckMouse");
+    mStartScreen.mouseClickedStart();
+    CheckSame(mStartScreen.gameStateStartScreen,-1,"testMouseClickedScoreButton1");
+    mStartScreen.gameStateStartScreen = 0; //reset gameState;
+    global.mouseX += 100;
+    mStartScreen.mouseClickedStart();
+    if(lol) await new Promise(r => setTimeout(r, 1000));
+    CheckSame(mStartScreen.gameStateStartScreen,-1,"testMouseClickedScoreButton2");
+    mStartScreen.gameStateStartScreen = 0; //reset gameState;
+    global.mouseX += 100;
+    mStartScreen.mouseClickedStart();
+    CheckSame(mStartScreen.gameStateStartScreen,0,"testMouseClickedScoreButtonMissed");
+    
+}
+
 async function testRunnerSetupStartScreen() {
     mStartScreen = new startScreen[0];
     await testDefaultUsername();
@@ -162,7 +183,8 @@ async function testRunnerSetupStartScreen() {
     await testChangeMaxUsername();
     await testDeleteUsername();
     await testCheckSpecialChars();
+    await testHighScoreButton();
+    console.log(mStartScreen);
 }
 
 
-console.log(mStartScreen);
