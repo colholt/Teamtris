@@ -36,11 +36,11 @@ public class Play : WebSocketBehavior
         // thread.Start();
     }
 
-    protected override void OnMessage(MessageEventArgs e)
-    {
-        Sessions.Broadcast(e.Data);
-        gameState.players.Add(new Player(5));
-    }
+    // protected override void OnMessage(MessageEventArgs e)
+    // {
+    //     Sessions.Broadcast(e.Data);
+    //     gameState.players.Add(new Player(5));
+    // }
 
     protected override void OnClose(CloseEventArgs e)
     {

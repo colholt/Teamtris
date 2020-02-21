@@ -12,11 +12,8 @@ namespace Teamtris
         static void Main(string[] args)
         {
             // initialize game state
-            GameState game = new GameState();
-            game.players = new List<Player>();
-
-            // Board(rows, columns)
-            game.board = new Board(6, 6);
+            GameState game = new GameState(6, 6);
+            game.players = new Dictionary<int, Player>();
 
             // currently just have a single bot
             game.bot = new SingleBot();
@@ -35,8 +32,8 @@ namespace Teamtris
             //     new int[] {0, 1, 0, 0}, 
             // };
             int[][] data = new int[][] {
-                new int[] {0, 0, 0, 0}, 
-                new int[] {0, 1, 0, 1}, 
+                new int[] {0, 0, 1, 0}, 
+                new int[] {0, 1, 1, 1}, 
                 new int[] {0, 0, 1, 0}, 
                 new int[] {0, 0, 0, 0}, 
             };
