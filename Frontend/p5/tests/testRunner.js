@@ -11,6 +11,7 @@ var mStartScreen;
 global.gameState = 0;
 
 var lol = true;
+var numTests = 1;
 
 /* p5 stuff */
 global.windowWidth = 2560;
@@ -62,10 +63,10 @@ function CheckSame( given, expect, name, debug = false ){
         console.log(blue, "given: " + given + " expect: " + expect + " name: " + name);
     }
     if(given === expect){
-        console.log(green, name + " passed");  //cyan
+        console.log(green, numTests++ + ". " + name + " passed"); 
         return true;
     } else {
-        console.log(red, name + " failed should have been " + expect + " but was " + given);  //red
+        console.log(red, numTests++ + ". " + name + " failed should have been " + expect + " but was " + given);
         return false;
     }
 }
@@ -164,13 +165,24 @@ async function testHighScoreButton() {
     mStartScreen.gameStateStartScreen = 0; //reset gameState;
     global.mouseX += 100;
     mStartScreen.mouseClickedStart();
-    if(lol) await new Promise(r => setTimeout(r, 1000));
+    if(lol) await new Promise(r => setTimeout(r, 300));
     CheckSame(mStartScreen.gameStateStartScreen,-1,"testMouseClickedScoreButton2");
+    CheckSame(global.gameState,3,"testMouseClickedScoreButton2"); // 3 == score screen game state
     mStartScreen.gameStateStartScreen = 0; //reset gameState;
+    global.gameState = 0; // reset gameState
     global.mouseX += 100;
     mStartScreen.mouseClickedStart();
     CheckSame(mStartScreen.gameStateStartScreen,0,"testMouseClickedScoreButtonMissed");
-    
+    if(lol) await new Promise(r => setTimeout(r, 1000));
+    CheckSame(global.gameState,0,"testMouseClickedScoreButtonMissedRealGamestate");
+}
+
+async function testJoinLobbyButton() {
+    // global.mouseX = mStartScreen.RightX + 1;
+    // global.mouseY = mStartScreen.TopY + 1;
+    // CheckSame(mStartScreen.gameStateStartScreen,0,"testCheckInitGameStateJoinButton");
+    // CheckSame(mStartScreen.drawHighScoreButtonCheckMouse(),true,"testDrawHighScoreButtonCheckMouse");
+    // mStartScreen.mouseClickedStart();
 }
 
 async function testRunnerSetupStartScreen() {
@@ -184,6 +196,7 @@ async function testRunnerSetupStartScreen() {
     await testDeleteUsername();
     await testCheckSpecialChars();
     await testHighScoreButton();
+    await testJoinLobbyButton();
     console.log(mStartScreen);
 }
 
