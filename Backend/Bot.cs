@@ -26,10 +26,10 @@ public class SingleBot : Bot {
         @@return
             List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces - information about the pieces that are compatible on the board
      */
-    public List<Tuple<int, List<Tuple<int, int>>, int, int>> getFit(Board board, Block block, int rotation) {
+    public List<Tuple<int, List<Tuple<int, int>>, int, int, int>> getFit(Board board, Block block, int rotation) {
 
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it has a tetris
-        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
+        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear line and next line
+        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
 
         // positions of where the piece exists in the data in a tuple with both the ints for row and column
         List<Tuple<int, int>> dotPositions = new List<Tuple<int, int>>();
@@ -151,8 +151,10 @@ public class SingleBot : Bot {
 
                 Console.WriteLine("SHIFTED DOT POSITION (" + shiftedDotRow + "," + shiftedDotCol + ")");
 
+                Console.WriteLine("STARTING POSITION ON BOARD " + startingPieceHeightOnBoard +  " " + shiftedDotRow);
                 // check whether the 2 heights are more than height of the board
-                if(startingPieceHeightOnBoard - shiftedDotRow < 0) {
+                if((board.height - startingPieceHeightOnBoard - 1) + (4 - shiftedDotRow) >= board.height) {
+                    Console.WriteLine("\n\n\n\n\n\n\nI AM HEREHEHEH");
                     compatibleBoard = null;
                     break;
                 } 
@@ -164,6 +166,7 @@ public class SingleBot : Bot {
                 // add to the tuples on the actual board
                 compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
 
+                Console.WriteLine(" \n\n\n\n\n\n\n\n\n I AM HEREHEHEKLFJSKLJFLKSDJFKLJSDLFKJSDKLFJkl" + shiftedForBoardRow + " " + shiftedForBoardCol);
                 // put it on the board as well
                 modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
 
@@ -209,10 +212,10 @@ public class SingleBot : Bot {
                 if(dotsFillingFloor + board.numFilledFloor == board.height) {
                     // creates tetris
                     Console.WriteLine("CREATING TETRIS");
-                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1));
+                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1, 0));
                 } else {
                     // no tetris
-                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0));
+                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0, 0));
                 }
             }
         }
@@ -233,7 +236,7 @@ public class SingleBot : Bot {
 
         // compatible pieces
         // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear a line
-        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
+        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
 
         // test out each of the pieces
         foreach(Block block in blocks) {
@@ -263,7 +266,8 @@ public class SingleBot : Bot {
         botInfoPrinter.PrintPositions(bestPiecePlacement);
         Console.WriteLine("BOARD");
         botInfoPrinter.PrintMultiDimArr(board.board);
-
+        Console.WriteLine("BOARD WITH PIECE");
+        botInfoPrinter.PrintBoardWithPiece(board.board, bestPiecePlacement);
 
         return bestPiecePlacement;
     }

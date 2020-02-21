@@ -17,12 +17,20 @@ namespace Teamtris
 
             // currently just have a single bot
             game.bot = new SingleBot();
+            // game.board.board =  new int[,]{
+            //     {0, 0, 0, 0, 0, 0},
+            //     {0, 0, 0, 0, 0, 0},
+            //     {0, 0, 0, 0, 0, 0},
+            //     {0, 0, 0, 0, 0, 1},
+            //     {0, 0, 0, 1, 1, 1},
+            //     {1, 0, 1, 1, 1, 1}
+            // };
             game.board.board =  new int[,]{
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 1},
-                {0, 0, 0, 1, 1, 1},
+                {1, 0, 0, 1, 0, 1},
+                {1, 1, 0, 1, 1, 1},
                 {1, 0, 1, 1, 1, 1}
             };
             // int[][] data = new int[][] {
@@ -33,9 +41,9 @@ namespace Teamtris
             // };
             int[][] data = new int[][] {
                 new int[] {0, 0, 1, 0}, 
-                new int[] {0, 1, 1, 1}, 
                 new int[] {0, 0, 1, 0}, 
-                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 1, 0}, 
+                new int[] {0, 0, 1, 0}, 
             };
             Block block = new Block(data, 1);
             List<Block> blocks = new List<Block>();
