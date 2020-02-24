@@ -14,7 +14,7 @@ class LobbyScreen {
             var data = JSON.stringify({"maxPlayers":"4","name": "bob","playerID": "1"})
             // console.log(JSON.stringify({"type": "1", "data": data}));
             socket.send(JSON.stringify({"type": "1", "data": data}));
-            socket.onmessage =  (event) => {
+            socket.onmessage = (event) => {
                 // console.log(event);
                 var e = JSON.parse(event.data);
                 if(e.lobbyID !== undefined) { 
@@ -49,10 +49,11 @@ class LobbyScreen {
      * 
      */
     drawToken() {
-        console.log("drawToken: " + this.team.lobbyToken);
-        push(); // push my settings 
-
-        pop(); // pop my settings
+        push(); // push the settings
+        fill(255); // fill white
+        textSize(windowWidth/30) // text size relative to screen width
+        text("Token: " + this.team.lobbyToken,windowWidth/10,windowHeight/1.1) // draw the token
+        pop(); // pop the settings
     }
 
     /**
@@ -124,3 +125,5 @@ class LobbyScreen {
         }
     }
 }
+
+module.exports = [LobbyScreen];
