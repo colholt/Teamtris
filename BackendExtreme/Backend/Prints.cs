@@ -10,20 +10,41 @@ public class Prints {
             int[][] data - the data to be printed
      */
     public void PrintJaggedArr(int[][] data, bool normalMode = true) {
-        Console.WriteLine();
+         if(normalMode) {
+            Console.WriteLine();
+        } else {
+            TestContext.Progress.WriteLine();
+        }
+
+        StringBuilder sb = new StringBuilder();
         for (int n = 0; n < data.Length; n++) { 
   
             // Print the row number 
-            Console.Write("Row({0}): ", n); 
+            if (normalMode) {
+                Console.Write("Row({0}): ", n);
+            } else {
+                sb.Append("Row(" + n + "): ");
+            }
   
             for (int k = 0; k < data[n].Length; k++) { 
-  
-                // Print the elements in the row 
-                Console.Write("{0} ", data[n][k]); 
+                if (normalMode) {
+                    // Print the elements in the row 
+                    Console.Write("{0} ", data[n][k]); 
+                } else {
+                    sb.Append(data[n][k] + " ");
+                } 
             } 
-            Console.WriteLine(); 
+            if (normalMode) {
+                Console.WriteLine(); 
+            } else {
+                sb.AppendLine();
+            }
         } 
-        Console.WriteLine();
+        if (normalMode) {
+            Console.WriteLine(); 
+        } else {
+            TestContext.Progress.WriteLine(sb.ToString());
+        }
     }
 
 
@@ -56,14 +77,12 @@ public class Prints {
                 } else {
                     sb.Append(data[n,k] + " ");
                 }
-                
             } 
             if (normalMode) {
                 Console.WriteLine(); 
             } else {
                 sb.AppendLine();
             }
-            
         } 
         if (normalMode) {
             Console.WriteLine(); 
