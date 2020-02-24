@@ -127,7 +127,7 @@ namespace Tests
                     List<Block> newBlocks = new List<Block>();
                     newBlocks.Add(block);
                     List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
-                    System.Diagnostics.Debug.WriteLine("BOARD WITH PIECE\n\n\n\n");
+                    TestContext.Progress.WriteLine("BOARD WITH PIECE\n\n\n\n");
                     botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced);
                 }
             } catch (Exception e) {

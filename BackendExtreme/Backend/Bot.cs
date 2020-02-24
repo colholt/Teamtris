@@ -259,7 +259,7 @@ public class SingleBot : Bot {
             return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
         });
 
-        if(compatiblePieces.Length == 0) {
+        if(compatiblePieces.Count == 0) {
             return null;
         }
 
