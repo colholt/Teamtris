@@ -289,5 +289,3 @@ async function testRunnerSetupStartScreen() {
     // console.log(mStartScreen);
     console.log(mLobbyScreen);
 }
-
-

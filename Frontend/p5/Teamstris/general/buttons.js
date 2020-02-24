@@ -28,7 +28,7 @@ class Buttons {
 
   draw() {
     push();
-    // if (this.gs == gameState) {
+    if (this.gs == gameState) {
       translate(windowWidth / 2, windowHeight / 2);
       this.currentColor = this.color
       if (this.checkMouse() && !this.invalid) { // Checking to see if the mouse is over the button
@@ -41,7 +41,7 @@ class Buttons {
       textSize(windowWidth/50);
       text(this.text, this.x, this.y);
       // if (buttons_draw) console.log(this.checkMouse());
-    // }
+    }
     pop();
   }
   /**

@@ -1,11 +1,10 @@
 class LobbyScreen {
     constructor(player) {
-        console.log("LobbyScreen made: ");
-        console.log(player)
         this.player = player;
         this.team = new Team();
         this.team.addPlayer(this.player);
         this.lobbyGameState = 0;
+        this.numBots = 0;
         this.playerCards = [];
         this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
         /** @todo. Make the L in lobby fall with this thing! */
@@ -19,11 +18,19 @@ class LobbyScreen {
                 var e = JSON.parse(event.data);
                 if(e.lobbyID !== undefined) { 
                     this.team.lobbyToken = e.lobbyID;
-                } else {
-                    this.team.lobbyToken = "oh shit";
                 }
                 // console.log("this.team.lobbyToken: " + this.team.lobbyToken);
             };
+            /* 							X, Y 				 , W  			  , H 				 , gamestate, default color	*/
+            buttonList.push(new Buttons(windowWidth/2.5, windowHeight / 3.1, windowWidth / 7, windowHeight / 12, 1, "green"));
+            buttonList[buttonList.length - 1].text = "Add bot"; // Text to put in the button
+            buttonList[buttonList.length - 1].hoverColor = "yellow"; // What color to make the button on mouse hover
+            buttonList[buttonList.length - 1].id = "addbot"; // ID of the button
+
+            buttonList.push(new Buttons(windowWidth/2.5, windowHeight / 2.4, windowWidth / 7, windowHeight / 12, 1, "red"));
+            buttonList[buttonList.length - 1].text = "Remove bot"; // Text to put in the button
+            buttonList[buttonList.length - 1].hoverColor = "yellow"; // What color to make the button on mouse hover
+            buttonList[buttonList.length - 1].id = "removebot"; // ID of the button
         }
     }
  
@@ -36,7 +43,12 @@ class LobbyScreen {
             this.playerCards.forEach(playerCard => {
                 playerCard.draw();
             });
+            Buttonloop();
         }
+    }
+
+    addAndRemoveBotButton() {
+
     }
 
     /**
@@ -90,12 +102,29 @@ class LobbyScreen {
         pop();
     }
 
+    /**
+     * newPlayerJoins - this function will be called when a new user joins
+     *                  the lobby.
+     * 
+     * @param
+     * 
+     * @returns
+     * 
+     */
     newPlayerJoins() {
         console.log("New player joined!")
         // add new player to playercard and team
     }
-
-    PlayerLeaves() {
+    /**
+     * playerLeaves - this function will be called when a user leaves
+     *                the lobby.
+     * 
+     * @param
+     * 
+     * @returns
+     * 
+     */
+    playerLeaves() {
         console.log("Player leaves!")
     }
 
@@ -121,6 +150,9 @@ class LobbyScreen {
                 if(checkMouseTeamAccept()) {
                     this.lobbyGameState = 1;
                 }
+                break;
+            case 1: 
+                
                 break;
         }
     }
