@@ -10,7 +10,7 @@ class LobbyScreen {
         /** @todo. Make the L in lobby fall with this thing! */
         // this.titleAnimation = [300, 500, 400, 700] //drops the peices 
         if(this.player.owner == true) { // If the player is the owner, we need to ask for the token
-            var data = JSON.stringify({"maxPlayers":"4","name": "bob","playerID": "1"})
+            var data = JSON.stringify({"maxPlayers":"4","name": this.player.username,"playerID": this.player.id})
             // console.log(JSON.stringify({"type": "1", "data": data}));
             socket.send(JSON.stringify({"type": "1", "data": data}));
             socket.onmessage = (event) => {
@@ -34,6 +34,14 @@ class LobbyScreen {
         }
     }
  
+    /**
+     * draw: This function will be called 60 times a second by sketch.js
+     * 
+     * @param void
+     * 
+     * @returns void
+     * 
+     */
     draw() {
         this.drawTitle();
         this.drawToken();
@@ -47,8 +55,28 @@ class LobbyScreen {
         }
     }
 
-    addAndRemoveBotButton() {
-
+    /**
+     * addAndRemoveBotButton: This function will be called when a person 
+     *                        clicks add or remove bot in the lobby screen.
+     * 
+     * @param addOrRemove - This param can either be the following
+     *                      "addbot": Clicked add bot button
+     *                      "removebot": Clicked remove bot button
+     * @returns void
+     * 
+     */
+    addAndRemoveBotButton(addOrRemove) {
+        if( addOrRemove == "addbot" ) { // For add bot button
+            /* Make sure that we are not going over 4 players + bots */
+            if((this.numBots + this.team.playersInTeam.length) < 4){
+                this.numBots++;
+            }
+        } else if( addOrRemove == "removebot" ) { // for remove bot button
+            /* Dont want negative bots! */
+            if(this.numBots != 0) {
+                this.numBots--;
+            }
+        }
     }
 
     /**
@@ -64,7 +92,9 @@ class LobbyScreen {
         push(); // push the settings
         fill(255); // fill white
         textSize(windowWidth/30) // text size relative to screen width
-        text("Token: " + this.team.lobbyToken,windowWidth/10,windowHeight/1.1) // draw the token
+        // if(this.team.lobbyToken.length == 4) {
+            text("Token: " + this.team.lobbyToken,windowWidth/10,windowHeight/1.1) // draw the token
+        // } 
         pop(); // pop the settings
     }
 
@@ -115,6 +145,7 @@ class LobbyScreen {
         console.log("New player joined!")
         // add new player to playercard and team
     }
+
     /**
      * playerLeaves - this function will be called when a user leaves
      *                the lobby.
@@ -128,8 +159,15 @@ class LobbyScreen {
         console.log("Player leaves!")
     }
 
+    /**
+     * keyPressedLobby: Is called when the user clicks a key
+     * 
+     * @param void (but really given a keycode)
+     * 
+     * @returns void
+     * 
+     */
     keyPressedLobby() {
-        console.log("KeyCode: " + keyCode)
         switch (this.lobbyGameState) {
             case 0: // If we are on the username text box
                 if (keyCode == 8) { // "pressed delete"
@@ -144,6 +182,14 @@ class LobbyScreen {
         }
     }
 
+    /**
+     * mouseClickedLobby: Is called when the user clicks anywhere on the screen
+     * 
+     * @param void
+     * 
+     * @returns void
+     * 
+     */
     mouseClickedLobby() {
         switch (this.lobbyGameState) {
             case 0: //if owner is entering username
@@ -152,7 +198,9 @@ class LobbyScreen {
                 }
                 break;
             case 1: 
-                
+                if(ClickedLoop() == "addbot" || ClickedLoop() == "removebot") {
+                    this.addAndRemoveBotButton(ClickedLoop());
+                }
                 break;
         }
     }
