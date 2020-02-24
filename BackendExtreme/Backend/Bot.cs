@@ -154,7 +154,6 @@ public class SingleBot : Bot {
                 Console.WriteLine("STARTING POSITION ON BOARD " + startingPieceHeightOnBoard +  " " + shiftedDotRow);
                 // check whether the 2 heights are more than height of the board
                 if((board.height - startingPieceHeightOnBoard - 1) + (4 - shiftedDotRow) >= board.height) {
-                    Console.WriteLine("\n\n\n\n\n\n\nI AM HEREHEHEH");
                     compatibleBoard = null;
                     break;
                 } 
@@ -166,7 +165,7 @@ public class SingleBot : Bot {
                 // add to the tuples on the actual board
                 compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
 
-                Console.WriteLine(" \n\n\n\n\n\n\n\n\n I AM HEREHEHEKLFJSKLJFLKSDJFKLJSDLFKJSDKLFJkl" + shiftedForBoardRow + " " + shiftedForBoardCol);
+                // Console.WriteLine(" \n\n\n\n\n\n\n\n\n I AM HEREHEHEKLFJSKLJFLKSDJFKLJSDLFKJSDKLFJkl" + shiftedForBoardRow + " " + shiftedForBoardCol);
                 // put it on the board as well
                 modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
 
@@ -248,7 +247,7 @@ public class SingleBot : Bot {
             block.data = block.RotateMatrix();
             compatiblePieces.AddRange(getFit(board, block, 3));
             block.data = block.RotateMatrix();
-            compatiblePieces.AddRange(getFit(board, block, 1));
+            compatiblePieces.AddRange(getFit(board, block, 4));
         }
 
         // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line

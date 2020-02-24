@@ -1029,23 +1029,112 @@ namespace Tests
         }
 
         /*
-            Assert that a move can be taken without erroring for trying multiple different pieces
+            Assert that a move can be taken without erroring for trying multiple different pieces once
         */
         [Test]
-        public void MakeDiffPieceMoves() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE DIFF PIECE MOVES--------------------------------------");
+        public void MakeDiffPieceMove1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE DIFF PIECE MOVE 1--------------------------------------");
             try {
-                foreach(Block block in blocks) {
-                    TestContext.Progress.WriteLine("--------------------------------------");
-                    List<Block> newBlocks = new List<Block>();
-                    newBlocks.Add(block);
-                    TestContext.Progress.Write("Piece to be placed");
-                    botInfoPrinter.PrintJaggedArr(block.data, false);
-                    List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
-                    TestContext.Progress.Write("Board with piece");
-                    botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
-                    TestContext.Progress.WriteLine("--------------------------------------");
-                }
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                newBlocks.Add(blocks[0]);
+                Block block = blocks[0];
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.Write("Board with piece");
+                botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+        /*
+            Assert that a move can be taken without erroring for trying different pieces
+        */
+        [Test]
+        public void MakeDiffPieceMove2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE DIFF PIECE MOVE 2--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[1];
+                newBlocks.Add(blocks[1]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.Write("Board with piece");
+                botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a move can be taken without erroring for trying different pieces
+        */
+        [Test]
+        public void MakeDiffPieceMove3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE DIFF PIECE MOVE 3--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[2];
+                newBlocks.Add(blocks[2]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.Write("Board with piece");
+                botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a move can be taken without erroring for trying different pieces
+        */
+        [Test]
+        public void MakeDiffPieceMove4() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE DIFF PIECE MOVE 4--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[3];
+                newBlocks.Add(blocks[3]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.Write("Board with piece");
+                botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+        /*
+            Assert that a move can be taken without erroring for trying different pieces
+        */
+        [Test]
+        public void MakeDiffPieceMove5() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE DIFF PIECE MOVE 5--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[4];
+                newBlocks.Add(blocks[4]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.Write("Board with piece");
+                botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
             } catch (Exception e) {
                 Assert.Fail("Expected no exception recieved " + e.Message);
             }        
@@ -1096,6 +1185,59 @@ namespace Tests
                     {1, 1, 0, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1}
                 };
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved" + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a move can be taken without erroring when same piece placed twice on the board
+        */
+        [Test]
+        public void MakeMultipleMoves() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ZMAKE MULTIPLE MOVES 1--------------------------------------");
+            try {
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 0, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+
+                foreach(Block block in blocks) {
+                    List<Block> newBlocks = new List<Block>();
+                    newBlocks.Add(block);
+
+                    List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+
+                    if(piecePlaced == null) {
+                        break;
+                    }
+
+                    Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced);
+
+                    game.board.board = allBoards.Item1;
+                    
+                    TestContext.Progress.Write("Board after piece placed");
+                    botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+                }
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                // point back to old board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 1, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+               
             } catch (Exception e) {
                 Assert.Fail("Expected no exception but recieved" + e.Message);
             }        
