@@ -42,10 +42,12 @@ function teamNameAsker(team) {
 }
 
 function checkMouseTeamAccept() {
-    if ((mouseX - (windowWidth / 2) >= this.RightX) && (mouseX - (windowWidth / 2) <= this.LeftX)) {
-        if ((mouseY - (windowHeight / 2) >= this.TopY) && (mouseY - (windowHeight / 2) <= this.BotY)) {
+    if ((mouseX - (windowWidth / 2) >= (0 - windowWidth/5 / 2)) && (mouseX - (windowWidth / 2) <= (0 + windowWidth/5 / 2))) {
+        if ((mouseY - (windowHeight / 2) >= (windowHeight/7.4 - windowHeight/10 / 2)) && (mouseY - (windowHeight / 2) <= (windowHeight/7.4 + windowHeight/10 / 2))) {
             return true;
         }
     }
     return false;
 }
+
+module.exports = [checkMouseTeamAccept, teamNameAsker];
