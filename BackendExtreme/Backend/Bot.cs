@@ -27,10 +27,9 @@ public class SingleBot : Bot {
             List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces - information about the pieces that are compatible on the board
      */
     public List<Tuple<int, List<Tuple<int, int>>, int, int, int>> getFit(Board board, Block block, int rotation) {
-
         // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear line and next line
         List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
-
+        
         // positions of where the piece exists in the data in a tuple with both the ints for row and column
         List<Tuple<int, int>> dotPositions = new List<Tuple<int, int>>();
         
@@ -50,33 +49,23 @@ public class SingleBot : Bot {
         // print the positions of the pieces
         botInfoPrinter.PrintPositions(dotPositions);
 
-
         // find the position at the bottommost left corner of the piece because that is where we start placing the piece on the board
         Tuple<int, int> bottomLeft = block.FindBottomLeft();
-
-        // break it up into the bottom left row and column
         int bottomLeftRow = bottomLeft.Item1;
         int bottomLeftCol = bottomLeft.Item2;
-
         Console.WriteLine("THE BOTTOM LEFT ROW OF PIECE: " + bottomLeftRow);
         Console.WriteLine("THE BOTTOM LEFT COLUMN OF PIECE: " + bottomLeftCol);
 
-        // piece with shifted over information
+        // shifted over piece information
         int[,] shiftedOverPiece = new int[4,4];
+        List<Tuple<int, int>> shiftedDotPositions = new List<Tuple<int, int>>();
 
         // to calculate the width of the piece
         int minCol = 5;
-        int maxCol = -1;
+        int maxCol = -1;        
 
-        // get the indicies of the piece that have the bottomLeftRow
-        HashSet<int> colsWithHighestHeight = new HashSet<int>();
-
-        // shifted over dot positions
-        List<Tuple<int, int>> shiftedDotPositions = new List<Tuple<int, int>>();
-
-        // look at each of the positions on the piece and see if there is a conflict on the board
+        // shift over the dot positions
         foreach(Tuple<int, int>  positionOfDot in dotPositions) {
-
             // dot to be tested
             int dotRowOnPiece = positionOfDot.Item1;
             int dotColOnPiece = positionOfDot.Item2;
@@ -84,11 +73,6 @@ public class SingleBot : Bot {
             // shift over the dot to get rid of extra space
             int modRowOnPiece = 3 - (bottomLeftRow - dotRowOnPiece);
             int modDotCol = dotColOnPiece - bottomLeftCol;
-
-            // put into the list of indicies with the large heights
-            if (modRowOnPiece == 3) {
-                colsWithHighestHeight.Add(modDotCol);
-            }
 
             // fill in new piece with this dot and this is the piece we have to fit on the board at this specific column
             shiftedOverPiece[modRowOnPiece, modDotCol] = 1;
@@ -101,121 +85,115 @@ public class SingleBot : Bot {
             maxCol = Math.Max(maxCol, dotColOnPiece);
         }
 
+        // find width of piece
         int widthOfPiece = maxCol - minCol + 1;
         Console.WriteLine("WIDTH OF PIECE " + widthOfPiece);
 
-        
-        Console.WriteLine("COLUMNS WITH THE LOWEST ROWS");
-        botInfoPrinter.PrintSet(colsWithHighestHeight);
-
-
+        // get the shifted over piece
         Console.WriteLine();
         Console.WriteLine("SHIFTED OVER PIECE");
         botInfoPrinter.PrintMultiDimArr(shiftedOverPiece);
 
+        // go through all starting positions in columns and rows
+        for(int startingCol = 0; startingCol < board.board.GetLength(1) - widthOfPiece + 1; startingCol++) {
+            bool incompatibleBasedOnRow = false;
+            for(int startingRow = board.height - board.maxHeights[startingCol]; startingRow >= 0; startingRow--) {
+                Console.WriteLine("STARTING COL " + startingCol + " AND ROW " + startingRow);
 
-        // go through each of the starting positions of the piece to find out the fit
-        for(int i = 0; i < board.board.GetLength(1) - widthOfPiece + 1; i++) {
+                // compatible board info
+                List<Tuple<int, int>> compatibleBoard = new List<Tuple<int, int>>();
 
-            // where should the dot starting spot be placed with this location of the column
-            int startingPieceHeightOnBoard = board.height - board.maxHeights[colsWithHighestHeight.First()] - 1;
-            Console.WriteLine("\nSTARTING PIECE HEIGHT ON BOARD FOR COLUMN " + i + " IS " + startingPieceHeightOnBoard);
-            // find the starting height for the pieces
-            foreach(int j in colsWithHighestHeight) {
-                Console.WriteLine("COL ON BOARD " + (j+i) + " HEIGHT IS " + (board.height - board.maxHeights[j+i] - 1 ));
-                // see if that spot is okay with the max height and continue till it is okay with that height starting with
-                while(board.height - board.maxHeights[j+i] - 1 < startingPieceHeightOnBoard) {
-                    startingPieceHeightOnBoard = board.height - board.maxHeights[j+i] - 1;
+                // modified board with the pieces in position
+                int[,] modifiedBoard = new int[board.height,board.width];
+
+                // dots nearby for area covered
+                HashSet<Tuple<int, int>> dotsNearby = new HashSet<Tuple<int,int>>();
+
+                // dots that fill the floor
+                int dotsFillingFloor = 0;
+
+                // see if all dots can be placed on the board without indexing issues in the column space
+                foreach(Tuple<int, int> shiftedDotPosition in shiftedDotPositions) {
+                    int shiftedDotRow = shiftedDotPosition.Item1;
+                    int shiftedDotCol = shiftedDotPosition.Item2;
+
+                    Console.WriteLine("ON THE PIECE " + shiftedDotRow + " " + shiftedDotCol);
+
+                    // shifted on the board size for the dot to be on the board
+                    int shiftedForBoardRow = startingRow - (3 - shiftedDotRow); 
+                    // int shiftedForBoardRow = startingRow - (4 - shiftedDotRow);
+                    
+                    int shiftedForBoardCol = startingCol + shiftedDotCol;
+                    Console.WriteLine("SHIFTED DOT POSITION ON BOARD(" + shiftedForBoardRow + "," + shiftedForBoardCol + ")");
+
+                    // check whether the 2 heights are more than height of the board, if yes, then should not continue with the piece in this or any of the following rows
+                    if(shiftedForBoardRow < 0 || shiftedForBoardRow >= board.height) {
+                        Console.WriteLine("INCOMPATIBLE PIECE BECAUSE OUT OF BOUNDS WITH INFO " + (board.height - startingRow - 1) + " " + (4 - shiftedDotRow - 1));
+                        incompatibleBasedOnRow = true;
+                        compatibleBoard = null;
+                        break;
+                    } 
+
+                    // check if the dot is overriding an exising dot
+                    if(board.board[shiftedForBoardRow, shiftedForBoardCol] == 1) {
+                        Console.WriteLine("INCOMPATIBLE PIECE BECAUSE OVERRIDING DOTS");
+                        compatibleBoard = null;
+                        break;
+                    }
+
+                    // add to the board information
+                    compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
+                    modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
+
+                    // see which dots are nearby
+                    // up
+                    if(shiftedForBoardRow - 1 >= 0 && board.board[shiftedForBoardRow - 1,shiftedForBoardCol] == 1) {
+                        dotsNearby.Add(Tuple.Create(shiftedForBoardRow - 1, shiftedForBoardCol));
+                    }
+                    // down
+                    if(shiftedForBoardRow + 1 < board.height && board.board[shiftedForBoardRow + 1,shiftedForBoardCol] == 1) {
+                        dotsNearby.Add(Tuple.Create(shiftedForBoardRow + 1, shiftedForBoardCol));
+                    }
+                    // left
+                    if(shiftedForBoardCol - 1 >= 0 && board.board[shiftedForBoardRow,shiftedForBoardCol - 1] == 1) {
+                        dotsNearby.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol - 1));
+                    }
+                    // right
+                    if(shiftedForBoardCol + 1 < board.width && board.board[shiftedForBoardRow,shiftedForBoardCol + 1] == 1) {
+                        dotsNearby.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol + 1));
+                    }
+                    // check for touching the floor
+                    if(shiftedForBoardRow + 1 == board.height) {
+                        dotsNearby.Add(Tuple.Create(shiftedForBoardRow + 1, shiftedForBoardCol));
+                        dotsFillingFloor += 1;
+                    }
+
                 }
-            }
-            Console.WriteLine("MODIFIED PIECE HEIGHT ON BOARD FOR COLUMN " + i + " IS " + startingPieceHeightOnBoard + "\n");
 
-
-            // compatible board info
-            List<Tuple<int, int>> compatibleBoard = new List<Tuple<int, int>>();
-
-            // modified board with the pieces in position
-            int[,] modifiedBoard = new int[board.height,board.width];
-
-            // dots nearby for area covered
-            HashSet<Tuple<int, int>> dotsNearby = new HashSet<Tuple<int,int>>();
-
-            // dots that fill the floor
-            int dotsFillingFloor = 0;
-
-            // see if all dots can be placed on the board without indexing issues in the column space
-            foreach(Tuple<int, int> shiftedDotPosition in shiftedDotPositions) {
-                // column to check for the spacing
-                int shiftedDotRow = shiftedDotPosition.Item1;
-                int shiftedDotCol = shiftedDotPosition.Item2;
-
-                Console.WriteLine("SHIFTED DOT POSITION (" + shiftedDotRow + "," + shiftedDotCol + ")");
-
-                Console.WriteLine("STARTING POSITION ON BOARD " + startingPieceHeightOnBoard +  " " + shiftedDotRow);
-                // check whether the 2 heights are more than height of the board
-                if((board.height - startingPieceHeightOnBoard - 1) + (4 - shiftedDotRow) >= board.height) {
-                    compatibleBoard = null;
+                // should not continue checking with any of the upcoming rows
+                if(incompatibleBasedOnRow) {
                     break;
-                } 
+                }
+                
+                 // piece starting at this column and row is actually compatible then add its information
+                if(compatibleBoard != null) {
+                    Console.WriteLine("MODIFIED BOARD");
+                    botInfoPrinter.PrintMultiDimArr(modifiedBoard);
 
-                // shifted on the board size
-                int shiftedForBoardRow = startingPieceHeightOnBoard - (3 - shiftedDotRow); 
-                int shiftedForBoardCol = i + shiftedDotCol;
-
-                // add to the tuples on the actual board
-                compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
-
-                // Console.WriteLine(" \n\n\n\n\n\n\n\n\n I AM HEREHEHEKLFJSKLJFLKSDJFKLJSDLFKJSDKLFJkl" + shiftedForBoardRow + " " + shiftedForBoardCol);
-                // put it on the board as well
-                modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
-
-                // see which dots are nearby
-                // up
-                if(shiftedForBoardRow - 1 >= 0 && board.board[shiftedForBoardRow - 1,shiftedForBoardCol] == 1) {
-                    dotsNearby.Add(Tuple.Create(shiftedForBoardRow - 1, shiftedForBoardCol));
+                    Console.WriteLine("DOTS NEARBY");
+                    botInfoPrinter.PrintSetTuples(dotsNearby);
+                    if(dotsFillingFloor + board.numFilledFloor == board.height) {
+                        // creates tetris
+                        Console.WriteLine("CREATING TETRIS");
+                        compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1, 0));
+                    } else {
+                        // no tetris
+                        compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0, 0));
+                    }
+                    // was able to place on the board
+                    break;
                 }
 
-                // down
-                if(shiftedForBoardRow + 1 < board.height && board.board[shiftedForBoardRow + 1,shiftedForBoardCol] == 1) {
-                    dotsNearby.Add(Tuple.Create(shiftedForBoardRow + 1, shiftedForBoardCol));
-                }
-
-                // left
-                if(shiftedForBoardCol - 1 >= 0 && board.board[shiftedForBoardRow,shiftedForBoardCol - 1] == 1) {
-                    dotsNearby.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol - 1));
-                }
-
-                // right
-                if(shiftedForBoardCol + 1 < board.width && board.board[shiftedForBoardRow,shiftedForBoardCol + 1] == 1) {
-                    dotsNearby.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol + 1));
-                }
-
-                // check for touching the floor
-                if(shiftedForBoardRow + 1 == board.height) {
-                    dotsNearby.Add(Tuple.Create(shiftedForBoardRow + 1, shiftedForBoardCol));
-                    dotsFillingFloor += 1;
-                }
-            }
-
-            Console.WriteLine("MODIFIED BOARD");
-            botInfoPrinter.PrintMultiDimArr(modifiedBoard);
-
-            Console.WriteLine("DOTS NEARBY");
-            botInfoPrinter.PrintSetTuples(dotsNearby);
-
-            Console.WriteLine("NUM FILLING FLOOR " + board.numFilledFloor);
-            Console.WriteLine("DOTS FILLING FLOOR " + dotsFillingFloor);
-
-            // piece starting at this column and row is actually compatible then add its information
-            if(compatibleBoard != null) {
-                if(dotsFillingFloor + board.numFilledFloor == board.height) {
-                    // creates tetris
-                    Console.WriteLine("CREATING TETRIS");
-                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1, 0));
-                } else {
-                    // no tetris
-                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0, 0));
-                }
             }
         }
 
@@ -242,12 +220,12 @@ public class SingleBot : Bot {
 
             // get the fit of the board with the area and whether a piece can clear a line
             compatiblePieces.AddRange(getFit(board, block, 1));
-            block.data = block.RotateMatrix();
-            compatiblePieces.AddRange(getFit(board, block, 2));
-            block.data = block.RotateMatrix();
-            compatiblePieces.AddRange(getFit(board, block, 3));
-            block.data = block.RotateMatrix();
-            compatiblePieces.AddRange(getFit(board, block, 4));
+            // block.data = block.RotateMatrix();
+            // compatiblePieces.AddRange(getFit(board, block, 2));
+            // block.data = block.RotateMatrix();
+            // compatiblePieces.AddRange(getFit(board, block, 3));
+            // block.data = block.RotateMatrix();
+            // compatiblePieces.AddRange(getFit(board, block, 4));
         }
 
         // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line

@@ -1142,6 +1142,117 @@ namespace Tests
 
 
         /*
+            Assert that the bottom left of a piece can be found
+        */
+        [Test]
+        public void FindBottomLeft1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BOTTOM LEFT 1--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[0];
+                newBlocks.Add(blocks[0]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                Tuple<int, int> bottomLeftInfo = block.FindBottomLeft();
+                Tuple<int, int> expectedTuple = new Tuple<int, int>(3,2);
+                Assert.That(bottomLeftInfo, Is.EqualTo(expectedTuple));
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+         /*
+            Assert that the bottom left of a piece can be found
+        */
+        [Test]
+        public void FindBottomLeft2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BOTTOM LEFT 2--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[1];
+                newBlocks.Add(blocks[1]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                Tuple<int, int> bottomLeftInfo = block.FindBottomLeft();
+                Tuple<int, int> expectedTuple = new Tuple<int, int>(3,2);
+                Assert.That(bottomLeftInfo, Is.EqualTo(expectedTuple));
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+         /*
+            Assert that the bottom left of a piece can be found
+        */
+        [Test]
+        public void FindBottomLeft3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BOTTOM LEFT 3--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[2];
+                newBlocks.Add(blocks[2]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                Tuple<int, int> bottomLeftInfo = block.FindBottomLeft();
+                Tuple<int, int> expectedTuple = new Tuple<int, int>(3,0);
+                Assert.That(bottomLeftInfo, Is.EqualTo(expectedTuple));
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+         /*
+            Assert that the bottom left of a piece can be found
+        */
+        [Test]
+        public void FindBottomLeft4() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BOTTOM LEFT 4--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[3];
+                newBlocks.Add(blocks[3]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                Tuple<int, int> bottomLeftInfo = block.FindBottomLeft();
+                Tuple<int, int> expectedTuple = new Tuple<int, int>(3,1);
+                Assert.That(bottomLeftInfo, Is.EqualTo(expectedTuple));
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+         /*
+            Assert that the bottom left of a piece can be found
+        */
+        [Test]
+        public void FindBottomLeft5() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BOTTOM LEFT 5--------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[4];
+                newBlocks.Add(blocks[4]);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(block.data, false);
+                Tuple<int, int> bottomLeftInfo = block.FindBottomLeft();
+                Tuple<int, int> expectedTuple = new Tuple<int, int>(3,1);
+                Assert.That(bottomLeftInfo, Is.EqualTo(expectedTuple));
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
             Assert that a move can be taken without erroring when same piece placed twice on the board
         */
         [Test]
