@@ -7,6 +7,7 @@ public class Block
     public int color;
     public int id;
     public Tuple<int, int> pos;
+    int size = 4;
 
     public Block(int[][] data, int color)
     {
@@ -19,13 +20,23 @@ public class Block
             int[][] matrix - contains where each one of the dots on the block are filled after rotation
      */
      public int[][] RotateMatrix() {
-        int length = data[0].Length;
-        int[][] retVal = new int[length][];
-        for(int x = 0; x < length; x++)
-        {
-            retVal[x] = data.Select(p => p[x]).ToArray();
-        }
-        return retVal;
+        // int length = data[0].Length;
+        // int[][] retVal = new int[length][];
+        // for(int x = 0; x < length; x++)
+        // {
+        //     retVal[x] = data.Select(p => p[x]).ToArray();
+        // }
+        // return retVal;
+        for (int i = 0; i < size/2; i++) { 
+            for (int j = i; j < size-i-1; j++) { 
+                int temp = data[i][j]; 
+                data[i][j] = data[size-1-j][i]; 
+                data[size-1-j][i] = data[size-1-i][size-1-j]; 
+                data[size-1-i][size-1-j] = data[j][size-1-i]; 
+                data[j][size-1-i] = temp; 
+            } 
+        } 
+        return data;
     }
 
 

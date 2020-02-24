@@ -45,8 +45,8 @@ namespace Tests
                 new int[] {0, 0, 0, 0}, 
             };
 
-             int[][] b3 = new int[][] {
-                new int[] {0, 0, 1, 0}, 
+            int[][] b3 = new int[][] {
+                new int[] {1, 1, 1, 0}, 
                 new int[] {0, 0, 1, 0}, 
                 new int[] {0, 0, 1, 1}, 
                 new int[] {0, 0, 1, 0}, 
@@ -140,6 +140,893 @@ namespace Tests
             return allBoards;
         }
 
+
+        /*
+            Assert that a piece can be rotated once
+        */
+        [Test]
+        public void RotatePieceOnce1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE ONCE 1--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                int[][] expectedRotation = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation));
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated once
+        */
+        [Test]
+        public void RotatePieceOnce2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE ONCE 2--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                int[][] expectedRotation = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation));
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated once
+        */
+        [Test]
+        public void RotatePieceOnce3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE ONCE 3--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                int[][] expectedRotation = new int[][] {
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation));
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated once
+        */
+        [Test]
+        public void RotatePieceOnce4() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE ONCE 4--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                int[][] expectedRotation = new int[][] {
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation));
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated once
+        */
+        [Test]
+        public void RotatePieceOnce5() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE ONCE 5--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                int[][] expectedRotation = new int[][] {
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 1}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation));
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated twice
+        */
+        [Test]
+        public void RotatePieceTwice1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE TWICE 1--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated twice
+        */
+        [Test]
+        public void RotatePieceTwice2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE TWICE 2--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated twice
+        */
+        [Test]
+        public void RotatePieceTwice3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE TWICE 3--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 1}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated twice
+        */
+        [Test]
+        public void RotatePieceTwice4() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE TWICE 4--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated twice
+        */
+        [Test]
+        public void RotatePieceTwice5() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE TWICE 5--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated three times
+        */
+        [Test]
+        public void RotatePieceThrice1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE THRICE 1--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation3 = new int[][] {
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation3));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated three times
+        */
+        [Test]
+        public void RotatePieceThrice2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE THRICE 2--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation3 = new int[][] {
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation3));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated three times
+        */
+        [Test]
+        public void RotatePieceThrice3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE THRICE 3--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation3 = new int[][] {
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation3));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated three times
+        */
+        [Test]
+        public void RotatePieceThrice4() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE THRICE 4--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation3 = new int[][] {
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation3));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated three times
+        */
+        [Test]
+        public void RotatePieceThrice5() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE THRICE 5--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation1));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation2 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation2));
+
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+
+                int[][] expectedRotation3 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+
+                Assert.That(b.data, Is.EqualTo(expectedRotation3));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated four times is the same
+        */
+        [Test]
+        public void RotatePieceFour1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE FOUR 1--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                Assert.That(b.data, Is.EqualTo(b1));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+        /*
+            Assert that a piece can be rotated four times is the same
+        */
+        [Test]
+        public void RotatePieceFour2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE FOUR 2--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                Assert.That(b.data, Is.EqualTo(b1));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+        /*
+            Assert that a piece can be rotated four times is the same
+        */
+        [Test]
+        public void RotatePieceFour3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE FOUR 3--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 0, 1, 1}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                Assert.That(b.data, Is.EqualTo(b1));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated four times is the same
+        */
+        [Test]
+        public void RotatePieceFour4() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE FOUR 4--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {1, 1, 1, 1}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                Assert.That(b.data, Is.EqualTo(b1));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a piece can be rotated four times is the same
+        */
+        [Test]
+        public void RotatePieceFour5() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ROTATE PIECE FOUR 5--------------------------------------");
+            try {
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 1}, 
+                    new int[] {1, 1, 1, 1}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {1, 1, 1, 1}, 
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Block b = new Block(b1, 1);
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                b.data = b.RotateMatrix();
+                botInfoPrinter.PrintJaggedArr(b.data, false);
+                Assert.That(b.data, Is.EqualTo(b1));
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception recieved " + e.Message);
+            }        
+        }
 
         /*
             Assert that a move can be taken without erroring for trying multiple different pieces
