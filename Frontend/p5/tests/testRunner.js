@@ -10,7 +10,7 @@ var mStartScreen;
 
 global.gameState = 0;
 
-var lol = true;
+var lol = false;
 var numTests = 1;
 
 /* p5 stuff */
@@ -177,6 +177,15 @@ async function testHighScoreButton() {
     CheckSame(global.gameState,0,"testMouseClickedScoreButtonMissedRealGamestate");
 }
 
+async function testCreateGameButton() {
+    global.mouseX = mStartScreen.RightX + 1;
+    global.mouseY = mStartScreen.TopY + 1;
+    CheckSame(mStartScreen.gameStateStartScreen,0,"testCheckInitGameState");
+    // CheckSame(mStartScreen.drawHighScoreButtonCheckMouse(),true,"testDrawHighScoreButtonCheckMouse");
+    // mStartScreen.mouseClickedStart();
+    // CheckSame(mStartScreen.gameStateStartScreen,-1,"testMouseClickedScoreButton1");
+}
+
 async function testJoinLobbyButton() {
     // global.mouseX = mStartScreen.RightX + 1;
     // global.mouseY = mStartScreen.TopY + 1;
@@ -196,6 +205,7 @@ async function testRunnerSetupStartScreen() {
     await testDeleteUsername();
     await testCheckSpecialChars();
     await testHighScoreButton();
+    await testCreateGameButton();
     await testJoinLobbyButton();
     console.log(mStartScreen);
 }

@@ -49,10 +49,11 @@ class LobbyScreen {
      * 
      */
     drawToken() {
-        console.log("drawToken: " + this.team.lobbyToken);
-        push(); // push my settings 
-
-        pop(); // pop my settings
+        push(); // push the settings
+        fill(255); // fill white
+        textSize(windowWidth/30) // text size relative to screen width
+        text("Token: " + this.team.lobbyToken,windowWidth/10,windowHeight/1.1) // draw the token
+        pop(); // pop the settings
     }
 
     /**
