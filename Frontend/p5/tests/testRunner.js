@@ -8,6 +8,7 @@ const button = require('../Teamstris/general/buttons.js');
 const startScreen = require('../Teamstris/startscreen/startScreen.js');
 const lobbyScreen = require('../Teamstris/lobbyscreen/lobbyScreen.js');
 const playerCard = require('../Teamstris/lobbyscreen/playerCard.js');
+const teamasker = require('../Teamstris/lobbyscreen/teamasker.js');
 const player = require('../Teamstris/general/player.js');
 const team = require('../Teamstris/general/team.js');
 
@@ -55,6 +56,10 @@ global.FindButtonbyID = button[4];
 /* Lobby */
 global.LobbyScreen = lobbyScreen[0];
 global.mLobbyScreen = 5;
+
+/* Teammaker stuff */
+global.checkMouseTeamAccept = teamasker[0];
+global.teamNameAsker = teamasker[1];
 
 /* Player */
 global.Player = player[0];
@@ -267,6 +272,30 @@ async function testCheckTokenIsBeingDisplayed() {
     CheckSame(y,1454.5454545454545,"testCheckYOfTextCall");
 }
 
+async function testAddAndRemoveBotsFromLobby() {
+    global.mouseX = 1039;
+    global.mouseY = 1039;
+    CheckSame(mLobbyScreen.lobbyGameState,0,"haveNotYetClickedAcceptOnTeamMakerButton");
+    global.keyCode = 64;
+    var fullStr = "ABCDEFGHIJK";
+    for(var i = 0; i < 15; i++) {
+        global.keyCode++;
+        mLobbyScreen.keyPressedLobby();
+        CheckSame(mLobbyScreen.team.teamName,fullStr.substring(0, i+1),"typedKeyforTeamName" + fullStr.substring(0, i+1));
+    }
+
+    mLobbyScreen.mouseClickedLobby();
+    CheckSame(mLobbyScreen.lobbyGameState,1,"clickedAcceptOnTeamAskerButton");
+    CheckSame(mLobbyScreen.team.teamName,fullStr,"typedKeyforTeamNameAfterAccept" + fullStr);
+    global.mouseX = 0;2486:1353
+    global.mouseY = 0;
+    global.gameState = 1;
+    // if(ClickedLoop() == "addbot"){
+    //     console.log("HERRE: " + global.mouseX + ":" + global.mouseY);
+    // }
+
+}
+
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
     mStartScreen = new startScreen[0];
@@ -286,6 +315,28 @@ async function testRunnerSetupStartScreen() {
     /* Lobby Screen tests */
     await testCheckLobbyInitValues();
     await testCheckTokenIsBeingDisplayed();
+    await testAddAndRemoveBotsFromLobby();
     // console.log(mStartScreen);
-    console.log(mLobbyScreen);
+    // console.log(mLobbyScreen);
 }
+
+
+
+
+/**********
+ * 
+ * 
+ * 
+ * 
+ *     BUTTON FINDER 3700
+for(var i = 0 ; i < 10000; i++) {
+    global.mouseX += 1;
+    global.mouseY = 0;
+    for(var j = 0 ; j < 10000; j++) {
+        global.mouseY += 1;
+        if(ClickedLoop() == "addbot"){
+            console.log("HERRE: " + global.mouseX + ":" + global.mouseY);
+        }
+    }
+}
+ */

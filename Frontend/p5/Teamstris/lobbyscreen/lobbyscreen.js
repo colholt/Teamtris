@@ -162,7 +162,6 @@ class LobbyScreen {
                 break;
         }
         // add new player to playercard and team
-
         return true;
     }
 
@@ -176,7 +175,18 @@ class LobbyScreen {
      * 
      */
     playerLeaves(player) {
-        console.log("Player leaves!")
+        console.log("Player leaves!");
+        console.log(player);
+        this.team.playersInTeam.forEach(function(playerInList, index, object) {
+            if(playerInList == player) {
+                object.splice(index, 1);
+            }
+        });
+        this.playerCards.forEach(function(playercard, index, object) {
+            if(playercard.player == player) {
+                object.splice(index, 1);
+            }
+        });
     }
 
     /**
