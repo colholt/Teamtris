@@ -26,11 +26,18 @@ class PlayerCard {
     draw() {
         push();
         translate(0,0);
-        fill(102,102,255,100)
-        // fill("red")
+        fill(102,102,255,100);
         rect(this.x, this.y, this.w+2*this.sqaureLength, this.h+2*this.sqaureLength);
         pop();
         // this.drawGrid();
+    }
+
+    drawUsername() {
+        push();
+        fill("white");
+        textSize(this.w/5);
+        text(this.player.username, this.x, this.y - 12*this.sqaureLength);
+        pop();
     }
 
     drawGrid() {
