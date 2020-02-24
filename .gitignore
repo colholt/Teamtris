@@ -1,7 +1,9 @@
 .vscode
 Backend/.vscode
-BackendExtreme/Backend/bin/Debug
-BackendExtreme/Backend/obj/Debug
+Backend/bin
+Backend/obj
+BackendExtreme/Backend/bin
+BackendExtreme/Backend/obj
 BackendExtreme/Backend.Tests/bin/Debug/
 BackendExtreme/Backend.Tests/bin/Debug/
 *.deb
