@@ -118,7 +118,7 @@ namespace Tests
         }
 
     /*
-        Assert that a move can be taken without erroring
+        Assert that a move can be taken without erroring for trying multiple different pieces
      */
     [Test]
         public void MakeMoves() {
@@ -127,12 +127,32 @@ namespace Tests
                     List<Block> newBlocks = new List<Block>();
                     newBlocks.Add(block);
                     List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
-                    TestContext.Progress.WriteLine("BOARD WITH PIECE\n\n\n\n");
-                    botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced);
+                    TestContext.Progress.Write("BOARD WITH PIECE");
+                    botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
                 }
             } catch (Exception e) {
                 Assert.Fail("Expected no exception " + e.Message);
             }        
         }
     }
+
+
+    //  /*
+    //     Assert that a move can be taken without erroring
+    //  */
+    // [Test]
+    //     public void MakeMoves() {
+    //         try {
+    //             foreach(Block block in blocks) {
+    //                 List<Block> newBlocks = new List<Block>();
+    //                 newBlocks.Add(block);
+    //                 List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+    //                 TestContext.Progress.Write("BOARD WITH PIECE");
+    //                 botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
+    //             }
+    //         } catch (Exception e) {
+    //             Assert.Fail("Expected no exception " + e.Message);
+    //         }        
+    //     }
+    // }
 }
