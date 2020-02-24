@@ -14,7 +14,7 @@ class LobbyScreen {
             var data = JSON.stringify({"maxPlayers":"4","name": "bob","playerID": "1"})
             // console.log(JSON.stringify({"type": "1", "data": data}));
             socket.send(JSON.stringify({"type": "1", "data": data}));
-            socket.onmessage =  (event) => {
+            socket.onmessage = (event) => {
                 // console.log(event);
                 var e = JSON.parse(event.data);
                 if(e.lobbyID !== undefined) { 
@@ -125,3 +125,5 @@ class LobbyScreen {
         }
     }
 }
+
+module.exports = [LobbyScreen];
