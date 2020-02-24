@@ -14,16 +14,13 @@ function setup() {
   /* Have all our text in center mode */
   textAlign(CENTER, CENTER);
 
-  // socket = io.connect("ws://0.0.0.0:5202/play");
-  // socket.emit('play', playerPreferences);
+  /* Connecting to our WebSocket the backend */
+  socket = new WebSocket('ws://198.199.64.158:5202/lobby');
+
   /* Tells us what screen we are in */
   gameState = 0;
   /* Creating my startscreen object */
   mStartScreen = new StartScreen();
-  /* Creating my lobbyscreen object */
-  // mLobbyScreen = new LobbyScreen();
-  /* Createing my gamescreen object */
-  // mGameScreen = new GameScreen();
 }
 
 function draw() {
