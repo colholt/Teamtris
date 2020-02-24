@@ -80,7 +80,7 @@ public class LobbyManager : WebSocketBehavior
         int playerID = RandomNumber(1001, 9998);
         // initialize a new lobby, player, and list of players
         Lobby newLobby = new Lobby(getToken(), maxPlayers);
-        Player newPlayer = new Player(playerID, name, socketID);
+        Player newPlayer = new Player(playerID, name, socketID, Context.WebSocket);
         newLobby.players = new List<Player>();
 
         newLobby.players.Add(newPlayer);
@@ -112,7 +112,7 @@ public class LobbyManager : WebSocketBehavior
             {
                 int newPlayerID = RandomNumber(1001, 9998);
                 lobby.numPlayers += 1;
-                Player newPlayer = new Player(newPlayerID, name, socketID);
+                Player newPlayer = new Player(newPlayerID, name, socketID, Context.WebSocket);
                 lobby.players.Add(newPlayer);
                 // send message to user of lobby id
                 ConfirmationPacket confirmationPacket = new ConfirmationPacket();
@@ -170,6 +170,16 @@ public class LobbyManager : WebSocketBehavior
                 lobbyInfoPacket.dataType = type;
                 Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
             }
+        }
+    }
+
+    public void stateUpdate(string lobbyID)
+    {
+        Console.WriteLine("state update for lobby " + lobbyID);
+        Lobby lobby = lobbies[lobbyID];
+        for (int j = 0; j < lobby.players.Count; j++)
+        {
+            // Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
         }
     }
 
