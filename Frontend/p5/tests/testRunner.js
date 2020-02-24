@@ -212,7 +212,7 @@ async function testCreateGameButton() {
     CheckSame(mStartScreen.gameStateStartScreen,0,"testCheckInitGameStateCreateButton");
     mStartScreen.mouseClickedStart();
     CheckSame(mStartScreen.gameStateStartScreen,0,"testClickCreateButtonWithNoUsername");
-    mStartScreen.usernameText = "A";
+    mStartScreen.usernameText = "Steven";
     mStartScreen.mouseClickedStart();
     CheckSame(global.gameState,1,"testClickCreateButtonWithUsername");
 }
@@ -226,12 +226,49 @@ async function testJoinLobbyButton() {
     CheckSame(mStartScreen.gameStateStartScreen,0,"testCheckInitGameStateJoinButton");
     mStartScreen.mouseClickedStart();
     CheckSame(mStartScreen.gameStateStartScreen,0,"testClickJoinButtonWithNoUsername");
-    // mStartScreen.usernameText = "A";
-    // mStartScreen.mouseClickedStart();
-    // CheckSame(global.gameState,1,"testClickCreateButtonWithUsername");
+    mStartScreen.usernameText = "Steven";
+    mStartScreen.mouseClickedStart();
+    if(lol) await new Promise(r => setTimeout(r, 400));
+    CheckSame(mStartScreen.gameStateStartScreen,1,"testClickJoinButtonWithUsername");
+}
+
+async function testCheckLobbyInitValues() {
+    CheckSame(mLobbyScreen.player.username,"Steven","testCheckInitUsername");
+    CheckSame(mLobbyScreen.player.owner,true,"testCheckInitOwnerTrue");
+    CheckSame(typeof mLobbyScreen.player.id,"number","testCheckInitID");
+
+    CheckSame(mLobbyScreen.team.playersInTeam[0].username,"Steven","testCheckInitTeamUsername");
+    CheckSame(mLobbyScreen.team.playersInTeam[0].owner,true,"testCheckInitTeamOwnerTrue");
+    CheckSame(typeof mLobbyScreen.team.playersInTeam[0].id,"number","testCheckInitTeamID");
+
+    CheckSame(mLobbyScreen.team.teamName,"","testCheckInitTeamName");
+    CheckSame(typeof mLobbyScreen.team.lobbyToken,"string","testCheckInitLobbyToken");
+}
+
+async function testCheckTokenIsBeingDisplayed() {
+    var strInside;
+    var x;
+    var y;
+    global.text = function(str, xx, yy) {
+        x = xx;
+        y = yy;
+        strInside = str;
+        console.log("strInside: " + strInside + " x: " + x + " y: " + y);
+    };
+    mLobbyScreen.drawToken();
+    CheckSame(strInside,"Token: ","testCheckTextPositionWithNoValue");
+    CheckSame(x,256,"testCheckYOfTextCall");
+    CheckSame(y,1454.5454545454545,"testCheckYOfTextCall");
+
+    mLobbyScreen.team.lobbyToken = "abcd";
+    mLobbyScreen.drawToken();
+    CheckSame(strInside,"Token: abcd","testCheckTextPositionWithRealValues");
+    CheckSame(x,256,"testCheckYOfTextCall");
+    CheckSame(y,1454.5454545454545,"testCheckYOfTextCall");
 }
 
 async function testRunnerSetupStartScreen() {
+    /* Start screen tests*/
     mStartScreen = new startScreen[0];
     await testDefaultUsername();
     await testDefaultTokenValue();
@@ -244,7 +281,13 @@ async function testRunnerSetupStartScreen() {
     await testHighScoreButton();
     await testCreateGameButton();
     await testJoinLobbyButton();
-    console.log(mStartScreen);
+    /* End start screen tests */
+
+    /* Lobby Screen tests */
+    await testCheckLobbyInitValues();
+    await testCheckTokenIsBeingDisplayed();
+    // console.log(mStartScreen);
+    console.log(mLobbyScreen);
 }
 
 
