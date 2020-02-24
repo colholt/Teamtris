@@ -1177,7 +1177,7 @@ namespace Tests
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(block.data, false);
                 Tuple<int, int> bottomLeftInfo = block.FindBottomLeft();
-                Tuple<int, int> expectedTuple = new Tuple<int, int>(3,2);
+                Tuple<int, int> expectedTuple = new Tuple<int, int>(2,2);
                 Assert.That(bottomLeftInfo, Is.EqualTo(expectedTuple));
                 TestContext.Progress.WriteLine("--------------------------------------");
             } catch (Exception e) {
