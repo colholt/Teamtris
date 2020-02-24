@@ -1,8 +1,8 @@
 .vscode
 Backend/.vscode
-BackendExtreme/Backend/bin/Debug/*
-BackendExtreme/Backend/obj/Debug/*
-BackendExtreme/Backend.Tests/bin/Debug/*
-BackendExtreme/Backend.Tests/bin/Debug/*
+BackendExtreme/Backend/bin/*
+BackendExtreme/Backend/obj/*
+BackendExtreme/Backend.Tests/bin/*
+BackendExtreme/Backend.Tests/obj/*
 *.deb
 .DS_Store
