@@ -1,13 +1,13 @@
 class PlayerCard {
     constructor(player, x, y, scale, shift) {
-        console.log("PlayerCard made");
+        // console.log("PlayerCard made");
         this.x = x;
         this.y = y;
         this.player = player;
         this.scale  = scale;
         this.squareArray = [];
         this.sqaureLength = this.scale*(windowHeight / 19) - shift;
-        console.log("AHFEAFEA: " + this.sqaureLength);
+        // console.log("AHFEAFEA: " + this.sqaureLength);
         this.w = this.sqaureLength*9;
         this.h = this.sqaureLength*19;
         this.initGrid();

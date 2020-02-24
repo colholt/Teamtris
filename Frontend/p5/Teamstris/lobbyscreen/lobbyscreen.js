@@ -10,10 +10,26 @@ class LobbyScreen {
         this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
         /** @todo. Make the L in lobby fall with this thing! */
         // this.titleAnimation = [300, 500, 400, 700] //drops the peices 
+        if(this.player.owner == true) { // If the player is the owner, we need to ask for the token
+            var data = JSON.stringify({"maxPlayers":"4","name": "bob","playerID": "1"})
+            // console.log(JSON.stringify({"type": "1", "data": data}));
+            socket.send(JSON.stringify({"type": "1", "data": data}));
+            socket.onmessage =  (event) => {
+                // console.log(event);
+                var e = JSON.parse(event.data);
+                if(e.lobbyID !== undefined) { 
+                    this.team.lobbyToken = e.lobbyID;
+                } else {
+                    this.team.lobbyToken = "oh shit";
+                }
+                // console.log("this.team.lobbyToken: " + this.team.lobbyToken);
+            };
+        }
     }
  
     draw() {
         this.drawTitle();
+        this.drawToken();
         if (this.lobbyGameState == 0) {
             teamNameAsker(this.team);
         } else {
@@ -21,6 +37,22 @@ class LobbyScreen {
                 playerCard.draw();
             });
         }
+    }
+
+    /**
+     * drawToken: This function will draw the token for the owner and all the 
+     *            players.
+     * 
+     * @param void
+     * 
+     * @returns void
+     * 
+     */
+    drawToken() {
+        console.log("drawToken: " + this.team.lobbyToken);
+        push(); // push my settings 
+
+        pop(); // pop my settings
     }
 
     /**
