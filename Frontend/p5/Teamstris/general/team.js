@@ -8,3 +8,5 @@ class Team {
         this.playersInTeam.push(player);
     }
 }
+
+module.exports = [Team]

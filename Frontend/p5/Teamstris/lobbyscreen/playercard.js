@@ -16,11 +16,11 @@ class PlayerCard {
     initGrid() {
         let spaceCalcX = this.x - this.scale*(this.sqaureLength*9 / 2);
         let spaceCalcY = this.y - this.scale*(this.sqaureLength*19 / 2);
-        for (let i = 0; i < 20; i++) {
-            for (let j = 0; j < 10; j++) {
-                this.squareArray.push(createVector(j*this.sqaureLength + spaceCalcX, i*this.sqaureLength + spaceCalcY));
-            }
-        }
+        // for (let i = 0; i < 20; i++) {
+        //     for (let j = 0; j < 10; j++) {
+        //         this.squareArray.push(createVector(j*this.sqaureLength + spaceCalcX, i*this.sqaureLength + spaceCalcY));
+        //     }
+        // }
     }
 
     draw() {
@@ -30,7 +30,7 @@ class PlayerCard {
         // fill("red")
         rect(this.x, this.y, this.w+2*this.sqaureLength, this.h+2*this.sqaureLength);
         pop();
-        this.drawGrid();
+        // this.drawGrid();
     }
 
     drawGrid() {
@@ -70,6 +70,8 @@ class PlayerCard {
         pop();
     }
 }
+
+module.exports = [PlayerCard];
 /** 
 Board
 * * * * * * * * * *

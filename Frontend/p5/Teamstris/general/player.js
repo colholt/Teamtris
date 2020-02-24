@@ -9,3 +9,5 @@ class Player {
         this.playerNum = num;
     }
 }
+
+module.exports = [Player]
