@@ -17,13 +17,13 @@ function setup() {
   // socket = io.connect("ws://0.0.0.0:5202/play");
   // socket.emit('play', playerPreferences);
   /* Tells us what screen we are in */
-  gameState = 0;
+  gameState = 2;
   /* Creating my startscreen object */
   mStartScreen = new StartScreen();
   /* Creating my lobbyscreen object */
   // mLobbyScreen = new LobbyScreen();
   /* Createing my gamescreen object */
-  // mGameScreen = new GameScreen();
+  mGameScreen = new GameScreen();
 }
 
 function draw() {
@@ -36,7 +36,7 @@ function draw() {
       mLobbyScreen.draw();
       break;
     case 2:
-
+      mGameScreen.draw();
       break;
     case 3:
 
