@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class Player
 {
@@ -14,6 +15,7 @@ public class Player
     public int id;
     public string name;
     public string socketID;
+    [JsonIgnore]
     public WebSocketSharp.WebSocket webSocket;
     public Tuple<int, int> currentBlockPosition;
 }
