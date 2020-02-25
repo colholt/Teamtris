@@ -288,16 +288,17 @@ public class SingleBot : Bot {
             // find the next piece that clears lines
             Tuple<int, List<Tuple<int, int>>, int, int> bestPieceOfNextBlock = allBlocksPossible[blocks[1]][0];
 
+            // next next piece that clears lines
+            Tuple<int, List<Tuple<int, int>>, int, int> bestPieceOfNextNextBlock = allBlocksPossible.Count > 2 ? allBlocksPossible[blocks[2]][0] : null;
+
             // the next piece is able to clear lines
             if(bestPieceOfNextBlock.Item4 > 0) {
+                Console.WriteLine("I AM HEREHEHEH LOOKING AT THE NEXT PIECE!\n");
                 // create a new copy of the board so that it can run through the steps for clearing lines again
                 int [,] copiedBoard = board.CopyBoard(board.board);
 
                 // add the pieces to this board to where it has the new information
                 copiedBoard = board.FillBoardWithPieceConsidered(copiedBoard, bestPieceOfNextBlock.Item2);
-
-                Console.WriteLine("BOARD FILLED WITH THE NEXT PIECE\n\n\n\n\n\n\n\n\n\n\n");
-                botInfoPrinter.PrintMultiDimArr(copiedBoard);
 
                 // check to see if there is anything the current piece can place so do another search with the new info
                 List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePiecesForCurrentPieceAfterPiece1 = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
@@ -330,8 +331,49 @@ public class SingleBot : Bot {
 
                 // placement of this block that is the best of the current block
                 bestPiecePlacementOfCurrentBlock= compatiblePiecesForCurrentPieceAfterPiece1[0].Item2;
+            } else if(bestPieceOfNextNextBlock != null && bestPieceOfNextNextBlock.Item4 > 0) {
+                // check 2 shapes from the current shape
+
+                // create a new copy of the board so that it can run through the steps for clearing lines again
+                int [,] copiedBoard = board.CopyBoard(board.board);
+
+                // add the pieces to this board to where it has the new information
+                copiedBoard = board.FillBoardWithPieceConsidered(copiedBoard, bestPieceOfNextNextBlock.Item2);
+
+                // check to see if there is anything the current piece can place so do another search with the new info
+                List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePiecesForCurrentPieceAfterPiece2 = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
+
+                // set up new board
+                Board cBoard = new Board(board.board.GetLength(0), board.board.GetLength(1));
+                cBoard.board = copiedBoard;
+                cBoard.FindMaxHeights();
+
+                // get the fit of the board with the area and whether a piece can clear a line
+                compatiblePiecesForCurrentPieceAfterPiece2.AddRange(getFit(cBoard, blocks[0], 1));
+                blocks[0].data = blocks[0].RotateMatrix();
+                compatiblePiecesForCurrentPieceAfterPiece2.AddRange(getFit(cBoard, blocks[0], 2));
+                blocks[0].data = blocks[0].RotateMatrix();
+                compatiblePiecesForCurrentPieceAfterPiece2.AddRange(getFit(cBoard, blocks[0], 3));
+                blocks[0].data = blocks[0].RotateMatrix();
+                compatiblePiecesForCurrentPieceAfterPiece2.AddRange(getFit(cBoard, blocks[0], 4));
+
+                if(allRotations) {
+                    blocks[0].data = blocks[0].RotateMatrix();
+                }
+
+                // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
+                compatiblePiecesForCurrentPieceAfterPiece2.Sort((x, y) => {
+                    // sort by whether a line has been cleared and puts those first if there is
+                    int result = y.Item4.CompareTo(x.Item4);
+                    // sort by the area covered
+                    return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
+                });
+
+                // placement of this block that is the best of the current block
+                bestPiecePlacementOfCurrentBlock= compatiblePiecesForCurrentPieceAfterPiece2[0].Item2;
+
             }
-        }
+        } 
 
         Console.WriteLine("BEST PIECE FOR BOARD");
         botInfoPrinter.PrintPositions(bestPiecePlacementOfCurrentBlock);
