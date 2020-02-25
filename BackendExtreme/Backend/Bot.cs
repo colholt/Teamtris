@@ -4,7 +4,7 @@ using System.Linq;
 
 public abstract class Bot {
 
-    public abstract List<Tuple<int, int>> GetMove(Board board, List<Block> blocks);
+    public abstract List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false);
    
 }
 
@@ -26,9 +26,9 @@ public class SingleBot : Bot {
         @@return
             List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces - information about the pieces that are compatible on the board
      */
-    public List<Tuple<int, List<Tuple<int, int>>, int, int, int>> getFit(Board board, Block block, int rotation) {
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear line and next line
-        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
+    public List<Tuple<int, List<Tuple<int, int>>, int, int>> getFit(Board board, Block block, int rotation) {
+        // has all the positions compatible for this piece with the rotation, location on board, area covered, and number of lines it can clear
+        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
         
         // positions of where the piece exists in the data in a tuple with both the ints for row and column
         List<Tuple<int, int>> dotPositions = new List<Tuple<int, int>>();
@@ -37,6 +37,7 @@ public class SingleBot : Bot {
         for(int row = 0; row < block.data.Length; row++) {
             dotPositions.AddRange(block.data[row].Select((b,i) => b == 1 ? i : -1).Where(i => i != -1).Select(index => new Tuple<int, int>(row, index)));
         }
+
 
         // print out the board
         Console.WriteLine("BOARD");
@@ -94,17 +95,27 @@ public class SingleBot : Bot {
         Console.WriteLine("SHIFTED OVER PIECE");
         botInfoPrinter.PrintMultiDimArr(shiftedOverPiece);
 
+        int[] bottomBlocks = block.GetBottomBlocks(shiftedOverPiece);
+        Console.WriteLine("BOTTOM ");
+        botInfoPrinter.PrintArr(bottomBlocks);
+
         // go through all starting positions in columns and rows
         for(int startingCol = 0; startingCol < board.board.GetLength(1) - widthOfPiece + 1; startingCol++) {
-            bool incompatibleBasedOnRow = false;
-            for(int startingRow = board.height - board.maxHeights[startingCol]; startingRow >= 0; startingRow--) {
+        // for(int startingCol = 0; startingCol < 1; startingCol++) { 
+            for(int startingRow = board.maxHeights[startingCol] + 1; startingRow <= board.height; startingRow++) {
                 Console.WriteLine("STARTING COL " + startingCol + " AND ROW " + startingRow);
 
                 // compatible board info
                 List<Tuple<int, int>> compatibleBoard = new List<Tuple<int, int>>();
 
-                // modified board with the pieces in position
-                int[,] modifiedBoard = new int[board.height,board.width];
+                // modified board that is getting filled by these dots
+                int[,] modifiedBoardWithOnlyPieces = new int[board.height,board.width];
+
+                for(int i = 0; i < board.width; i++){
+                    for(int j = 0; j < board.height; j++){
+                        modifiedBoardWithOnlyPieces[i,j] = board.board[i,j];
+                    }
+                }
 
                 // dots nearby for area covered
                 HashSet<Tuple<int, int>> dotsNearby = new HashSet<Tuple<int,int>>();
@@ -117,19 +128,19 @@ public class SingleBot : Bot {
                     int shiftedDotRow = shiftedDotPosition.Item1;
                     int shiftedDotCol = shiftedDotPosition.Item2;
 
-                    Console.WriteLine("ON THE PIECE " + shiftedDotRow + " " + shiftedDotCol);
+                    // Console.WriteLine("\n\nON THE PIECE " + shiftedDotRow + " " + shiftedDotCol);
 
                     // shifted on the board size for the dot to be on the board
-                    int shiftedForBoardRow = startingRow - (3 - shiftedDotRow); 
-                    // int shiftedForBoardRow = startingRow - (4 - shiftedDotRow);
-                    
+                    int shiftedForBoardRow = board.height + (shiftedDotRow - bottomBlocks[0]) - startingRow;
+                    // Console.WriteLine("SHIFTED DOT ROW " + bottomBlocks[0]);
+                    // Console.WriteLine("CURRENT ROW " + shiftedDotRow);
+                    // Console.WriteLine("IIIII " + startingRow);
                     int shiftedForBoardCol = startingCol + shiftedDotCol;
                     Console.WriteLine("SHIFTED DOT POSITION ON BOARD(" + shiftedForBoardRow + "," + shiftedForBoardCol + ")");
 
                     // check whether the 2 heights are more than height of the board, if yes, then should not continue with the piece in this or any of the following rows
                     if(shiftedForBoardRow < 0 || shiftedForBoardRow >= board.height) {
                         Console.WriteLine("INCOMPATIBLE PIECE BECAUSE OUT OF BOUNDS WITH INFO " + (board.height - startingRow - 1) + " " + (4 - shiftedDotRow - 1));
-                        incompatibleBasedOnRow = true;
                         compatibleBoard = null;
                         break;
                     } 
@@ -143,7 +154,7 @@ public class SingleBot : Bot {
 
                     // add to the board information
                     compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
-                    modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
+                    modifiedBoardWithOnlyPieces[shiftedForBoardRow, shiftedForBoardCol] = 2;
 
                     // see which dots are nearby
                     // up
@@ -169,31 +180,33 @@ public class SingleBot : Bot {
                     }
 
                 }
-
-                // should not continue checking with any of the upcoming rows
-                if(incompatibleBasedOnRow) {
-                    break;
-                }
                 
                  // piece starting at this column and row is actually compatible then add its information
                 if(compatibleBoard != null) {
                     Console.WriteLine("MODIFIED BOARD");
-                    botInfoPrinter.PrintMultiDimArr(modifiedBoard);
+                    botInfoPrinter.PrintMultiDimArr(modifiedBoardWithOnlyPieces);
 
                     Console.WriteLine("DOTS NEARBY");
                     botInfoPrinter.PrintSetTuples(dotsNearby);
-                    if(dotsFillingFloor + board.numFilledFloor == board.height) {
-                        // creates tetris
-                        Console.WriteLine("CREATING TETRIS");
-                        compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1, 0));
-                    } else {
-                        // no tetris
-                        compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0, 0));
+
+                    // check for the number of rows that it fills
+                    int rowsFilled = 0;
+                    for(int k = 0; k < board.height; k++) {
+                        bool allFilled = true;
+                        for(int l = 0; l < board.width; l++) {
+                            if(modifiedBoardWithOnlyPieces[k, l] != 1 && modifiedBoardWithOnlyPieces[k, l] != 2){
+                                allFilled = false;
+                            }
+                        }
+                        if(allFilled) {
+                            rowsFilled += 1;
+                        }
                     }
-                    // was able to place on the board
+                    Console.WriteLine("ROWS FILLED WITH THIS PIECE IS " + rowsFilled);
+                
+                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, rowsFilled));
                     break;
                 }
-
             }
         }
 
@@ -207,57 +220,99 @@ public class SingleBot : Bot {
             int[][] board - current enviornment
             List<Block> blocks - contains the list of all the blocks to try to fit in this location
      */
-    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false) {
         // get the max height of each column of the baord 
         board.FindMaxHeights();
 
-        // compatible pieces
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear a line
-        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
+        // has the information about all the compatible pieces for a given block
+        Dictionary<Block, List<Tuple<int, List<Tuple<int, int>>, int, int>>> allBlocksPossible = new Dictionary<Block, List<Tuple<int, List<Tuple<int, int>>, int, int>>>();
+
+        int blockCount = 0;
 
         // test out each of the pieces
         foreach(Block block in blocks) {
 
+            // compatible pieces for a single block
+            // has all the positions compatible for this piece with the rotation, location on board, area covered, and number of lines that can be cleared
+            List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
+
             // get the fit of the board with the area and whether a piece can clear a line
             compatiblePieces.AddRange(getFit(board, block, 1));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 2));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 3));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 4));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 2));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 3));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 4));
+
+            if(allRotations) {
+                block.data = block.RotateMatrix();
+            }
+
+            // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
+            compatiblePieces.Sort((x, y) => {
+                // sort by whether a line has been cleared and puts those first if there is
+                int result = y.Item4.CompareTo(x.Item4);
+                // sort by the area covered
+                return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
+            });
+
+            // the current piece cannot even be placed so must return null
+            if(compatiblePieces.Count == 0 && blockCount == 0) {
+                return null;
+            }
+            blockCount++;
+
+            allBlocksPossible[block] = compatiblePieces;
         }
 
-        // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
-        compatiblePieces.Sort((x, y) => {
-            // sort by whether a line has been cleared and puts those first if there is
-            int result = y.Item4.CompareTo(x.Item4);
-            // sort by the area covered
-            return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
-        });
+        // get the best piece of the block that is the first one
+        Tuple<int, List<Tuple<int, int>>, int, int> bestPieceOfCurrentBlock = allBlocksPossible[blocks[0]][0];
 
-        if(compatiblePieces.Count == 0) {
-            return null;
+        // placement of this block that is the best of the current block
+        List<Tuple<int, int>> bestPiecePlacementOfCurrentBlock = bestPieceOfCurrentBlock.Item2;
+
+        // if the best currnet piece doesnt clear any lines, need to find one that does clear lines
+        if(bestPieceOfCurrentBlock.Item4 == 0 && blocks.Count > 1) {
+            // does not clear any lines so need to look for another candidate and choose the next best spot for this block
+            
+            // find the next piece that clears lines
+            Tuple<int, List<Tuple<int, int>>, int, int> bestPieceOfNextBlock = allBlocksPossible[blocks[1]][0];
+            // able to clear lines
+            if(bestPieceOfNextBlock.Item4 > 0) {
+                // can clear lines so find another spot for the current piece after filling the board with the existing pieces
+                // create a new copy of the board so that it can run through the steps for clearing lines again
+                int [,] copiedBoard = board.CopyBoard(board.board);
+                // add the pieces to this board to where it has the new information
+
+                // check to see if there is anything the current piece can place
+
+                // if the current piece can place, then place the current piece there
+
+                // if not, then check the next piece
+
+                // if the next piece is there, then place it if it can be place
+
+                // if nothing can be placed, just do the best of what is already there
+                
+            }
         }
-
-        // best piece to place with information to place on board
-        List<Tuple<int, int>> bestPiecePlacement = compatiblePieces[0].Item2;
 
         Console.WriteLine("BEST PIECE FOR BOARD");
-        botInfoPrinter.PrintPositions(bestPiecePlacement);
+        botInfoPrinter.PrintPositions(bestPiecePlacementOfCurrentBlock);
         Console.WriteLine("BOARD");
         botInfoPrinter.PrintMultiDimArr(board.board);
         Console.WriteLine("BOARD WITH PIECE");
-        botInfoPrinter.PrintBoardWithPiece(board.board, bestPiecePlacement);
+        botInfoPrinter.PrintBoardWithPiece(board.board, bestPiecePlacementOfCurrentBlock);
 
-        return bestPiecePlacement;
+        return bestPiecePlacementOfCurrentBlock;
     }
 }
 
 
 
 public class DoubleBot : Bot {
-    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false) {
         return null;
     }
 }
@@ -265,7 +320,7 @@ public class DoubleBot : Bot {
 
 
 public class TripleBot : Bot {
-    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false) {
         return null;
     }
 }

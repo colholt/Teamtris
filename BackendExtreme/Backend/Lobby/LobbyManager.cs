@@ -202,6 +202,7 @@ public class LobbyManager : WebSocketBehavior
                 {
                     Console.WriteLine("deleting player " + lobby.players[j].name);
                     lobby.players.Remove(lobby.players[j]);
+                    alertLobby(-1, lobby.id, -1);
                     // if lobby is void of players, remove the lobby
                     break;
                 }
