@@ -55,13 +55,13 @@ public class Block
             bool found1 = false;
             for(int j = numRows - 1; j >= 0; j--) {
                 if(shiftedOverPiece[j,i] == 1) {
-                    bottomIndicies[i] = j + 1;
+                    bottomIndicies[i] = j;
                     found1 = true;
                     break;
                 }
             }
             if(!found1) {
-                bottomIndicies[i] = 3;
+                bottomIndicies[i] = 4;
             }
         }
 

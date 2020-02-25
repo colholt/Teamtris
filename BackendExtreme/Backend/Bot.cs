@@ -38,6 +38,7 @@ public class SingleBot : Bot {
             dotPositions.AddRange(block.data[row].Select((b,i) => b == 1 ? i : -1).Where(i => i != -1).Select(index => new Tuple<int, int>(row, index)));
         }
 
+
         // print out the board
         Console.WriteLine("BOARD");
         botInfoPrinter.PrintMultiDimArr(board.board);
@@ -94,10 +95,15 @@ public class SingleBot : Bot {
         Console.WriteLine("SHIFTED OVER PIECE");
         botInfoPrinter.PrintMultiDimArr(shiftedOverPiece);
 
+        int[] bottomBlocks = block.GetBottomBlocks(shiftedOverPiece);
+        Console.WriteLine("BOTTOM ");
+        botInfoPrinter.PrintArr(bottomBlocks);
+
         // go through all starting positions in columns and rows
         for(int startingCol = 0; startingCol < board.board.GetLength(1) - widthOfPiece + 1; startingCol++) {
+        // for(int startingCol = 1; startingCol < 2; startingCol++) { 
             bool incompatibleBasedOnRow = false;
-            for(int startingRow = board.height - board.maxHeights[startingCol]; startingRow >= 0; startingRow--) {
+            for(int startingRow = board.maxHeights[startingCol] + 1; startingRow < board.height; startingRow++) {
                 Console.WriteLine("STARTING COL " + startingCol + " AND ROW " + startingRow);
 
                 // compatible board info
@@ -111,18 +117,26 @@ public class SingleBot : Bot {
 
                 // dots that fill the floor
                 int dotsFillingFloor = 0;
+                
 
                 // see if all dots can be placed on the board without indexing issues in the column space
                 foreach(Tuple<int, int> shiftedDotPosition in shiftedDotPositions) {
                     int shiftedDotRow = shiftedDotPosition.Item1;
                     int shiftedDotCol = shiftedDotPosition.Item2;
 
-                    Console.WriteLine("ON THE PIECE " + shiftedDotRow + " " + shiftedDotCol);
+                    Console.WriteLine("\n\nON THE PIECE " + shiftedDotRow + " " + shiftedDotCol);
 
                     // shifted on the board size for the dot to be on the board
-                    int shiftedForBoardRow = startingRow - (3 - shiftedDotRow); 
-                    // int shiftedForBoardRow = startingRow - (4 - shiftedDotRow);
-                    
+                    // int shiftedForBoardRow = startingRow - (3 - shiftedDotRow); 
+                    // int shiftedForBoardRow = (board.height - board.maxHeights[startingCol] - 1) - (3 - shiftedDotRow);
+                    // int shiftedForBoardRow = (board.height - startingRow) - (3 - shiftedDotRow); 
+                    // int shiftedForBoardRow = (board.height - 1 - board.maxHeights[startingCol + shiftedDotCol] - (3 - startingRow));
+                    // int shiftedForBoardRow = board.maxHeights[startingCol + shiftedDotCol] - 1;
+                    // int shiftedForBoardRow = board.height + (bottomBlocks[startingCol + shiftedDotCol] - bottomBlocks[startingCol]) - startingRow;
+                    int shiftedForBoardRow = board.height + (shiftedDotRow - bottomBlocks[0]) - startingRow;
+                    Console.WriteLine("SHIFTED DOT ROW " + bottomBlocks[0]);
+                    Console.WriteLine("CURRENT ROW " + shiftedDotRow);
+                    Console.WriteLine("IIIII " + startingRow);
                     int shiftedForBoardCol = startingCol + shiftedDotCol;
                     Console.WriteLine("SHIFTED DOT POSITION ON BOARD(" + shiftedForBoardRow + "," + shiftedForBoardCol + ")");
 
@@ -220,12 +234,12 @@ public class SingleBot : Bot {
 
             // get the fit of the board with the area and whether a piece can clear a line
             compatiblePieces.AddRange(getFit(board, block, 1));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 2));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 3));
-            // block.data = block.RotateMatrix();
-            // compatiblePieces.AddRange(getFit(board, block, 4));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 2));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 3));
+            block.data = block.RotateMatrix();
+            compatiblePieces.AddRange(getFit(board, block, 4));
         }
 
         // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
