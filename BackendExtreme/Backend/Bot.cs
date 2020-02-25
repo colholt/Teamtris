@@ -272,10 +272,30 @@ public class SingleBot : Bot {
         // placement of this block that is the best of the current block
         List<Tuple<int, int>> bestPiecePlacementOfCurrentBlock = bestPieceOfCurrentBlock.Item2;
 
-        // see if the best piece clears any lines
-        if(bestPieceOfCurrentBlock.Item4 == 0) {
+        // if the best currnet piece doesnt clear any lines, need to find one that does clear lines
+        if(bestPieceOfCurrentBlock.Item4 == 0 && blocks.Count > 1) {
             // does not clear any lines so need to look for another candidate and choose the next best spot for this block
             
+            // find the next piece that clears lines
+            Tuple<int, List<Tuple<int, int>>, int, int> bestPieceOfNextBlock = allBlocksPossible[blocks[1]][0];
+            // able to clear lines
+            if(bestPieceOfNextBlock.Item4 > 0) {
+                // can clear lines so find another spot for the current piece after filling the board with the existing pieces
+                // create a new copy of the board so that it can run through the steps for clearing lines again
+                int [,] copiedBoard = board.CopyBoard(board.board);
+                // add the pieces to this board to where it has the new information
+
+                // check to see if there is anything the current piece can place
+
+                // if the current piece can place, then place the current piece there
+
+                // if not, then check the next piece
+
+                // if the next piece is there, then place it if it can be place
+
+                // if nothing can be placed, just do the best of what is already there
+                
+            }
         }
 
         Console.WriteLine("BEST PIECE FOR BOARD");

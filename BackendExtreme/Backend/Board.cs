@@ -63,4 +63,19 @@ public class Board
         Console.WriteLine("[{0}]", string.Join(", ", heights));
         this.maxHeights = heights;
     }
+
+    /*
+        @@param int[,] board - board to be copied
+        @@return int[,] copied board - board that has been copied
+    */
+    public int[,] CopyBoard(int[,] data) {
+        int[,] copiedBoard = new int[board.height, board.width];
+
+        for(int i = 0; i < data.width; i++) {
+            for(int j = 0; j < data.height; j++) {
+                copiedBoard[i,j] = data[i,j];
+            }
+        }
+        return copiedBoard;
+    }
 }
