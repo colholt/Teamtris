@@ -69,13 +69,30 @@ public class Board
         @@return int[,] copied board - board that has been copied
     */
     public int[,] CopyBoard(int[,] data) {
-        int[,] copiedBoard = new int[board.height, board.width];
+        int[,] copiedBoard = new int[data.GetLength(0), data.GetLength(1)];
 
-        for(int i = 0; i < data.width; i++) {
-            for(int j = 0; j < data.height; j++) {
+        for(int i = 0; i < data.GetLength(0); i++) {
+            for(int j = 0; j < data.GetLength(1); j++) {
                 copiedBoard[i,j] = data[i,j];
             }
         }
         return copiedBoard;
     }
+
+
+    /*
+        @@param int[,] board - board to be checked
+        @@return bool emptyBoard - is the abord emptu
+    */
+    public bool IsBoardEmpty(int[,] data) {
+        for(int i = 0; i < data.GetLength(0); i++) {
+            for(int j = 0; j < data.GetLength(1); j++) {
+                if(data[i,j] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }

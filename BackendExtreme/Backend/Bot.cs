@@ -138,6 +138,14 @@ public class SingleBot : Bot {
                     int shiftedForBoardCol = startingCol + shiftedDotCol;
                     Console.WriteLine("SHIFTED DOT POSITION ON BOARD(" + shiftedForBoardRow + "," + shiftedForBoardCol + ")");
 
+                    // Console.Write("\n\n\nAAAHH" + board.maxHeights[startingCol + shiftedDotCol] + " " + shiftedForBoardRow);
+                    // make sure that the shifted piece is not below the possibile pieces already there
+                    if(board.height - board.maxHeights[startingCol + shiftedDotCol] <=  shiftedForBoardRow) {
+                        Console.WriteLine("INCOMPATIBLE PIECE WITH MAX HEIGHTS");
+                        compatibleBoard = null;
+                        break;
+                    }
+
                     // check whether the 2 heights are more than height of the board, if yes, then should not continue with the piece in this or any of the following rows
                     if(shiftedForBoardRow < 0 || shiftedForBoardRow >= board.height) {
                         Console.WriteLine("INCOMPATIBLE PIECE BECAUSE OUT OF BOUNDS WITH INFO " + (board.height - startingRow - 1) + " " + (4 - shiftedDotRow - 1));
