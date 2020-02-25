@@ -291,7 +291,11 @@ public class SingleBot : Bot {
                 // can clear lines so find another spot for the current piece after filling the board with the existing pieces
                 // create a new copy of the board so that it can run through the steps for clearing lines again
                 int [,] copiedBoard = board.CopyBoard(board.board);
+
                 // add the pieces to this board to where it has the new information
+                copiedBoard = board.FillBoardWithPieceConsidered(copiedBoard, bestPieceOfNextBlock.Item2);
+                Console.WriteLine("BOARD FILLED WITH THE NEXT PIECE\n\n\n\n\n\n\n\n\n\n\n");
+                botInfoPrinter.PrintMultiDimArr(copiedBoard);
 
                 // check to see if there is anything the current piece can place
 
