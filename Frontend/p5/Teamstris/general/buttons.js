@@ -54,6 +54,10 @@ class Buttons {
    *          false - if mouse is NOT over button
    */
   checkMouse() {
+    if(this.id == "addbot") {
+      // console.log("this.RightX: " + this.RightX + " this.TopY: " + this.TopY);
+      // console.log(mouseX + ":" + mouseY);
+    }
     if (!this.invalid) {
       if (buttons_checkmouse) console.log(mouseX - (windowWidth / 2) + ":" + this.RightX);
       if ((mouseX - (windowWidth / 2) >= this.RightX) && (mouseX - (windowWidth / 2) <= this.LeftX)) {
@@ -74,6 +78,7 @@ function Buttonloop() {
 }
 
 function ClickedLoop() {
+  // console.log(buttonList);
   for (let i = 0; i < buttonList.length; i++) {
     if (buttonList[i].checkMouse()) {
       return buttonList[i].id;

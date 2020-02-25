@@ -39,10 +39,39 @@ public class Block
         return data;
     }
 
+    /** 
+        @@param
+            Tuple<int, int>data - the data at the bottommost positions across all columns
+     */
+     public int[] GetBottomBlocks(int[,] shiftedOverPiece) {
+        int[] bottomIndicies = new int[4];
+
+        int numRows = shiftedOverPiece.GetLength(0);
+        int numCols = shiftedOverPiece.GetLength(1);
+
+        Console.WriteLine("HERE " + numRows + " " + numCols);
+
+        for(int i = 0; i < numCols; i++) {
+            bool found1 = false;
+            for(int j = numRows - 1; j >= 0; j--) {
+                if(shiftedOverPiece[j,i] == 1) {
+                    bottomIndicies[i] = j + 1;
+                    found1 = true;
+                    break;
+                }
+            }
+            if(!found1) {
+                bottomIndicies[i] = 3;
+            }
+        }
+
+        return bottomIndicies;
+     }
+
 
      /** 
-        @@param
-            int[][] data - the data at the bottommost left position
+        @@return 
+            Tuple<int, int> data - the data at the bottommost left position
      */
     public Tuple<int, int> FindBottomLeft() {
         Tuple<int, int> bottomLeft = new Tuple<int, int>(data.Length, data[0].Length);

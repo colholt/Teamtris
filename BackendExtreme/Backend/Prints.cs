@@ -157,4 +157,22 @@ public class Prints {
 
        PrintMultiDimArr(newBoard, normalMode);
     }
+
+    
+
+    /**
+        @@param 
+            int[] arr - array to be printed
+     */
+    public void PrintArr(int[] arr, bool normalMode = true) {
+        Console.WriteLine("HER HERE");
+
+        for(int i = 0; i < arr.Length; i++) {
+            Console.Write("{0} ", arr[i]);
+        } 
+
+        Console.WriteLine();
+    }
+
+
 }
