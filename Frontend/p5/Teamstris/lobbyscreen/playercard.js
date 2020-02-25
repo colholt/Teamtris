@@ -1,13 +1,13 @@
 class PlayerCard {
     constructor(player, x, y, scale, shift) {
-        console.log("PlayerCard made");
+        // console.log("PlayerCard made");
         this.x = x;
         this.y = y;
         this.player = player;
         this.scale  = scale;
         this.squareArray = [];
         this.sqaureLength = this.scale*(windowHeight / 19) - shift;
-        console.log("AHFEAFEA: " + this.sqaureLength);
+        // console.log("AHFEAFEA: " + this.sqaureLength);
         this.w = this.sqaureLength*9;
         this.h = this.sqaureLength*19;
         this.initGrid();
@@ -16,21 +16,28 @@ class PlayerCard {
     initGrid() {
         let spaceCalcX = this.x - this.scale*(this.sqaureLength*9 / 2);
         let spaceCalcY = this.y - this.scale*(this.sqaureLength*19 / 2);
-        for (let i = 0; i < 20; i++) {
-            for (let j = 0; j < 10; j++) {
-                this.squareArray.push(createVector(j*this.sqaureLength + spaceCalcX, i*this.sqaureLength + spaceCalcY));
-            }
-        }
+        // for (let i = 0; i < 20; i++) {
+        //     for (let j = 0; j < 10; j++) {
+        //         this.squareArray.push(createVector(j*this.sqaureLength + spaceCalcX, i*this.sqaureLength + spaceCalcY));
+        //     }
+        // }
     }
 
     draw() {
         push();
         translate(0,0);
-        fill(102,102,255,100)
-        // fill("red")
+        fill(102,102,255,100);
         rect(this.x, this.y, this.w+2*this.sqaureLength, this.h+2*this.sqaureLength);
         pop();
-        this.drawGrid();
+        // this.drawGrid();
+    }
+
+    drawUsername() {
+        push();
+        fill("white");
+        textSize(this.w/5);
+        text(this.player.username, this.x, this.y - 12*this.sqaureLength);
+        pop();
     }
 
     drawGrid() {
@@ -70,6 +77,8 @@ class PlayerCard {
         pop();
     }
 }
+
+module.exports = [PlayerCard];
 /** 
 Board
 * * * * * * * * * *
