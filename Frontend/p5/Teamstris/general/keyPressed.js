@@ -7,7 +7,7 @@ function keyPressed() {
       mLobbyScreen.keyPressedLobby();
       break;
     case 2:
-      // mGameScreen.keyPressedGame();
+      mGameScreen.keyPressedGame();
       break;
     case 3:
       // mScoreScreen.keyPressedScore();
