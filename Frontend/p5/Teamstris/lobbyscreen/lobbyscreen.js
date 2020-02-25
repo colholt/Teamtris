@@ -33,7 +33,13 @@ class LobbyScreen {
         /* Going to handle all the connections from the backend */
         socket.onmessage = (event) => {
             var e = JSON.parse(event.data);
-            if(e.lobbyID !== undefined) { 
+            console.log("HERE WE GO ");
+            console.log(e);
+            if(e.players != undefined) {
+                console.log("players:");
+                console.log(e.players[e.players.length-1].name);
+                var newPlayer = new Player();
+            } else if(e.lobbyID !== undefined) { 
                 this.team.lobbyToken = e.lobbyID.toUpperCase();
             }
         };
@@ -163,7 +169,7 @@ class LobbyScreen {
                 this.playerCards.push(new PlayerCard(player, windowWidth/6, (windowHeight/1.5), .6, windowHeight/60));
                 break;
             case 4:
-                this.playerCards.push(new PlayerCard(player, windowWidth/1.2, (windowHeight/2), .6, windowHeight/60));
+                this.playerCards.push(new PlayerCard(player, windowWidth/1.2, (windowHeight/2.7), .6, windowHeight/60));
                 break;
         }
         // add new player to playercard and team
