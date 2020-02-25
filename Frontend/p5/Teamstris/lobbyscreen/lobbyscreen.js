@@ -23,6 +23,11 @@ class LobbyScreen {
             buttonList[buttonList.length - 1].text = "Remove bot"; // Text to put in the button
             buttonList[buttonList.length - 1].hoverColor = "yellow"; // What color to make the button on mouse hover
             buttonList[buttonList.length - 1].id = "removebot"; // ID of the button
+
+            buttonList.push(new Buttons(windowWidth/2.5, windowHeight / 4.4, windowWidth / 7, windowHeight / 12, 1, "green"));
+            buttonList[buttonList.length - 1].text = "Start"; // Text to put in the button
+            buttonList[buttonList.length - 1].hoverColor = "yellow"; // What color to make the button on mouse hover
+            buttonList[buttonList.length - 1].id = "startgame"; // ID of the button
         }
 
         /* Going to handle all the connections from the backend */
@@ -230,6 +235,8 @@ class LobbyScreen {
             case 1: 
                 if(ClickedLoop() == "addbot" || ClickedLoop() == "removebot") {
                     this.addAndRemoveBotButton(ClickedLoop());
+                } else if(ClickedLoop() == "startgame") {
+                    gameState = 2;
                 }
                 break;
         }
