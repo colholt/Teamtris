@@ -26,9 +26,9 @@ public class SingleBot : Bot {
         @@return
             List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces - information about the pieces that are compatible on the board
      */
-    public List<Tuple<int, List<Tuple<int, int>>, int, int, int>> getFit(Board board, Block block, int rotation) {
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear line and next line
-        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
+    public List<Tuple<int, List<Tuple<int, int>>, int, int>> getFit(Board board, Block block, int rotation) {
+        // has all the positions compatible for this piece with the rotation, location on board, area covered, and number of lines it can clear
+        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
         
         // positions of where the piece exists in the data in a tuple with both the ints for row and column
         List<Tuple<int, int>> dotPositions = new List<Tuple<int, int>>();
@@ -108,15 +108,20 @@ public class SingleBot : Bot {
                 // compatible board info
                 List<Tuple<int, int>> compatibleBoard = new List<Tuple<int, int>>();
 
-                // modified board with the pieces in position
-                int[,] modifiedBoard = new int[board.height,board.width];
+                // modified board that is getting filled by these dots
+                int[,] modifiedBoardWithOnlyPieces = new int[board.height,board.width];
+
+                for(int i = 0; i < board.width; i++){
+                    for(int j = 0; j < board.height; j++){
+                        modifiedBoardWithOnlyPieces[i,j] = board.board[i,j];
+                    }
+                }
 
                 // dots nearby for area covered
                 HashSet<Tuple<int, int>> dotsNearby = new HashSet<Tuple<int,int>>();
 
                 // dots that fill the floor
                 int dotsFillingFloor = 0;
-                
 
                 // see if all dots can be placed on the board without indexing issues in the column space
                 foreach(Tuple<int, int> shiftedDotPosition in shiftedDotPositions) {
@@ -149,7 +154,7 @@ public class SingleBot : Bot {
 
                     // add to the board information
                     compatibleBoard.Add(Tuple.Create(shiftedForBoardRow, shiftedForBoardCol));
-                    modifiedBoard[shiftedForBoardRow, shiftedForBoardCol] = 1;
+                    modifiedBoardWithOnlyPieces[shiftedForBoardRow, shiftedForBoardCol] = 2;
 
                     // see which dots are nearby
                     // up
@@ -179,22 +184,29 @@ public class SingleBot : Bot {
                  // piece starting at this column and row is actually compatible then add its information
                 if(compatibleBoard != null) {
                     Console.WriteLine("MODIFIED BOARD");
-                    botInfoPrinter.PrintMultiDimArr(modifiedBoard);
+                    botInfoPrinter.PrintMultiDimArr(modifiedBoardWithOnlyPieces);
 
                     Console.WriteLine("DOTS NEARBY");
                     botInfoPrinter.PrintSetTuples(dotsNearby);
-                    if(dotsFillingFloor + board.numFilledFloor == board.height) {
-                        // creates tetris
-                        Console.WriteLine("CREATING TETRIS");
-                        compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 1, 0));
-                    } else {
-                        // no tetris
-                        compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, 0, 0));
+
+                    // check for the number of rows that it fills
+                    int rowsFilled = 0;
+                    for(int k = 0; k < board.height; k++) {
+                        bool allFilled = true;
+                        for(int l = 0; l < board.width; l++) {
+                            if(modifiedBoardWithOnlyPieces[k, l] != 1 && modifiedBoardWithOnlyPieces[k, l] != 2){
+                                allFilled = false;
+                            }
+                        }
+                        if(allFilled) {
+                            rowsFilled += 1;
+                        }
                     }
-                    // was able to place on the board
+                    Console.WriteLine("ROWS FILLED WITH THIS PIECE IS " + rowsFilled);
+                
+                    compatiblePieces.Add(Tuple.Create(rotation, compatibleBoard, dotsNearby.Count, rowsFilled));
                     break;
                 }
-
             }
         }
 
@@ -213,8 +225,8 @@ public class SingleBot : Bot {
         board.FindMaxHeights();
 
         // compatible pieces
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and if it can clear a line
-        List<Tuple<int, List<Tuple<int, int>>, int, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int, int>>();
+        // has all the positions compatible for this piece with the rotation, location on board, area covered, and number of lines that can be cleared
+        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
 
         // test out each of the pieces
         foreach(Block block in blocks) {
