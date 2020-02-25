@@ -49,7 +49,7 @@ public class Block
         int numRows = shiftedOverPiece.GetLength(0);
         int numCols = shiftedOverPiece.GetLength(1);
 
-        Console.WriteLine("HERE " + numRows + " " + numCols);
+        // Console.WriteLine("HERE " + numRows + " " + numCols);
 
         for(int i = 0; i < numCols; i++) {
             bool found1 = false;
