@@ -4,7 +4,7 @@ using System.Linq;
 
 public abstract class Bot {
 
-    public abstract List<Tuple<int, int>> GetMove(Board board, List<Block> blocks);
+    public abstract List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false);
    
 }
 
@@ -123,19 +123,13 @@ public class SingleBot : Bot {
                     int shiftedDotRow = shiftedDotPosition.Item1;
                     int shiftedDotCol = shiftedDotPosition.Item2;
 
-                    Console.WriteLine("\n\nON THE PIECE " + shiftedDotRow + " " + shiftedDotCol);
+                    // Console.WriteLine("\n\nON THE PIECE " + shiftedDotRow + " " + shiftedDotCol);
 
                     // shifted on the board size for the dot to be on the board
-                    // int shiftedForBoardRow = startingRow - (3 - shiftedDotRow); 
-                    // int shiftedForBoardRow = (board.height - board.maxHeights[startingCol] - 1) - (3 - shiftedDotRow);
-                    // int shiftedForBoardRow = (board.height - startingRow) - (3 - shiftedDotRow); 
-                    // int shiftedForBoardRow = (board.height - 1 - board.maxHeights[startingCol + shiftedDotCol] - (3 - startingRow));
-                    // int shiftedForBoardRow = board.maxHeights[startingCol + shiftedDotCol] - 1;
-                    // int shiftedForBoardRow = board.height + (bottomBlocks[startingCol + shiftedDotCol] - bottomBlocks[startingCol]) - startingRow;
                     int shiftedForBoardRow = board.height + (shiftedDotRow - bottomBlocks[0]) - startingRow;
-                    Console.WriteLine("SHIFTED DOT ROW " + bottomBlocks[0]);
-                    Console.WriteLine("CURRENT ROW " + shiftedDotRow);
-                    Console.WriteLine("IIIII " + startingRow);
+                    // Console.WriteLine("SHIFTED DOT ROW " + bottomBlocks[0]);
+                    // Console.WriteLine("CURRENT ROW " + shiftedDotRow);
+                    // Console.WriteLine("IIIII " + startingRow);
                     int shiftedForBoardCol = startingCol + shiftedDotCol;
                     Console.WriteLine("SHIFTED DOT POSITION ON BOARD(" + shiftedForBoardRow + "," + shiftedForBoardCol + ")");
 
@@ -214,7 +208,7 @@ public class SingleBot : Bot {
             int[][] board - current enviornment
             List<Block> blocks - contains the list of all the blocks to try to fit in this location
      */
-    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false) {
         // get the max height of each column of the baord 
         board.FindMaxHeights();
 
@@ -233,6 +227,9 @@ public class SingleBot : Bot {
             compatiblePieces.AddRange(getFit(board, block, 3));
             block.data = block.RotateMatrix();
             compatiblePieces.AddRange(getFit(board, block, 4));
+            if(allRotations) {
+                block.data = block.RotateMatrix();
+            }
         }
 
         // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
@@ -264,7 +261,7 @@ public class SingleBot : Bot {
 
 
 public class DoubleBot : Bot {
-    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false) {
         return null;
     }
 }
@@ -272,7 +269,7 @@ public class DoubleBot : Bot {
 
 
 public class TripleBot : Bot {
-    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks) {
+    public override List<Tuple<int, int>> GetMove(Board board, List<Block> blocks, bool allRotations = false) {
         return null;
     }
 }

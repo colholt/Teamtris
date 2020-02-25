@@ -157,7 +157,7 @@ namespace Tests
 
 
         /*
-            Helper for placing the pieces on the  board
+            Helper for placing the pieces on the board
          */
         public Tuple<int[,], int[,]> PlacePieceOnBoard(int [,] board, List<Tuple<int, int>> dots) {
             int[,] newBoard = new int[board.GetLength(0),board.GetLength(1)];
@@ -171,6 +171,39 @@ namespace Tests
             foreach(Tuple<int, int> dot in dots) {
                 board[dot.Item1, dot.Item2] = 1;
                 newBoard[dot.Item1, dot.Item2] = 2;
+            }
+
+            int rows = board.GetLength(0);
+            int cols = board.GetLength(1);
+
+            // remove the line completed
+            for(int i = rows - 1; i >= 0; i--) {
+                // check to see if all the columns have a value of 1
+                bool hasAllFilled = true;
+                for(int j = 0; j < cols; j++) {
+                    if(board[i,j] != 1 && board[i,j] != 2) {
+                        hasAllFilled = false;
+                        break;
+                    }
+                }
+
+                // everything is filled in the row, so need to shift all the rows down by 1
+                if(hasAllFilled) {
+                    for(int k = i - 1; k > 0; k--) {
+                        for(int y = 0; y < cols; y++) {
+                            board[k + 1, y] = board[k, y];
+                            newBoard[k + 1, y] = newBoard[k, y];
+                        }
+                    }
+
+                    // if first row, just need to replace no need to fill again
+                    for(int j = 0; j < cols; j++) {
+                        board[0,j] = 0;
+                        newBoard[0,j] = 0;
+                    }
+
+                    i = i + 1;
+                }
             }
 
             
@@ -1341,11 +1374,11 @@ namespace Tests
 
 
         /*
-            Assert that a move can be taken without erroring when same piece placed twice on the board
+            Assert that a move can be taken without erroring when multiple pieces placed on the board
         */
         [Test]
         public void MakeMultipleMoves() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ZMAKE MULTIPLE MOVES 1--------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE MULTIPLE MOVES 1--------------------------------------");
             try {
                 // point it to new board
                 game.board.board = new int[,]{
@@ -1359,17 +1392,29 @@ namespace Tests
 
                 // try to play a game with the pieces
                 bool gameDone = false;
-                while(true) {
+                int count = 0;
+                int x = 0;
+                while(x < 20) {
                     for(int i = 9; i < 13; i++) {
+                        x++;
                         Block block = blocks[i];
                         List<Block> newBlocks = new List<Block>();
                         newBlocks.Add(block);
 
-                        
+                        TestContext.Progress.Write(count);
+                        count++;
+
+                        // TestContext.Progress.Write("Piece to be placed");
+                        // botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+
+                        // TestContext.Progress.Write("Board BEFORE piece placed");
+                        // botInfoPrinter.PrintMultiDimArr(game.board.board, false);
+
                         List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
 
+                        // TestContext.Progress.Write(piecePlaced[0].Item1 + " " + piecePlaced[0].Item2);
                         if(piecePlaced == null) {
-                            TestContext.Progress.Write("Piece to be placed");
+                            TestContext.Progress.Write("Piece that could not be placed");
                             botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                             gameDone = true;
                             break;
@@ -1379,11 +1424,88 @@ namespace Tests
 
                         game.board.board = allBoards.Item1;
                     
-                        TestContext.Progress.Write("Board after piece placed");
+                        TestContext.Progress.Write("Board AFTER piece placed");
                         botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+                        // botInfoPrinter.PrintMultiDimArr(allBoards.Item1, false);
                     }
 
                     if(gameDone == true) {
+                        TestContext.Progress.Write("Board is filled");
+                        break;
+                    }
+                }
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                // point back to old board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 1, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+               
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved" + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that a move can be taken without erroring when single pieces are place don the baord
+        */
+        [Test]
+        public void MakeMultipleMovesWithDot() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MAKE MULTIPLE MOVES 2--------------------------------------");
+            try {
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0}
+                };
+
+                // try to play a game with the pieces
+                bool gameDone = false;
+                int count = 0;
+                int x = 0;
+                while(x < 100) {
+                    for(int i = 12; i < 13; i++) {
+                        x++;
+                        Block block = blocks[i];
+                        List<Block> newBlocks = new List<Block>();
+                        newBlocks.Add(block);
+                        TestContext.Progress.Write("Piece to be placed");
+                        botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+
+                        TestContext.Progress.Write(count);
+                        count++;
+
+                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks, true); 
+
+                        if(piecePlaced == null) {
+                            TestContext.Progress.Write("Piece that could not be placed");
+                            botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                            gameDone = true;
+                            break;
+                        }
+
+                        Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced);
+
+                        game.board.board = allBoards.Item1;
+                    
+                        // TestContext.Progress.Write("Board AFTER piece placed");
+                        // botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+                        // botInfoPrinter.PrintMultiDimArr(allBoards.Item1, false);
+                    }
+
+                    if(gameDone == true) {
+                        TestContext.Progress.Write("Board is filled");
                         break;
                     }
                 }
