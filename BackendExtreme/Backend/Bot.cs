@@ -101,9 +101,8 @@ public class SingleBot : Bot {
 
         // go through all starting positions in columns and rows
         for(int startingCol = 0; startingCol < board.board.GetLength(1) - widthOfPiece + 1; startingCol++) {
-        // for(int startingCol = 1; startingCol < 2; startingCol++) { 
-            bool incompatibleBasedOnRow = false;
-            for(int startingRow = board.maxHeights[startingCol] + 1; startingRow < board.height; startingRow++) {
+        // for(int startingCol = 0; startingCol < 1; startingCol++) { 
+            for(int startingRow = board.maxHeights[startingCol] + 1; startingRow <= board.height; startingRow++) {
                 Console.WriteLine("STARTING COL " + startingCol + " AND ROW " + startingRow);
 
                 // compatible board info
@@ -143,7 +142,6 @@ public class SingleBot : Bot {
                     // check whether the 2 heights are more than height of the board, if yes, then should not continue with the piece in this or any of the following rows
                     if(shiftedForBoardRow < 0 || shiftedForBoardRow >= board.height) {
                         Console.WriteLine("INCOMPATIBLE PIECE BECAUSE OUT OF BOUNDS WITH INFO " + (board.height - startingRow - 1) + " " + (4 - shiftedDotRow - 1));
-                        incompatibleBasedOnRow = true;
                         compatibleBoard = null;
                         break;
                     } 
@@ -182,11 +180,6 @@ public class SingleBot : Bot {
                         dotsFillingFloor += 1;
                     }
 
-                }
-
-                // should not continue checking with any of the upcoming rows
-                if(incompatibleBasedOnRow) {
-                    break;
                 }
                 
                  // piece starting at this column and row is actually compatible then add its information

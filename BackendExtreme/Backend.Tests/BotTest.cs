@@ -94,6 +94,36 @@ namespace Tests
                 new int[] {0, 0, 0, 0}, 
             };
 
+            int[][] b10 = new int[][] {
+                new int[] {0, 0, 1, 1}, 
+                new int[] {0, 0, 1, 1}, 
+                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 0, 0}, 
+            };
+
+            int[][] b11 = new int[][] {
+                new int[] {0, 0, 1, 1}, 
+                new int[] {0, 0, 1, 0}, 
+                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 0, 0}, 
+            };
+
+            int[][] b12 = new int[][] {
+                new int[] {0, 0, 1, 0}, 
+                new int[] {0, 0, 1, 0}, 
+                new int[] {0, 0, 1, 0}, 
+                new int[] {0, 0, 0, 0}, 
+            };
+
+            int[][] b13 = new int[][] {
+                new int[] {0, 0, 1, 0}, 
+                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 0, 0}, 
+            };
+
+
+
             Block block1 = new Block(b1, 1);
             Block block2 = new Block(b2, 1);
             Block block3 = new Block(b3, 1);
@@ -103,6 +133,10 @@ namespace Tests
             Block block7 = new Block(b7, 1);
             Block block8 = new Block(b8, 1);
             Block block9 = new Block(b9, 1);
+            Block block10 = new Block(b10, 1);
+            Block block11 = new Block(b11, 1);
+            Block block12 = new Block(b12, 1);
+            Block block13= new Block(b13, 1);
 
             blocks = new List<Block>();
 
@@ -115,6 +149,10 @@ namespace Tests
             blocks.Add(block7);
             blocks.Add(block8);
             blocks.Add(block9);
+            blocks.Add(block10);
+            blocks.Add(block11);
+            blocks.Add(block12);
+            blocks.Add(block13);
         }
 
 
@@ -1314,27 +1352,40 @@ namespace Tests
                     {0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0},
-                    {1, 0, 0, 1, 0, 1},
-                    {1, 0, 0, 1, 1, 1},
-                    {1, 0, 1, 1, 1, 1}
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0}
                 };
 
-                foreach(Block block in blocks) {
-                    List<Block> newBlocks = new List<Block>();
-                    newBlocks.Add(block);
+                // try to play a game with the pieces
+                bool gameDone = false;
+                while(true) {
+                    for(int i = 9; i < 13; i++) {
+                        Block block = blocks[i];
+                        List<Block> newBlocks = new List<Block>();
+                        newBlocks.Add(block);
 
-                    List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                        
+                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
 
-                    if(piecePlaced == null) {
-                        break;
+                        if(piecePlaced == null) {
+                            TestContext.Progress.Write("Piece to be placed");
+                            botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                            gameDone = true;
+                            break;
+                        }
+
+                        Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced);
+
+                        game.board.board = allBoards.Item1;
+                    
+                        TestContext.Progress.Write("Board after piece placed");
+                        botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
                     }
 
-                    Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced);
-
-                    game.board.board = allBoards.Item1;
-                    
-                    TestContext.Progress.Write("Board after piece placed");
-                    botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+                    if(gameDone == true) {
+                        break;
+                    }
                 }
 
                 TestContext.Progress.WriteLine("--------------------------------------");
