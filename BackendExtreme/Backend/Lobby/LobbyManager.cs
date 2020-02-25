@@ -30,13 +30,13 @@ public class LobbyManager : WebSocketBehavior
         Console.WriteLine(e.Data);
         Packet packet = JsonConvert.DeserializeObject<Packet>(e.Data);
         string socketID = ID;
-        // join packet
+        // join packet -- 0
         if (packet.type == Packets.JOIN)
         {
             JoinPacket jPacket = JsonConvert.DeserializeObject<JoinPacket>(packet.data);
             joinLobby(jPacket.lobbyID, jPacket.playerID, jPacket.name, socketID);
         }
-        // create packet
+        // create packet -- 1
         else if (packet.type == Packets.CREATE)
         {
             try
@@ -52,6 +52,7 @@ public class LobbyManager : WebSocketBehavior
                 Console.WriteLine(nre);
             }
         }
+        // start packet -- 2
         else if (packet.type == 2)
         {
             PlayPacket playPacket = JsonConvert.DeserializeObject<PlayPacket>(packet.data);
@@ -67,6 +68,7 @@ public class LobbyManager : WebSocketBehavior
             gameLobby.game = game;
             // update all players that game will start
             alertLobby(0, playPacket.lobbyID, Packets.START);
+            gameLobby.lobbyState = LobbyState.PLAYING;
         }
         else
         {
@@ -119,7 +121,7 @@ public class LobbyManager : WebSocketBehavior
                 confirmationPacket.lobbyID = lobbyID;
                 confirmationPacket.playerID = newPlayerID;
                 alertLobby(playerID, lobbyID, Packets.UPDATE);
-                Send(JsonConvert.SerializeObject(confirmationPacket));
+                Send(JsonConvert.SerializeObject(confirmationPacket, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }));
             }
             else
             {
@@ -171,6 +173,10 @@ public class LobbyManager : WebSocketBehavior
                 Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
             }
         }
+        else
+        {
+            Send("invalid ID");
+        }
     }
 
     public void stateUpdate(string lobbyID)
@@ -196,6 +202,7 @@ public class LobbyManager : WebSocketBehavior
                 {
                     Console.WriteLine("deleting player " + lobby.players[j].name);
                     lobby.players.Remove(lobby.players[j]);
+                    alertLobby(-1, lobby.id, -1);
                     // if lobby is void of players, remove the lobby
                     break;
                 }
