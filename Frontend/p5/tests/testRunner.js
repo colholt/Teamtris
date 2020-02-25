@@ -38,6 +38,8 @@ global.text = function () { }
 global.rect = function () { }
 global.rectMode = function () { }
 global.cursor = function () { }
+global.stroke = function () { }
+global.strokeWeight = function () { }
 
 /* Debug vars */
 global.startscreen_constructor       = false;
@@ -84,11 +86,6 @@ var red = '\x1b[31m%s\x1b[0m';
 var green = '\x1b[32m%s\x1b[0m';
 var blue = "\x1b[35m";
 
-/* sleep */
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
 testRunnerSetupStartScreen();
 
 function CheckSame( given, expect, name, debug = false ){
@@ -120,6 +117,7 @@ async function testCheckInitStartScreenValues() {
     CheckSame(mStartScreen.titleAnimation[1],500,"checkInitStartScreenValues.titleAnimation[1]");
     CheckSame(mStartScreen.titleAnimation[2],400,"checkInitStartScreenValues.titleAnimation[2]");
     CheckSame(mStartScreen.titleAnimation[3],700,"checkInitStartScreenValues.titleAnimation[3]");
+    CheckSame(mStartScreen.usernameBoxStroke,false,"checkInitStartScreenValues.usernameBoxStroke");
 }
 
 async function testCheckTitlePosAfterTwoDraw() {
@@ -264,7 +262,7 @@ async function testCheckTokenIsBeingDisplayed() {
         x = xx;
         y = yy;
         strInside = str;
-        console.log("strInside: " + strInside + " x: " + x + " y: " + y);
+        // console.log("strInside: " + strInside + " x: " + x + " y: " + y);
     };
     mLobbyScreen.drawToken();
     CheckSame(strInside,"Token: ","testCheckTextPositionWithNoValue");
@@ -393,6 +391,33 @@ async function checkPlayCardValues() {
     }
 }
 
+async function integrationTest1() { 
+    mStartScreen = new startScreen[0];
+    console.log(mStartScreen);
+    global.gameState = 0;
+    for(var i = 0; i < 90000; i++) {
+        mStartScreen.draw();
+        if(i == 500) { // mouse clicked
+            global.mouseX = 0;
+            global.mouseY = 0; 
+            mStartScreen.mouseClickedStart();
+            CheckSame(global.gameState,0,"checkNothingHappenedOnRandomClickgameState");
+            CheckSame(mStartScreen.gameStateStartScreen,0,"checkNothingHappenedOnRandomClick");
+        }
+        if(i == 700) { // mouse clicked
+            global.mouseX = 1300; // should be on the createGame
+            global.mouseY = 1300;
+            CheckSame(mStartScreen.usernameBoxStroke,false,"checkInitStartScreenValues.usernameBoxStroke");
+            mStartScreen.mouseClickedStart();
+            CheckSame(global.gameState,0,"checkClickedCreateGameWithNoUsername gameState");
+            CheckSame(mStartScreen.gameStateStartScreen,0,"checkNothingHappenedOnRandomClick gameStateStartScreen");
+            CheckSame(mStartScreen.usernameBoxStroke,true,"checkInitStartScreenValues.usernameBoxStroke");
+        }
+    }
+    CheckSame(1,1,"check90000Frames");
+    console.log(mStartScreen);
+}
+
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
     mStartScreen = new startScreen[0];
@@ -414,9 +439,11 @@ async function testRunnerSetupStartScreen() {
     await testCheckTokenIsBeingDisplayed();
     await testAddAndRemoveBotsFromLobby();
     await checkPlayCardValues();
+
+    await integrationTest1();
     // console.log(mStartScreen);
-    console.log(mLobbyScreen);
-    console.log(green, (numTests-numFailed-1) + " passed");
+    // console.log(mLobbyScreen);
+    console.log(green, "\n" + (numTests-numFailed-1) + " passed");
     console.log(red, numFailed + " failed");
 }
 
