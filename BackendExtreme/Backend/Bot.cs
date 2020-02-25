@@ -224,12 +224,17 @@ public class SingleBot : Bot {
         // get the max height of each column of the baord 
         board.FindMaxHeights();
 
-        // compatible pieces
-        // has all the positions compatible for this piece with the rotation, location on board, area covered, and number of lines that can be cleared
-        List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
+        // has the information about all the compatible pieces for a given block
+        Dictionary<Block, List<Tuple<int, List<Tuple<int, int>>, int, int>>> allBlocksPossible = new Dictionary<Block, List<Tuple<int, List<Tuple<int, int>>, int, int>>>();
+
+        int blockCount = 0;
 
         // test out each of the pieces
         foreach(Block block in blocks) {
+
+            // compatible pieces for a single block
+            // has all the positions compatible for this piece with the rotation, location on board, area covered, and number of lines that can be cleared
+            List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
 
             // get the fit of the board with the area and whether a piece can clear a line
             compatiblePieces.AddRange(getFit(board, block, 1));
@@ -239,34 +244,48 @@ public class SingleBot : Bot {
             compatiblePieces.AddRange(getFit(board, block, 3));
             block.data = block.RotateMatrix();
             compatiblePieces.AddRange(getFit(board, block, 4));
+
             if(allRotations) {
                 block.data = block.RotateMatrix();
             }
+
+            // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
+            compatiblePieces.Sort((x, y) => {
+                // sort by whether a line has been cleared and puts those first if there is
+                int result = y.Item4.CompareTo(x.Item4);
+                // sort by the area covered
+                return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
+            });
+
+            // the current piece cannot even be placed so must return null
+            if(compatiblePieces.Count == 0 && blockCount == 0) {
+                return null;
+            }
+            blockCount++;
+
+            allBlocksPossible[block] = compatiblePieces;
         }
 
-        // compatible pieces has all the pieces that are compatible with the board and has the information about the rotation, location on board, area covered, and if that piece can clear a line
-        compatiblePieces.Sort((x, y) => {
-            // sort by whether a line has been cleared and puts those first if there is
-            int result = y.Item4.CompareTo(x.Item4);
-            // sort by the area covered
-            return result == 0 ? y.Item3.CompareTo(x.Item3) : result;
-        });
+        // get the best piece of the block that is the first one
+        Tuple<int, List<Tuple<int, int>>, int, int> bestPieceOfCurrentBlock = allBlocksPossible[blocks[0]][0];
 
-        if(compatiblePieces.Count == 0) {
-            return null;
+        // placement of this block that is the best of the current block
+        List<Tuple<int, int>> bestPiecePlacementOfCurrentBlock = bestPieceOfCurrentBlock.Item2;
+
+        // see if the best piece clears any lines
+        if(bestPieceOfCurrentBlock.Item4 == 0) {
+            // does not clear any lines so need to look for another candidate and choose the next best spot for this block
+            
         }
-
-        // best piece to place with information to place on board
-        List<Tuple<int, int>> bestPiecePlacement = compatiblePieces[0].Item2;
 
         Console.WriteLine("BEST PIECE FOR BOARD");
-        botInfoPrinter.PrintPositions(bestPiecePlacement);
+        botInfoPrinter.PrintPositions(bestPiecePlacementOfCurrentBlock);
         Console.WriteLine("BOARD");
         botInfoPrinter.PrintMultiDimArr(board.board);
         Console.WriteLine("BOARD WITH PIECE");
-        botInfoPrinter.PrintBoardWithPiece(board.board, bestPiecePlacement);
+        botInfoPrinter.PrintBoardWithPiece(board.board, bestPiecePlacementOfCurrentBlock);
 
-        return bestPiecePlacement;
+        return bestPiecePlacementOfCurrentBlock;
     }
 }
 
