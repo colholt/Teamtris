@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using NUnit.Framework;
 using System.Collections.Generic;
 
 public class Prints {
@@ -7,21 +9,42 @@ public class Prints {
         @@param
             int[][] data - the data to be printed
      */
-    public void PrintJaggedArr(int[][] data) {
-        Console.WriteLine();
+    public void PrintJaggedArr(int[][] data, bool normalMode = true) {
+         if(normalMode) {
+            Console.WriteLine();
+        } else {
+            TestContext.Progress.WriteLine();
+        }
+
+        StringBuilder sb = new StringBuilder();
         for (int n = 0; n < data.Length; n++) { 
   
             // Print the row number 
-            Console.Write("Row({0}): ", n); 
+            if (normalMode) {
+                Console.Write("Row({0}): ", n);
+            } else {
+                sb.Append("Row(" + n + "): ");
+            }
   
             for (int k = 0; k < data[n].Length; k++) { 
-  
-                // Print the elements in the row 
-                Console.Write("{0} ", data[n][k]); 
+                if (normalMode) {
+                    // Print the elements in the row 
+                    Console.Write("{0} ", data[n][k]); 
+                } else {
+                    sb.Append(data[n][k] + " ");
+                } 
             } 
-            Console.WriteLine(); 
+            if (normalMode) {
+                Console.WriteLine(); 
+            } else {
+                sb.AppendLine();
+            }
         } 
-        Console.WriteLine();
+        if (normalMode) {
+            Console.WriteLine(); 
+        } else {
+            TestContext.Progress.WriteLine(sb.ToString());
+        }
     }
 
 
@@ -29,21 +52,43 @@ public class Prints {
         @@param
             int[,] data - the data to be printed
      */
-    public void PrintMultiDimArr(int[,] data) {
-        Console.WriteLine();
+    public void PrintMultiDimArr(int[,] data, bool normalMode = true) {
+        if(normalMode) {
+            Console.WriteLine();
+        } else {
+            TestContext.Progress.WriteLine();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        
         for (int n = 0; n < data.GetLength(0); n++) { 
   
             // Print the row number 
-            Console.Write("Row({0}): ", n); 
+            if (normalMode) {
+                Console.Write("Row({0}): ", n);
+            } else {
+                sb.Append("Row(" + n + "): ");
+            }
   
             for (int k = 0; k < data.GetLength(1); k++) { 
-  
-                // Print the elements in the row 
-                Console.Write("{0} ", data[n,k]); 
+                if (normalMode) {
+                    // Print the elements in the row 
+                    Console.Write("{0} ", data[n,k]); 
+                } else {
+                    sb.Append(data[n,k] + " ");
+                }
             } 
-            Console.WriteLine(); 
+            if (normalMode) {
+                Console.WriteLine(); 
+            } else {
+                sb.AppendLine();
+            }
         } 
-        Console.WriteLine();
+        if (normalMode) {
+            Console.WriteLine(); 
+        } else {
+            TestContext.Progress.WriteLine(sb.ToString());
+        }
     }
 
 
@@ -51,7 +96,7 @@ public class Prints {
         @@param
             List<Tuple<int, int>> positions - the data for the positions
      */
-    public void PrintPositions(List<Tuple<int, int>> positions) {
+    public void PrintPositions(List<Tuple<int, int>> positions, bool normalMode = true) {
         Console.WriteLine();
         foreach (var tuple in positions) {
             Console.WriteLine("({0}, {1})", tuple.Item1, tuple.Item2);
@@ -64,7 +109,7 @@ public class Prints {
         @@param 
             HashSet<int> data - data to be printed
      */
-    public void PrintSet(HashSet<int> set) {
+    public void PrintSet(HashSet<int> set, bool normalMode = true) {
         Console.WriteLine();
         Console.Write("{");
         foreach (int i in set)
@@ -80,7 +125,7 @@ public class Prints {
         @@param 
             HashSet<int, int> data - data to be printed
      */
-    public void PrintSetTuples(HashSet<Tuple<int, int>> set) {
+    public void PrintSetTuples(HashSet<Tuple<int, int>> set, bool normalMode = true) {
         Console.WriteLine();
         Console.Write("{");
         foreach (var tuple in set)
@@ -97,7 +142,7 @@ public class Prints {
             int[,] board - current state of board
             List<Tuple<int, int>> dots - the dots that fill up the piece
      */
-    public void PrintBoardWithPiece(int[,] board, List<Tuple<int, int>> dots) {
+    public void PrintBoardWithPiece(int[,] board, List<Tuple<int, int>> dots, bool normalMode = true) {
        int[,] newBoard = new int[board.GetLength(0),board.GetLength(1)];
 
        for(int i = 0; i < board.GetLength(0); i++){
@@ -110,6 +155,24 @@ public class Prints {
            newBoard[dot.Item1, dot.Item2] = 2;
        }
 
-       PrintMultiDimArr(newBoard);
+       PrintMultiDimArr(newBoard, normalMode);
     }
+
+    
+
+    /**
+        @@param 
+            int[] arr - array to be printed
+     */
+    public void PrintArr(int[] arr, bool normalMode = true) {
+        Console.WriteLine("HER HERE");
+
+        for(int i = 0; i < arr.Length; i++) {
+            Console.Write("{0} ", arr[i]);
+        } 
+
+        Console.WriteLine();
+    }
+
+
 }

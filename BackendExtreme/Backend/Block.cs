@@ -7,6 +7,7 @@ public class Block
     public int color;
     public int id;
     public Tuple<int, int> pos;
+    int size = 4;
 
     public Block(int[][] data, int color)
     {
@@ -19,19 +20,58 @@ public class Block
             int[][] matrix - contains where each one of the dots on the block are filled after rotation
      */
      public int[][] RotateMatrix() {
-        int length = data[0].Length;
-        int[][] retVal = new int[length][];
-        for(int x = 0; x < length; x++)
-        {
-            retVal[x] = data.Select(p => p[x]).ToArray();
-        }
-        return retVal;
+        // int length = data[0].Length;
+        // int[][] retVal = new int[length][];
+        // for(int x = 0; x < length; x++)
+        // {
+        //     retVal[x] = data.Select(p => p[x]).ToArray();
+        // }
+        // return retVal;
+        for (int i = 0; i < size/2; i++) { 
+            for (int j = i; j < size-i-1; j++) { 
+                int temp = data[i][j]; 
+                data[i][j] = data[size-1-j][i]; 
+                data[size-1-j][i] = data[size-1-i][size-1-j]; 
+                data[size-1-i][size-1-j] = data[j][size-1-i]; 
+                data[j][size-1-i] = temp; 
+            } 
+        } 
+        return data;
     }
+
+    /** 
+        @@param
+            Tuple<int, int>data - the data at the bottommost positions across all columns
+     */
+     public int[] GetBottomBlocks(int[,] shiftedOverPiece) {
+        int[] bottomIndicies = new int[4];
+
+        int numRows = shiftedOverPiece.GetLength(0);
+        int numCols = shiftedOverPiece.GetLength(1);
+
+        // Console.WriteLine("HERE " + numRows + " " + numCols);
+
+        for(int i = 0; i < numCols; i++) {
+            bool found1 = false;
+            for(int j = numRows - 1; j >= 0; j--) {
+                if(shiftedOverPiece[j,i] == 1) {
+                    bottomIndicies[i] = j;
+                    found1 = true;
+                    break;
+                }
+            }
+            if(!found1) {
+                bottomIndicies[i] = 4;
+            }
+        }
+
+        return bottomIndicies;
+     }
 
 
      /** 
-        @@param
-            int[][] data - the data at the bottommost left position
+        @@return 
+            Tuple<int, int> data - the data at the bottommost left position
      */
     public Tuple<int, int> FindBottomLeft() {
         Tuple<int, int> bottomLeft = new Tuple<int, int>(data.Length, data[0].Length);

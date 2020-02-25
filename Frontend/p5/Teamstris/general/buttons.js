@@ -28,7 +28,7 @@ class Buttons {
 
   draw() {
     push();
-    // if (this.gs == gameState) {
+    if (this.gs == gameState) {
       translate(windowWidth / 2, windowHeight / 2);
       this.currentColor = this.color
       if (this.checkMouse() && !this.invalid) { // Checking to see if the mouse is over the button
@@ -41,7 +41,7 @@ class Buttons {
       textSize(windowWidth/50);
       text(this.text, this.x, this.y);
       // if (buttons_draw) console.log(this.checkMouse());
-    // }
+    }
     pop();
   }
   /**
@@ -54,6 +54,10 @@ class Buttons {
    *          false - if mouse is NOT over button
    */
   checkMouse() {
+    if(this.id == "addbot") {
+      // console.log("this.RightX: " + this.RightX + " this.TopY: " + this.TopY);
+      // console.log(mouseX + ":" + mouseY);
+    }
     if (!this.invalid) {
       if (buttons_checkmouse) console.log(mouseX - (windowWidth / 2) + ":" + this.RightX);
       if ((mouseX - (windowWidth / 2) >= this.RightX) && (mouseX - (windowWidth / 2) <= this.LeftX)) {
@@ -74,6 +78,7 @@ function Buttonloop() {
 }
 
 function ClickedLoop() {
+  // console.log(buttonList);
   for (let i = 0; i < buttonList.length; i++) {
     if (buttonList[i].checkMouse()) {
       return buttonList[i].id;
