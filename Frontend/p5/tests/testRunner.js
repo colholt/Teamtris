@@ -360,6 +360,39 @@ async function testAddAndRemoveBotsFromLobby() {
     CheckSame(mLobbyScreen.team.playersInTeam[0].owner,true,"checkMakeSureDataForNonRemovedPlayerIsGood");
 }
 
+async function checkPlayCardValues() {
+    CheckSame(mLobbyScreen.playerCards[0].scale,1,"checkPlayCardValuesScale");
+    if(mLobbyScreen.playerCards[0].x <= global.windowWidth && mLobbyScreen.playerCards[0].x > 0){
+        CheckSame(1,1,"checkPlayCardValuesx");
+    }else {
+        CheckSame(0,1,"checkPlayCardValuesx");
+    }
+
+    if(mLobbyScreen.playerCards[0].y <= global.windowWidth && mLobbyScreen.playerCards[0].y > 0){
+        CheckSame(1,1,"checkPlayCardValuesy");
+    }else {
+        CheckSame(0,1,"checkPlayCardValuesy");
+    }
+
+    if(mLobbyScreen.playerCards[0].w > 0){
+        CheckSame(1,1,"checkPlayCardValuesw");
+    }else {
+        CheckSame(0,1,"checkPlayCardValuesw");
+    }
+
+    if(mLobbyScreen.playerCards[0].h > 0){
+        CheckSame(1,1,"checkPlayCardValuesh");
+    }else {
+        CheckSame(0,1,"checkPlayCardValuesh");
+    }
+
+    if(mLobbyScreen.playerCards[0].sqaureLength > 0){
+        CheckSame(1,1,"checkPlayCardValuesSqaureLength");
+    }else {
+        CheckSame(0,1,"checkPlayCardValuesSqaureLength");
+    }
+}
+
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
     mStartScreen = new startScreen[0];
@@ -380,9 +413,10 @@ async function testRunnerSetupStartScreen() {
     await testCheckLobbyInitValues();
     await testCheckTokenIsBeingDisplayed();
     await testAddAndRemoveBotsFromLobby();
+    await checkPlayCardValues();
     // console.log(mStartScreen);
     console.log(mLobbyScreen);
-    console.log(green, (numTests-numFailed) + " passed");
+    console.log(green, (numTests-numFailed-1) + " passed");
     console.log(red, numFailed + " failed");
 }
 
