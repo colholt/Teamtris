@@ -9,7 +9,12 @@ class Shape {
 
 		// calculate Dimensions of the shape in the form [rowTop, colLeft, width, height]
 		this.ShapeDimensions = this.CalculateDimensions(this.ShapeBlueprint)
+		this.ShapeCenter = this.CalculateCentering()
 
+		// determines if we rotateon the odd or even side of a shape
+		this.RotateOdd = 0
+		this.RotateSign = Math.pow(-1, int(this.ShapeDimensions[2] % 2 == 1))
+		this.RotateSign = 1
 		// color of all the squares attached to this shape
 		if (Color == "rand") {
 			this.Color = this.RandomColor()
@@ -86,15 +91,12 @@ class Shape {
 		return [rowTop, colLeft, colRight-colLeft+1, rowBot-rowTop+1]
 	}
 
+	CalculateCentering() {
+		return Math.abs(int(this.ShapeDimensions[2]/2)-int(this.ShapeDimensions[3]/2))
+	}
+
 	// returns a list of the new squares of which 
 	RotateIndices(gameArrayRows, gameArrayCols) {
-		// find the top left corner of the shape's bounding box
-		var rowTop = gameArrayRows
-		var colLeft = gameArrayCols
-		for (var k = 0; k < this.Squares.length; k++) {
-			rowTop = int(min(rowTop, this.Squares[k].i))
-			colLeft = int(min(colLeft, this.Squares[k].j))
-		}
 
 		// rotate the existing blueprint of the image
 		var RotatedBlueprint = this.RotateShapeBlueprint()
@@ -102,13 +104,26 @@ class Shape {
 		// calculate Dimensions of the shape in the ShapeBlueprint in the form [rowTop, colLeft, width, height]
 		var ShapeDims = this.CalculateDimensions(RotatedBlueprint)
 
+		// find the top left corner of the shape's bounding box
+		var rowTop = gameArrayRows // top row of the current shape
+		var colLeft = gameArrayCols // leftmost column of the current shape
+		for (var k = 0; k < this.Squares.length; k++) {
+			rowTop = int(min(rowTop, this.Squares[k].i))
+			colLeft = int(min(colLeft, this.Squares[k].j))
+		}
+		
+		// calculate average row/col values, then remove the top left corner of the shape's bounding box
+		// this provides a physical offset for where the center of the shape should be
+
 		// based off of the bounding box coordiantes, find the new square coordinates
 		var squareCoords = []
 		for (var i = ShapeDims[0]; i < ShapeDims[0] + ShapeDims[3]; i++) {
 			for (var j = ShapeDims[1]; j < ShapeDims[1] + ShapeDims[2]; j++) {
 				if (RotatedBlueprint[i][j] == 1) {
-					//console.log(rowTop+i-ShapeDims[0]+1,colLeft+j-ShapeDims[1])
-					squareCoords.push([rowTop+i-ShapeDims[0],colLeft+j-ShapeDims[1]])
+					var p1 = rowTop  + i - ShapeDims[0] + this.ShapeCenter*this.RotateSign
+					var p2 = colLeft + j - ShapeDims[1] - this.ShapeCenter*this.RotateSign
+					squareCoords.push([p1,p2])
+	
 				}
 			}
 		}
@@ -123,6 +138,10 @@ class Shape {
 
 	// update to a new set of dimensions and blueprint
 	UpdateAfterRotate(newSquares, blueprint, Dimensions) {
+		// update rotation specific completion variables
+		this.RotateOdd = int(!this.RotateOdd)
+		this.RotateSign = -1*this.RotateSign
+
 		this.RemoveShape() // remove the shape from the game board
 		this.ResetSquares() // set our list of squares to an empty array
 		this.AdoptSquares(newSquares) // set this shape as the owner of each square
@@ -162,8 +181,8 @@ class Shape {
 
 	DefaultShape1 () {
 		return [[0,0,0,0],
-				[0,0,1,1],
-				[0,0,1,0],
-				[0,0,1,1]]
+				[0,1,0,0],
+				[0,1,1,1],
+				[0,1,0,0]]
 	}
 }
