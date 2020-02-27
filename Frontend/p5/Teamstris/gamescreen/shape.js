@@ -104,7 +104,7 @@ class Shape {
      * 
      * @return void
      */
-	MoveShape(GameArray, left=0, right=0, down=0) {
+	MoveShape(GameArray, left=0, right=0, down=0, reply=true) {
 		this.RemoveShape() // remove the shape from the game array
 		var boardIndices = []
 		var newSquares = []
@@ -120,14 +120,16 @@ class Shape {
 		}
 
 		// determine which action to send to the server
-		if (left != 0) {
-			this.SendAction(this.ID, boardIndices, "left")
-		} else if (right != 0) {
-			this.SendAction(this.ID, boardIndices, "right")
-		} else if (down != 0) {
-			this.SendAction(this.ID, boardIndices, "down")
+		if (reply) {
+			if (left != 0) {
+				this.SendAction(this.ID, boardIndices, "left")
+			} else if (right != 0) {
+				this.SendAction(this.ID, boardIndices, "right")
+			} else if (down != 0) {
+				this.SendAction(this.ID, boardIndices, "down")
+			}
 		}
-		
+
 		// adopt all new squares
 		this.AdoptSquares(newSquares)
 	}
