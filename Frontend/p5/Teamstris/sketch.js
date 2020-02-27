@@ -9,7 +9,8 @@ var mStartScreen;
 var mGameScreen;
 
 var team;
-// var player;
+var player;
+
 function setup() {
   /* Create our canvas with the max windowWidth and windowHeight */
   createCanvas(windowWidth, windowHeight)
