@@ -51,7 +51,7 @@ class Square {
      */
 	SetFrozen() {
 		this.ID = 5
-		//this.Color = "black"
+		this.Color = "grey"
 	}
 
 	/** 
