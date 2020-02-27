@@ -246,7 +246,7 @@ public class SingleBot : Bot {
 
             // block is invalid
             if(!blockValid) {
-                return new List<Tuple<int, int>>();
+                throw new Exception("Shape formation is incorrect");
             }
 
             // compatible pieces for a single block

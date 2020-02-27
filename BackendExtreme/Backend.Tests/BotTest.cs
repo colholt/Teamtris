@@ -1706,6 +1706,243 @@ namespace Tests
         }
 
 
+
+        /*
+            Assert that the shape provided to the bot is valid with valid shape
+        */
+        [Test]
+        public void TestShapeFormation1Valid() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED VALID 1-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[0];
+                newBlocks.Add(blocks[0]);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved" + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that the shape provided to the bot is valid with valid shape
+        */
+        [Test]
+        public void TestShapeFormation2Valid() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED VALID 2-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[1];
+                newBlocks.Add(blocks[1]);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved" + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that the shape provided to the bot is valid with valid shape
+        */
+        [Test]
+        public void TestShapeFormation3Valid() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED VALID 3-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[2];
+                newBlocks.Add(blocks[2]);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved" + e.Message);
+            }        
+        }
+
+        
+        /*
+            Assert that the shape provided to the bot is valid with valid shape
+        */
+        [Test]
+        public void TestShapeFormation4Valid() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED VALID 4-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[3];
+                newBlocks.Add(blocks[3]);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved" + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that the shape provided to the bot is valid with valid shape
+        */
+        [Test]
+        public void TestShapeFormation5Valid() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED VALID 5-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                Block block = blocks[4];
+                newBlocks.Add(blocks[4]);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved" + e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that the shape provided to the bot is valid with invalid shape
+        */
+        [Test]
+        public void TestShapeFormationInvalid1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED INVALID 1-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block b = new Block(b1, 1);
+                newBlocks.Add(b);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Assert.Fail("Expected exception not thrown");
+            } catch (Exception e) {
+                string expectedMessage = "Shape formation is incorrect";
+                Assert.AreEqual(expectedMessage, e.Message);
+            }        
+        }
+
+
+        /*
+            Assert that the shape provided to the bot is valid with invalid shape
+        */
+        [Test]
+        public void TestShapeFormationInvalid2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED INVALID 2-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 0, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block b = new Block(b1, 1);
+                newBlocks.Add(b);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Assert.Fail("Expected exception not thrown");
+            } catch (Exception e) {
+                string expectedMessage = "Shape formation is incorrect";
+                Assert.AreEqual(expectedMessage, e.Message);
+            }        
+        }
+
+         /*
+            Assert that the shape provided to the bot is valid with invalid shape
+        */
+        [Test]
+        public void TestShapeFormationInvalid3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED INVALID 3-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 0, 1}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block b = new Block(b1, 1);
+                newBlocks.Add(b);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Assert.Fail("Expected exception not thrown");
+            } catch (Exception e) {
+                string expectedMessage = "Shape formation is incorrect";
+                Assert.AreEqual(expectedMessage, e.Message);
+            }        
+        }
+
+         /*
+            Assert that the shape provided to the bot is valid with invalid shape
+        */
+        [Test]
+        public void TestShapeFormationInvalid4() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED INVALID 4-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                };
+                Block b = new Block(b1, 1);
+                newBlocks.Add(b);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Assert.Fail("Expected exception not thrown");
+            } catch (Exception e) {
+                string expectedMessage = "Shape formation is incorrect";
+                Assert.AreEqual(expectedMessage, e.Message);
+            }        
+        }
+
+        /*
+            Assert that the shape provided to the bot is valid with invalid shape
+        */
+        [Test]
+        public void TestShapeFormationInvalid5() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED INVALID 5-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {1, 0, 0, 1}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 0, 0, 1}, 
+                };
+                Block b = new Block(b1, 1);
+                newBlocks.Add(b);
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Assert.Fail("Expected exception not thrown");
+            } catch (Exception e) {
+                string expectedMessage = "Shape formation is incorrect";
+                Assert.AreEqual(expectedMessage, e.Message);
+            }        
+        }
+
     }
 
 }
