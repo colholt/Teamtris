@@ -67,6 +67,7 @@ class Shape {
      */
 	RandomColor() {
 		var Colors = ["red","blue","green","yellow"]
+		return Colors[this.ID-1]
 		return Colors[Math.floor(Math.random()*Colors.length)]
 	}
 
