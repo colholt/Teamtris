@@ -106,13 +106,30 @@ class Shape {
      */
 	MoveShape(GameArray, left=0, right=0, down=0) {
 		this.RemoveShape() // remove the shape from the game array
+		var boardIndices = []
+		var newSquares = []
 		for (var k = 0; k < this.Squares.length; k++) {
+
+			boardIndices.push([this.Squares[k].i + down,this.Squares[k].j - left + right])
+			newSquares.push(GameArray[this.Squares[k].i + down][this.Squares[k].j - left + right])
 			// get the next square
-			this.Squares[k] = GameArray[this.Squares[k].i + down][this.Squares[k].j - left + right]
+			//this.Squares[k] = GameArray[this.Squares[k].i + down][this.Squares[k].j - left + right]
 			
 			// set this shape to be the owner of the square
-			this.Squares[k].ChangeOwner(this.ID, this.Color)
+			//this.Squares[k].ChangeOwner(this.ID, this.Color)
 		}
+
+		// determine which action to send to the server
+		if (left != 0) {
+			this.SendAction(this.ID, boardIndices, "left")
+		} else if (right != 0) {
+			this.SendAction(this.ID, boardIndices, "right")
+		} else if (down != 0) {
+			this.SendAction(this.ID, boardIndices, "down")
+		}
+		
+		// adopt all new squares
+		this.AdoptSquares(newSquares)
 	}
 
 	/** 
@@ -204,6 +221,7 @@ class Shape {
      * @return void
      */
 	AdoptSquares(SquareArray){
+		this.Squares = SquareArray
 		for (var i = 0; i < SquareArray.length; i++) {
 			SquareArray[i].ChangeOwner(this.ID, this.Color)
 		}
@@ -267,6 +285,20 @@ class Shape {
 		this.FreezeSquares() // set all the squares to frozen
 		this.ResetSquares() // reset this shape's list of squares
 	}
+
+	/** 
+     * @description Sends a user action to the server
+     * 
+     * @param ID - ID of a shape object
+     * @param boardIndices - Indices in the game array that the shape will take after performing the action
+     * @param action - action the shape is taking
+     * 
+     * @return void
+     */
+    SendAction(ID, boardIndices, action) {
+        var data = JSON.stringify({"lobbyID":(team.lobbyToken).toLowerCase(),"playerID":ID,"shapeIndices": boardIndices, "move": action})
+        socket.send(JSON.stringify({"type": "6", "data": data}))
+    }
 
 	/** 
      * @description Used for testing
