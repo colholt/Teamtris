@@ -18,7 +18,7 @@ function setup() {
   socket = new WebSocket('ws://198.199.64.158:5202/lobby');
 
   /* Tells us what screen we are in */
-  gameState = 2;
+  gameState = 0;
   /* Creating my startscreen object */
   mStartScreen = new StartScreen();
   /* Creating my lobbyscreen object */

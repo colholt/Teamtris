@@ -17,7 +17,7 @@ var mStartScreen;
 
 global.gameState = 0;
 
-var lol = false;
+var lol = true;
 var numTests = 1;
 var numFailed = 0;
 
@@ -93,7 +93,7 @@ function CheckSame( given, expect, name, debug = false ){
         console.log(blue, "given: " + given + " expect: " + expect + " name: " + name);
     }
     if(given === expect){
-        console.log(green, numTests++ + ". " + name + " passed"); 
+        console.log(green, numTests++ + ". " + name + " passed");
         return true;
     } else {
         console.log(red, numTests++ + ". " + name + " failed should have been " + expect + " but was " + given);
@@ -110,7 +110,7 @@ async function testDefaultUsername() {
 async function testDefaultTokenValue() {
     CheckSame(mStartScreen.TokenBoxText,"","testDefaultUsernameUserText");
 }
-  
+
 async function testCheckInitStartScreenValues() {
     CheckSame(mStartScreen.usernameTextTouched,false,"checkInitStartScreenValues.usernameTextTouched");
     CheckSame(mStartScreen.titleAnimation[0],300,"checkInitStartScreenValues.titleAnimation[0]");
@@ -147,7 +147,7 @@ async function testChangeMaxUsername() {
     global.keyCode = 65; // A
     var str = "";
     var strFull = "ABCDEFGHIJK"
-    
+
     for(var i = 0; i < 15; i++) {
         if(lol) await new Promise(r => setTimeout(r, 100));
         mStartScreen.keyPressedStart();
@@ -222,7 +222,7 @@ async function testCreateGameButton() {
     CheckSame(global.gameState,1,"testClickCreateButtonWithUsername");
 }
 
-async function testJoinLobbyButton() { 
+async function testJoinLobbyButton() {
     mStartScreen.usernameText = "";
     global.gameState = 0;
     CheckSame(mStartScreen.usernameText,"","testResetUsernametext");
@@ -391,7 +391,7 @@ async function checkPlayCardValues() {
     }
 }
 
-async function integrationTest1() { 
+async function integrationTest1() {
     mStartScreen = new startScreen[0];
     console.log(mStartScreen);
     global.gameState = 0;
@@ -399,7 +399,7 @@ async function integrationTest1() {
         mStartScreen.draw();
         if(i == 500) { // mouse clicked
             global.mouseX = 0;
-            global.mouseY = 0; 
+            global.mouseY = 0;
             mStartScreen.mouseClickedStart();
             CheckSame(global.gameState,0,"checkNothingHappenedOnRandomClickgameState");
             CheckSame(mStartScreen.gameStateStartScreen,0,"checkNothingHappenedOnRandomClick");
@@ -453,10 +453,10 @@ async function testRunnerSetupStartScreen() {
 
 
 /**********
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  *     BUTTON FINDER 3700
 for(var i = 0 ; i < 10000; i++) {
     global.mouseX += 1;
