@@ -1,5 +1,5 @@
 public class PlayerInputPacket
 {
-    public int move;
+    public int[,] shapeIndices;
     public string lobbyID;
 }
