@@ -63,3 +63,6 @@ class Square {
 		this.Color = Color
 	}
 }
+
+/* This export is used for testing*/
+module.exports = [Square]
