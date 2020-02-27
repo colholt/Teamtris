@@ -83,6 +83,16 @@ public class LobbyManager : WebSocketBehavior
                 // no valid player found in lobby
                 return;
             currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
+            UpdatePacket update = new UpdatePacket();
+            update.playerID = lobbies[playerInputPacket.lobbyID].players.IndexOf(currentPlayer);
+            update.move = playerInputPacket.move;
+            foreach(Player player in lobbies[playerInputPacket.lobbyID].players)
+            {
+                if (player.socketID != ID) {
+                    Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
+                }
+            }
+            // on place piece put on board ;GJ
         }
         else
         {
