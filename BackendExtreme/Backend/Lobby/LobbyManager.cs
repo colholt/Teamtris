@@ -89,6 +89,7 @@ public class LobbyManager : WebSocketBehavior
             foreach(Player player in lobbies[playerInputPacket.lobbyID].players)
             {
                 if (player.socketID != ID) {
+                    Console.WriteLine("hi");
                     Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
                 }
             }
