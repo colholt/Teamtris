@@ -82,42 +82,7 @@ public class LobbyManager : WebSocketBehavior
             if (currentPlayer == null)
                 // no valid player found in lobby
                 return;
-            if (playerInputPacket.move == Move.MOVE_DOWN)
-            {
-                // move down
-                // check collision
-                currentPlayer.currentBlockPosition = new Tuple<int, int>(currentPlayer.currentBlockPosition.Item1 - 1, currentPlayer.currentBlockPosition.Item2);
-            }
-            if (playerInputPacket.move == Move.MOVE_LEFT)
-            {
-                // move left
-                // check collision
-                currentPlayer.currentBlockPosition = new Tuple<int, int>(currentPlayer.currentBlockPosition.Item1, currentPlayer.currentBlockPosition.Item2 - 1);
-            }
-            if (playerInputPacket.move == Move.MOVE_RIGHT)
-            {
-                // move right
-                // check collision
-                currentPlayer.currentBlockPosition = new Tuple<int, int>(currentPlayer.currentBlockPosition.Item1, currentPlayer.currentBlockPosition.Item2 + 1);
-            }
-            if (playerInputPacket.move == Move.HARD_DROP)
-            {
-                // hard drop
-            }
-            // soft drop is continuous move down
-            if (playerInputPacket.move == Move.SOFT_DROP)
-            {
-                // soft drop
-            }
-            if (playerInputPacket.move == Move.ROTATE_CCW)
-            {
-                // rotate counter clockwise
-            }
-            if (playerInputPacket.move == Move.ROTATE_CW)
-            {
-                // move clockwise
-                currentPlayer.currentBlock.RotateMatrix(); // probably this should change position of the block
-            }
+            currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
         }
         else
         {

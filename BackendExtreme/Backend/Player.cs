@@ -17,5 +17,5 @@ public class Player
     public string socketID;
     [JsonIgnore]
     public WebSocketSharp.WebSocket webSocket;
-    public Tuple<int, int> currentBlockPosition;
+    public int[,] currentBlockPosition;
 }
