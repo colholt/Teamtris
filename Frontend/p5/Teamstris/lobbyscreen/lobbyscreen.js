@@ -38,6 +38,7 @@ class LobbyScreen {
             console.log(e);
             if(e.board != undefined ){
                 team = this.team;
+                mGameScreen.SetupSocket();
                 gameState = 2;
                 return;
             }
@@ -251,6 +252,7 @@ class LobbyScreen {
                     var data = JSON.stringify({"lobbyid":this.team.lobbyToken.toLowerCase()})
                     socket.send(JSON.stringify({"type": "2", "data": data}));
                     team = this.team;
+                    mGameScreen.SetupSocket();
                     gameState = 2;
                 }
                 break;
