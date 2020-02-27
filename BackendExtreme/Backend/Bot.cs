@@ -241,6 +241,14 @@ public class SingleBot : Bot {
         // test out each of the pieces
         foreach(Block block in blocks) {
 
+            // check to make sure that each block is valid
+            bool blockValid = block.CheckValidity();
+
+            // block is invalid
+            if(!blockValid) {
+                return new List<Tuple<int, int>>();
+            }
+
             // compatible pieces for a single block
             // has all the positions compatible for this piece with the rotation, location on board, area covered, and number of lines that can be cleared
             List<Tuple<int, List<Tuple<int, int>>, int, int>> compatiblePieces = new List<Tuple<int, List<Tuple<int, int>>, int, int>>();
@@ -290,10 +298,11 @@ public class SingleBot : Bot {
 
             // next next piece that clears lines
             Tuple<int, List<Tuple<int, int>>, int, int> bestPieceOfNextNextBlock = allBlocksPossible.Count > 2 ? allBlocksPossible[blocks[2]][0] : null;
+            // Console.WriteLine("NEXT PIECE " + bestPieceOfNextNextBlock.Item4);
 
             // the next piece is able to clear lines
             if(bestPieceOfNextBlock.Item4 > 0) {
-                Console.WriteLine("I AM HEREHEHEH LOOKING AT THE NEXT PIECE!\n");
+                // Console.WriteLine("I AM HEREHEHEH LOOKING AT THE NEXT PIECE!\n");
                 // create a new copy of the board so that it can run through the steps for clearing lines again
                 int [,] copiedBoard = board.CopyBoard(board.board);
 
@@ -332,6 +341,8 @@ public class SingleBot : Bot {
                 // placement of this block that is the best of the current block
                 bestPiecePlacementOfCurrentBlock= compatiblePiecesForCurrentPieceAfterPiece1[0].Item2;
             } else if(bestPieceOfNextNextBlock != null && bestPieceOfNextNextBlock.Item4 > 0) {
+                Console.WriteLine("I AM A NEXT NEXT SHAPE\n\n\n\n");
+
                 // check 2 shapes from the current shape
 
                 // create a new copy of the board so that it can run through the steps for clearing lines again
