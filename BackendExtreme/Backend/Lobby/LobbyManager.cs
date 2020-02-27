@@ -86,13 +86,22 @@ public class LobbyManager : WebSocketBehavior
             UpdatePacket update = new UpdatePacket();
             update.playerID = currentPlayer.id;
             update.move = playerInputPacket.move;
-            foreach(Player player in lobbies[playerInputPacket.lobbyID].players)
+            foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
             {
-                if (player.socketID != ID) {
+                if (player.socketID != ID)
+                {
                     Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
                 }
             }
             // on place piece put on board ;GJ
+        }
+        else if (packet.type == Packets.BOT_UPDATE)
+        {
+            BotPacket bot = JsonConvert.DeserializeObject<BotPacket>(packet.data);
+            if (bot.action == 1)
+            {
+
+            })
         }
         else
         {
@@ -135,7 +144,7 @@ public class LobbyManager : WebSocketBehavior
             lobby = lobbies[lobbyID];
             if (lobby.numPlayers < lobby.maxPlayers)
             {
-                int newPlayerID = lobby.players.Count+1;
+                int newPlayerID = lobby.players.Count + 1;
                 lobby.numPlayers += 1;
                 Player newPlayer = new Player(newPlayerID, name, socketID, Context.WebSocket);
                 lobby.players.Add(newPlayer);
