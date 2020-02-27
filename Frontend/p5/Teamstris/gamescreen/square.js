@@ -1,3 +1,6 @@
+/** 
+  * @classDesc Represents lowest functional unit of teamtris
+  */
 class Square {
 	constructor (SquareEdgeLength, ID=0, Color="grey", DefaultGridStroke=100) {
 		// edge length of the square
@@ -18,33 +21,75 @@ class Square {
 		this.j = -1
 	}
 
-	// Set the position of the quare
+	/** 
+     * @description Sets class variables representing this square's position in the game array
+	 * 
+	 * @param i - row index
+	 * @param j - column index
+	 * 
+     * @return void
+     */
 	SetPosition(i,j) {
 		this.i = i
 		this.j = j
 	}
 
-	// Sets this to be an empty square
+	/** 
+     * @description Sets this square to be an empty square
+	 * 
+     * @return void
+     */
 	SetEmpty() {
 		this.ID = 0
 		this.Color = this.DefaultColor
 	}
 
+	/** 
+     * @description Sets this square to be a frozen square
+	 * 
+     * @return void
+     */
 	SetFrozen() {
 		this.ID = 5
 		//this.Color = "black"
 	}
 
+	/** 
+     * @description Returns true if this square is frozen
+	 * 
+     * @return boolean
+     */
 	IsFrozen() {
 		return this.ID == 5
 	}
 
-	// returns true if the ID of this square is 0
+	/** 
+     * @description Returns true if this square is empty (ID == 0)
+	 * 
+     * @return boolean
+     */
 	IsEmpty() {
 		return (this.ID == 0)
 	}
 
-	// Draw the square at it's (i,j) position.
+	/** 
+     * @description Changes the owner of the square
+	 * 
+	 * @param ID - ID of the owner of the square
+	 * @param Color - color to set the square to
+	 * 
+     * @return boolean
+     */
+	ChangeOwner(ID, Color) {
+		this.ID = ID
+		this.Color = Color
+	}
+
+	/** 
+     * @description Called everytime we want to draw a square
+	 * 
+     * @return void
+     */
 	Draw() {
 		push();
 		stroke(this.DefaultGridStroke)
@@ -55,12 +100,6 @@ class Square {
 		}
 		rect(this.j * this.SquareEdgeLength, this.i * this.SquareEdgeLength, this.SquareEdgeLength, this.SquareEdgeLength)
 		pop();
-	}
-
-	// change the owner of the square.
-	ChangeOwner(ID, Color) {
-		this.ID = ID
-		this.Color = Color
 	}
 }
 
