@@ -70,6 +70,55 @@ public class LobbyManager : WebSocketBehavior
             alertLobby(0, playPacket.lobbyID, Packets.START);
             gameLobby.lobbyState = LobbyState.PLAYING;
         }
+        else if (packet.type == Packets.PLAYER_INPUT)
+        {
+            PlayerInputPacket playerInputPacket = JsonConvert.DeserializeObject<PlayerInputPacket>(packet.data);
+            Player currentPlayer = null;
+            foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+            {
+                if (player.socketID == ID)
+                    currentPlayer = player;
+            }
+            if (currentPlayer == null)
+                // no valid player found in lobby
+                return;
+            if (playerInputPacket.move == Move.MOVE_DOWN)
+            {
+                // move down
+                // check collision
+                currentPlayer.currentBlockPosition = new Tuple<int, int>(currentPlayer.currentBlockPosition.Item1 - 1, currentPlayer.currentBlockPosition.Item2);
+            }
+            if (playerInputPacket.move == Move.MOVE_LEFT)
+            {
+                // move left
+                // check collision
+                currentPlayer.currentBlockPosition = new Tuple<int, int>(currentPlayer.currentBlockPosition.Item1, currentPlayer.currentBlockPosition.Item2 - 1);
+            }
+            if (playerInputPacket.move == Move.MOVE_RIGHT)
+            {
+                // move right
+                // check collision
+                currentPlayer.currentBlockPosition = new Tuple<int, int>(currentPlayer.currentBlockPosition.Item1, currentPlayer.currentBlockPosition.Item2 + 1);
+            }
+            if (playerInputPacket.move == Move.HARD_DROP)
+            {
+                // hard drop
+            }
+            // soft drop is continuous move down
+            if (playerInputPacket.move == Move.SOFT_DROP)
+            {
+                // soft drop
+            }
+            if (playerInputPacket.move == Move.ROTATE_CCW)
+            {
+                // rotate counter clockwise
+            }
+            if (playerInputPacket.move == Move.ROTATE_CW)
+            {
+                // move clockwise
+                currentPlayer.currentBlock.RotateMatrix(); // probably this should change position of the block
+            }
+        }
         else
         {
             Console.WriteLine("bad packet");
@@ -121,6 +170,13 @@ public class LobbyManager : WebSocketBehavior
                 confirmationPacket.lobbyID = lobbyID;
                 confirmationPacket.playerID = newPlayerID;
                 alertLobby(playerID, lobbyID, Packets.UPDATE);
+                LobbyInfoPacket lobbyInfoPacket = new LobbyInfoPacket();
+                lobbyInfoPacket.lobbyID = lobby.id;
+                lobbyInfoPacket.players = lobby.players;
+                lobbyInfoPacket.lobbyID = lobbyID;
+                lobbyInfoPacket.maxPlayers = lobby.maxPlayers;
+                lobbyInfoPacket.dataType = Packets.UPDATE;
+                Send(JsonConvert.SerializeObject(lobbyInfoPacket));
                 Send(JsonConvert.SerializeObject(confirmationPacket, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }));
             }
             else
