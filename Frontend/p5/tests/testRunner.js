@@ -22,7 +22,7 @@ var mGameScreen;
 
 global.gameState = 0;
 
-var lol = true;
+var lol = false;
 var numTests = 1;
 var numFailed = 0;
 
@@ -233,8 +233,10 @@ async function testCreateGameButton() {
     global.mouseX = 1300; // should be on the createGame
     global.mouseY = 1300;
     CheckSame(mStartScreen.gameStateStartScreen,0,"testCheckInitGameStateCreateButton");
+    // CheckSame(mStartScreen.usernameBoxStroke,true,"testCheckInitGameStateCreateButton");
     mStartScreen.mouseClickedStart();
     CheckSame(mStartScreen.gameStateStartScreen,0,"testClickCreateButtonWithNoUsername");
+    CheckSame(mStartScreen.usernameBoxStroke,true,"testCheckInitGameStateCreateButton");
     mStartScreen.usernameText = "Steven";
     mStartScreen.mouseClickedStart();
     CheckSame(global.gameState,1,"testClickCreateButtonWithUsername");
