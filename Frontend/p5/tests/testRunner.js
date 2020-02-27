@@ -1,6 +1,6 @@
 
 
-const WebSocket = require("ws");
+//const WebSocket = require('ws');
 
 // const expect = require('chai').expect;
 
@@ -9,11 +9,16 @@ const startScreen = require('../Teamstris/startscreen/startScreen.js');
 const lobbyScreen = require('../Teamstris/lobbyscreen/lobbyScreen.js');
 const playerCard = require('../Teamstris/lobbyscreen/playerCard.js');
 const teamasker = require('../Teamstris/lobbyscreen/teamasker.js');
+const gameScreen = require('../Teamstris/gamescreen/gamescreen.js')
+const gameArray = require('../Teamstris/gamescreen/gamearray.js')
+const gameShape = require('../Teamstris/gamescreen/shape.js')
+const gameSquare = require('../Teamstris/gamescreen/square.js')
 const player = require('../Teamstris/general/player.js');
 const team = require('../Teamstris/general/team.js');
 
 /* vars being used for testing */
 var mStartScreen;
+var mGameScreen;
 
 global.gameState = 0;
 
@@ -28,6 +33,9 @@ global.CORNER = 0;
 global.ARROW = 0;
 global.mouseX = 30;
 global.mouseY = 30;
+global.LEFT_ARROW = 37;
+global.RIGHT_ARROW = 39;
+global.DOWN_ARROW = 40;
 global.createCanvas = function (x,y) { }
 global.push = function () { }
 global.pop = function () { }
@@ -45,6 +53,10 @@ global.strokeWeight = function () { }
 global.startscreen_constructor       = false;
 global.startscreen_draw              = false;
 global.startscreen_mouseClickedStart = false;
+global.gamescreen_constructor        = false;
+global.gamescreen_draw               = false;
+global.gamescreen_updateflag         = false;
+global.gamescreen_invalidshape       = false;
 global.buttons_constructor           = false;
 global.buttons_draw                  = false;
 global.buttons_checkmouse            = false;
@@ -59,6 +71,12 @@ global.FindButtonbyID = button[4];
 /* Lobby */
 global.LobbyScreen = lobbyScreen[0];
 global.mLobbyScreen = 5;
+
+/* GameScreen */
+global.GameScreen = gameScreen[0];
+global.GameArray = gameArray[0];
+global.Shape = gameShape[0];
+global.Square = gameSquare[0];
 
 /* Teammaker stuff */
 global.checkMouseTeamAccept = teamasker[0];
@@ -418,6 +436,158 @@ async function integrationTest1() {
     console.log(mStartScreen);
 }
 
+async function testGameArrayNotNull() {
+    mGameScreen = new GameScreen();
+    CheckSame(mGameScreen.GameArray != null, true, "testGameboardNotNull")
+}
+
+async function testGameScreenRotateKeyPress() {
+    mGameScreen = new GameScreen();
+    var custom_shape = [[0,0,0,0],
+                        [0,0,0,0],
+                        [0,1,1,0],
+                        [0,1,1,0]]
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
+    global.keyCode = 65
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].RotateSign, -1, "testGameScreenRotateKeyPress")
+}
+
+async function testGameScreenFailRotateKeyPress() {
+    mGameScreen = new GameScreen();
+    var custom_shape = [[0,0,0,0],
+                        [0,0,0,0],
+                        [0,1,0,0],
+                        [0,1,0,0]]
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
+    global.keyCode = 65
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].RotateSign, 1, "testGameScreenFailRotateKeyPress")
+}
+
+async function testGameScreenFailRotateKeyPress() {
+    mGameScreen = new GameScreen();
+    var custom_shape = [[0,0,0,0],
+                        [0,0,0,0],
+                        [0,1,0,0],
+                        [0,1,0,0]]
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
+    global.keyCode = 65
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].RotateSign, 1, "testGameScreenFailRotateKeyPress")
+}
+
+async function testFourRotate() {
+    mGameScreen = new GameScreen();
+    var custom_shape = [[0,0,0,0],
+                        [0,0,0,0],
+                        [0,1,1,0],
+                        [0,1,1,0]]
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
+    global.keyCode = 65
+    const temp_arr = mGameScreen.GameArray.ShapeArray[0].ShapeBlueprint
+    mGameScreen.keyPressedGame()
+    mGameScreen.keyPressedGame()
+    mGameScreen.keyPressedGame()
+    mGameScreen.keyPressedGame()
+    for (var i = 0; i < temp_arr.length; i++) {
+        for (var j = 0; j < temp_arr.length; j++) {
+            if (temp_arr[i][j] != mGameScreen.GameArray.ShapeArray[0].ShapeBlueprint[i][j]) {
+                CheckSame(0,1,"TestFourRotate")
+            }
+        }
+    }
+    CheckSame(1,1, "TestFourRotate")
+}
+
+async function testMove() {
+    mGameScreen = new GameScreen();
+    var custom_shape = [[0,0,0,0],
+                        [0,0,0,0],
+                        [0,1,1,0],
+                        [0,1,1,0]]
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
+
+    const temp_arr = mGameScreen.GameArray.arr.slice()
+    var temp_col = mGameScreen.GameArray.ShapeArray[0].Squares[0].j
+    global.keyCode = RIGHT_ARROW
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].j,temp_col+1, "testMoveR")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].j,temp_col+2, "testMoveRR")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].j,temp_col+3, "testMoveRRR")
+    global.keyCode = LEFT_ARROW
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].j,temp_col+2, "testMoveRRRL")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].j,temp_col+1, "testMoveRRRLL")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].j,temp_col, "testMoveRRRLLL")
+    for (var i = 0; i < temp_arr.length; i++) {
+        for (var j = 0; j < temp_arr.length; j++) {
+            if (temp_arr[i][j] != mGameScreen.GameArray.arr[i][j]) {
+                CheckSame(0,1,"testMove")
+            }
+        }
+    }
+    var temp_row = mGameScreen.GameArray.ShapeArray[0].Squares[0].i
+    global.keyCode = DOWN_ARROW
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,temp_row+1, "testMoveRRRLLD")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,temp_row+2, "testMoveRRRLLDD")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,temp_row+3, "testMoveRRRLLDDD")
+
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,17,0,false)
+    temp_row = mGameScreen.GameArray.ShapeArray[0].Squares[0].i
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,temp_row+1, "testMoveRRRLLD_noMove")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,0, "testMoveRRRLLDD_resetMove")
+    mGameScreen.keyPressedGame()
+    CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,1, "testMoveRRRLLDDD_resetMove2")
+    
+    CheckSame(1,1, "testMove")
+}
+
+async function testNewSquare() {
+    mGameScreen = new GameScreen();
+    var custom_shape = [[0,0,0,0],
+                        [0,0,0,0],
+                        [0,1,1,0],
+                        [0,1,1,0]]
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,18,0,false)
+    var temp_col = mGameScreen.GameArray.ShapeArray[0].Squares[0].j
+    var shape = mGameScreen.GameArray.ShapeArray[0]
+    mGameScreen.GameArray.CheckFreeze(shape, 1, mGameScreen.GameArray.CollisionType.OutOfBounds)
+    if (temp_col != mGameScreen.GameArray.ShapeArray[0].Squares[0].j) {
+        CheckSame(1,1,"testNewSquare")
+    } else {
+        CheckSame(temp_col,mGameScreen.GameArray.ShapeArray[0].Squares[0].j, "testNewSquare")
+    }
+
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
+    temp_col = mGameScreen.GameArray.ShapeArray[0].Squares[0].j
+    mGameScreen.GameArray.CheckFreeze(shape, 0, mGameScreen.GameArray.CollisionType.OutOfBounds)
+    if (temp_col == mGameScreen.GameArray.ShapeArray[0].Squares[0].j) {
+        CheckSame(1,1,"testNewSquareNoUpdate")
+    } else {
+        CheckSame(temp_col,mGameScreen.GameArray.ShapeArray[0].Squares[0].j, "testNewSquareNoUpdate")
+    }
+
+    mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
+    temp_col = mGameScreen.GameArray.ShapeArray[0].Squares[0].j
+    mGameScreen.GameArray.CheckFreeze(shape, 1, mGameScreen.GameArray.CollisionType.OtherPlayer)
+    if (temp_col == mGameScreen.GameArray.ShapeArray[0].Squares[0].j) {
+        CheckSame(1,1,"testNewSquareNoUpdateOtherPlayerDown")
+    } else {
+        CheckSame(temp_col,mGameScreen.GameArray.ShapeArray[0].Squares[0].j, "testNewSquareNoUpdateOtherPlayerDown")
+    }
+}
+
+
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
     mStartScreen = new startScreen[0];
@@ -440,17 +610,21 @@ async function testRunnerSetupStartScreen() {
     await testAddAndRemoveBotsFromLobby();
     await checkPlayCardValues();
 
+    /* Game Screen tests*/
+    await testGameArrayNotNull(); 
+    await testGameScreenRotateKeyPress();
+    await testGameScreenFailRotateKeyPress();
+    await testFourRotate();
+    await testMove();
+    await testNewSquare();
+    /* End Game Screen tests*/
+
     await integrationTest1();
     // console.log(mStartScreen);
     // console.log(mLobbyScreen);
     console.log(green, "\n" + (numTests-numFailed-1) + " passed");
     console.log(red, numFailed + " failed");
 }
-
-
-
-
-
 
 /**********
  *

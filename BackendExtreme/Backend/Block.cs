@@ -109,4 +109,54 @@ public class Block
         return bottomLeft;
     }
 
+
+    /** 
+        @@return 
+            bool valid - return whether the shape is valid
+     */
+    public bool CheckValidity() {
+        bool isValid = true;
+        int numOnes = 0;
+
+        // check each piece
+        for(int i = 0; i < data[0].Length; i++) {
+            for(int j = 0; j < data.Length; j++) {
+                if(data[i][j] == 1) {
+                    numOnes += 1;
+
+                    bool nextToPiece = false;
+
+                    // check left
+                    if(i -1 >= 0 && data[i-1][j] == 1) {
+                        nextToPiece = true;
+                    }
+
+                    // check right
+                    if(i + 1 <= data[0].Length - 1 && data[i+1][j] == 1) {
+                        nextToPiece = true;
+                    }
+
+                    // check up
+                    if(j-1 >= 0 && data[i][j-1] == 1) {
+                        nextToPiece = true;
+                    }
+
+                    // check down
+                     if(j + 1 <= data.Length - 1 && data[i][j + 1] == 1) {
+                        nextToPiece = true;
+                    }
+
+                    if(nextToPiece == false) {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if(numOnes == 1) {
+            return true;
+        }
+        return isValid;
+    }
+
 }

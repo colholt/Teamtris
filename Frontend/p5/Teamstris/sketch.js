@@ -6,6 +6,7 @@ var socket;
  */
 var mLobbyScreen;
 var mStartScreen;
+var mGameScreen;
 function setup() {
   /* Create our canvas with the max windowWidth and windowHeight */
   createCanvas(windowWidth, windowHeight)
