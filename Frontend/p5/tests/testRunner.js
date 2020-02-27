@@ -528,6 +528,7 @@ async function testMove() {
         for (var j = 0; j < temp_arr.length; j++) {
             if (temp_arr[i][j] != mGameScreen.GameArray.arr[i][j]) {
                 CheckSame(0,1,"testMove")
+                return;
             }
         }
     }

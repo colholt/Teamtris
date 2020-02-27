@@ -32,9 +32,15 @@ class LobbyScreen {
 
         /* Going to handle all the connections from the backend */
         socket.onmessage = (event) => {
+
             var e = JSON.parse(event.data);
             console.log("HERE WE GO ");
             console.log(e);
+            if(e.board != undefined ){
+                team = this.team;
+                gameState = 2;
+                return;
+            }
             if(e.players != undefined) {
                 console.log("players:");
                 console.log(e.players[e.players.length-1].name);
@@ -242,6 +248,9 @@ class LobbyScreen {
                 if(ClickedLoop() == "addbot" || ClickedLoop() == "removebot") {
                     this.addAndRemoveBotButton(ClickedLoop());
                 } else if(ClickedLoop() == "startgame") {
+                    var data = JSON.stringify({"lobbyid":this.team.lobbyToken.toLowerCase()})
+                    socket.send(JSON.stringify({"type": "2", "data": data}));
+                    team = this.team;
                     gameState = 2;
                 }
                 break;
