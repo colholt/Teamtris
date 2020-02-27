@@ -1,19 +1,28 @@
 class Shape {
-	constructor (ID, Color="rand", BlueprintDimensions=4) {
+	constructor (ID, ShapeBlueprint=null, Color="rand") {
 		// ID of the player who 'owns' this square
 		this.ID = ID
 
+		// dimensions of the shape blueprint
+		
+		this.BlueprintDimensions;
+		this.ShapeBlueprint;
 		// blueprint of the shape
-		this.BlueprintDimensions = BlueprintDimensions;
-		this.ShapeBlueprint = this.DefaultShape1()
+		if (ShapeBlueprint == null) {
+			this.BlueprintDimensions = 4;
+			this.ShapeBlueprint = this.DefaultShape1()
+		} else {
+			this.BlueprintDimensions = ShapeBlueprint.length;
+			this.ShapeBlueprint = ShapeBlueprint
+		}
+		
 
 		// calculate Dimensions of the shape in the form [rowTop, colLeft, width, height]
 		this.ShapeDimensions = this.CalculateDimensions(this.ShapeBlueprint)
 		this.ShapeCenter = this.CalculateCentering()
 
 		// determines if we rotateon the odd or even side of a shape
-		this.RotateOdd = 0
-		this.RotateSign = Math.pow(-1, int(this.ShapeDimensions[2] % 2 == 1))
+		//this.RotateSign = Math.pow(-1, Number(this.ShapeDimensions[2] % 2 == 1))
 		this.RotateSign = 1
 		// color of all the squares attached to this shape
 		if (Color == "rand") {
@@ -79,10 +88,10 @@ class Shape {
 			for (var j = 0; j < this.BlueprintDimensions; j++) {
 			// if the blueprint has a square at this location, we check to see if it is a significant part of the bounding box
 				if (arr[i][j] == 1) {
-					rowTop = min(rowTop,i)
-					colLeft = min(colLeft,j)
-					rowBot = max(rowBot,i)
-					colRight = max(colRight,j)
+					rowTop = Math.min(rowTop,i)
+					colLeft = Math.min(colLeft,j)
+					rowBot = Math.max(rowBot,i)
+					colRight = Math.max(colRight,j)
 
 				}
 			}
@@ -92,7 +101,7 @@ class Shape {
 	}
 
 	CalculateCentering() {
-		return Math.abs(int(this.ShapeDimensions[2]/2)-int(this.ShapeDimensions[3]/2))
+		return Math.abs(Math.floor(this.ShapeDimensions[2]/2)-Math.floor(this.ShapeDimensions[3]/2))
 	}
 
 	// returns a list of the new squares of which 
@@ -108,8 +117,8 @@ class Shape {
 		var rowTop = gameArrayRows // top row of the current shape
 		var colLeft = gameArrayCols // leftmost column of the current shape
 		for (var k = 0; k < this.Squares.length; k++) {
-			rowTop = int(min(rowTop, this.Squares[k].i))
-			colLeft = int(min(colLeft, this.Squares[k].j))
+			rowTop = Math.floor(Math.min(rowTop, this.Squares[k].i))
+			colLeft = Math.floor(Math.min(colLeft, this.Squares[k].j))
 		}
 		
 		// calculate average row/col values, then remove the top left corner of the shape's bounding box
@@ -139,7 +148,6 @@ class Shape {
 	// update to a new set of dimensions and blueprint
 	UpdateAfterRotate(newSquares, blueprint, Dimensions) {
 		// update rotation specific completion variables
-		this.RotateOdd = int(!this.RotateOdd)
 		this.RotateSign = -1*this.RotateSign
 
 		this.RemoveShape() // remove the shape from the game board
@@ -186,3 +194,6 @@ class Shape {
 				[0,1,0,0]]
 	}
 }
+
+/* This export is used for testing*/
+module.exports = [Shape]
