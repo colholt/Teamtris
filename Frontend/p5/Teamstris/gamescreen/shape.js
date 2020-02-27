@@ -25,8 +25,8 @@ class Shape {
 		this.ShapeCenter = this.CalculateCentering()
 
 		// determines if we rotateon the odd or even side of a shape
-		//this.RotateSign = Math.pow(-1, Number(this.ShapeDimensions[2] % 2 == 1))
-		this.RotateSign = 1
+		this.RotateSign = Math.pow(-1, Number((this.ShapeDimensions[2] > this.ShapeDimensions[3])))
+		//this.RotateSign = 1
 		// color of all the squares attached to this shape
 		if (Color == "rand") {
 			this.Color = this.RandomColor()
@@ -275,9 +275,9 @@ class Shape {
      */
 	DefaultShape1 () {
 		return [[0,0,0,0],
-				[0,1,0,0],
 				[0,1,1,1],
-				[0,1,0,0]]
+				[0,0,0,0],
+				[0,0,0,0]]
 	}
 }
 
