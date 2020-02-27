@@ -1,3 +1,6 @@
+/** 
+  * @classDesc A grouping of squares, used for simplifying moving/rotating shapes
+  */
 class Shape {
 	constructor (ID, ShapeBlueprint=null, Color="rand") {
 		// ID of the player who 'owns' this square
@@ -35,38 +38,72 @@ class Shape {
 		this.Squares = []
 	}
 
-	// adds the coordinates of a square to the shape
+	/** 
+     * @description Adds the provided square to this shape's list of squares, and changes the square
+	 * to be under ownership of this shape
+     * 
+     * @param Square - Square object
+     * 
+     * @return void
+     */
 	AddSquare(Square) {
 		this.Squares.push(Square)
 		Square.ChangeOwner(this.ID, this.Color)
 	}
 
-	// sets the squares array to empty
+	/** 
+     * @description Resets the array of squares to an empty array
+     * 
+     * @return void
+     */
 	ResetSquares() {
 		this.Squares = []
 	}
 
-	// returns a random color from the set of available colors
+	/** 
+     * @description Returns a random color from the list of available colors
+     * 
+     * @return String
+     */
 	RandomColor() {
 		var Colors = ["red","blue","green","yellow"]
 		return Colors[Math.floor(Math.random()*Colors.length)]
 	}
 
-	// sets all the squares associated with this shape to empty
+	/** 
+     * @description Sets all squares associated with this shape to empty
+     * 
+     * @return void
+     */
 	RemoveShape() {
 		for (var i = 0; i < this.Squares.length; i++) {
 			this.Squares[i].SetEmpty()
 		}
 	}
 
-	// sets all the squares associated with this shape to frozen
+	/** 
+     * @description Sets all the squares associated with this shape to be frozen
+     * 
+     * @return void
+     */
 	FreezeSquares() {
 		for (var i = 0; i < this.Squares.length; i++) {
 			this.Squares[i].SetFrozen()
 		}
 	}
 
-	// Moves all squares associated with this shape in the specified direction
+	/** 
+     * @description Moves all squares associated with this shape in the specified directions.
+	 * 				
+	 * IMPORTANT: Does not check collision
+	 * 
+	 * @param GameArray - A 2D array of square objects
+	 * @param left - How far left the specified shape should move
+	 * @param right - How far right the specified shape should move
+	 * @param down - How far down the specified shape should move
+     * 
+     * @return void
+     */
 	MoveShape(GameArray, left=0, right=0, down=0) {
 		this.RemoveShape() // remove the shape from the game array
 		for (var k = 0; k < this.Squares.length; k++) {
@@ -78,14 +115,20 @@ class Shape {
 		}
 	}
 
-	// finds the top left corner of the shape to allow for easy instaniatation along with width and height
+	/** 
+     * @description Calculates the dimensions of the shape that is contained within the provided 2D array.
+     * 
+	 * @param arr - Square 2D array representing a shape
+	 * 
+     * @return Array - Takes the form [Lowest row index, lowest column index, shape width, shape height]
+     */
 	CalculateDimensions(arr) {
-		var rowTop = this.BlueprintDimensions
+		var rowTop = arr.length
 		var rowBot = 0
-		var colLeft = this.BlueprintDimensions
+		var colLeft = arr[0].length
 		var colRight = 0
-		for (var i = 0; i < this.BlueprintDimensions; i++) {
-			for (var j = 0; j < this.BlueprintDimensions; j++) {
+		for (var i = 0; i < arr.length; i++) {
+			for (var j = 0; j < arr[0].length; j++) {
 			// if the blueprint has a square at this location, we check to see if it is a significant part of the bounding box
 				if (arr[i][j] == 1) {
 					rowTop = Math.min(rowTop,i)
@@ -100,11 +143,25 @@ class Shape {
 		return [rowTop, colLeft, colRight-colLeft+1, rowBot-rowTop+1]
 	}
 
+
+	/** 
+     * @description Calculates centering used for shape rotation
+	 * 
+     * @return integer
+     */
 	CalculateCentering() {
 		return Math.abs(Math.floor(this.ShapeDimensions[2]/2)-Math.floor(this.ShapeDimensions[3]/2))
 	}
 
-	// returns a list of the new squares of which 
+	/** 
+     * @description Returns a list of indices of which the shape would rotate to during a successful
+	 * rotation.
+	 * 
+	 * @param gameArrayRows - Number of rows of the game array
+	 * @param gameArrayCols - Number of columns of the game array
+	 * 
+     * @return Array - Takes the form [2D array of indices, rotated shape blueprint, dimensions of the new shape in the blueprint]
+     */
 	RotateIndices(gameArrayRows, gameArrayCols) {
 
 		// rotate the existing blueprint of the image
@@ -139,14 +196,29 @@ class Shape {
 		return [squareCoords,RotatedBlueprint,ShapeDims]
 	}
 
+	/** 
+     * @description Changes every square in the provided array to be owned by this shape
+	 * 
+	 * @param SquareArray - Array of Squares
+	 * 
+     * @return void
+     */
 	AdoptSquares(SquareArray){
 		for (var i = 0; i < SquareArray.length; i++) {
 			SquareArray[i].ChangeOwner(this.ID, this.Color)
 		}
 	}
 
-	// update to a new set of dimensions and blueprint
-	UpdateAfterRotate(newSquares, blueprint, Dimensions) {
+	/** 
+     * @description After a successful rotation, update the necessary values for this shape
+	 * 
+	 * @param newSquares - Array of Squares to be adopted into this shape
+	 * @param Blueprint - New, rotated, shape blueprint
+	 * @param Dimension - Dimensions of the new, rotated shape
+	 * 
+     * @return void
+     */
+	UpdateAfterRotate(newSquares, Blueprint, Dimensions) {
 		// update rotation specific completion variables
 		this.RotateSign = -1*this.RotateSign
 
@@ -156,11 +228,15 @@ class Shape {
 
 		// set associated class variables
 		this.Squares = newSquares
-		this.ShapeBlueprint = blueprint
+		this.ShapeBlueprint = Blueprint
 		this.ShapeDimensions = Dimensions
 	}
 
-	// rotate the shape blueprint by 90 degrees
+	/** 
+     * @description Returns an array of the current blueprint after a 90 degree rotation
+	 * 
+     * @return 2D Array
+     */
 	RotateShapeBlueprint() {
 		// allows for scaling from the typical 4x4 shape bounding box
 		var dims = this.ShapeBlueprint.length
@@ -182,11 +258,21 @@ class Shape {
 		return NewBlueprint
 	}
 
+	/** 
+     * @description Freeze the entire shape
+	 * 
+     * @return void
+     */
 	Freeze() {
 		this.FreezeSquares() // set all the squares to frozen
-		this.ResetSquares() // reset this shape's 
+		this.ResetSquares() // reset this shape's list of squares
 	}
 
+	/** 
+     * @description Used for testing
+	 * 
+     * @return 2D array
+     */
 	DefaultShape1 () {
 		return [[0,0,0,0],
 				[0,1,0,0],
