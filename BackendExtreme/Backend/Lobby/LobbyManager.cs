@@ -84,12 +84,11 @@ public class LobbyManager : WebSocketBehavior
                 return;
             currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
             UpdatePacket update = new UpdatePacket();
-            update.playerID = lobbies[playerInputPacket.lobbyID].players.IndexOf(currentPlayer);
+            update.playerID = currentPlayer.id;
             update.move = playerInputPacket.move;
             foreach(Player player in lobbies[playerInputPacket.lobbyID].players)
             {
                 if (player.socketID != ID) {
-                    Console.WriteLine("hi");
                     Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
                 }
             }
@@ -104,14 +103,13 @@ public class LobbyManager : WebSocketBehavior
 
     public void createLobby(int maxPlayers, string name, int id, string socketID)
     {
-        int playerID = RandomNumber(1001, 9998);
+        int playerID = 1;
         // initialize a new lobby, player, and list of players
         Lobby newLobby = new Lobby(getToken(), maxPlayers);
-        Player newPlayer = new Player(playerID, name, socketID, Context.WebSocket);
+        Player newPlayer = new Player(1, name, socketID, Context.WebSocket);
         newLobby.players = new List<Player>();
 
         newLobby.players.Add(newPlayer);
-        // lobbies.Add(newLobby);
         lobbies[newLobby.id] = newLobby;
 
         // Create a packet to confirm creation of new lobby
@@ -137,7 +135,7 @@ public class LobbyManager : WebSocketBehavior
             lobby = lobbies[lobbyID];
             if (lobby.numPlayers < lobby.maxPlayers)
             {
-                int newPlayerID = RandomNumber(1001, 9998);
+                int newPlayerID = lobby.players.Count+1;
                 lobby.numPlayers += 1;
                 Player newPlayer = new Player(newPlayerID, name, socketID, Context.WebSocket);
                 lobby.players.Add(newPlayer);
