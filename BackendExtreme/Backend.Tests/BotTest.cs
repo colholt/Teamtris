@@ -1108,7 +1108,7 @@ namespace Tests
         }
 
         /*
-            Assert that a move can be taken without erroring for trying multiple different pieces once
+            Assert that a move can be taken without erroring for trying a piece
         */
         [Test]
         public void MakeDiffPieceMove1() {
@@ -1130,7 +1130,7 @@ namespace Tests
         }
 
         /*
-            Assert that a move can be taken without erroring for trying different pieces
+            Assert that a move can be taken without erroring for trying a piece
         */
         [Test]
         public void MakeDiffPieceMove2() {
@@ -1153,7 +1153,7 @@ namespace Tests
 
 
         /*
-            Assert that a move can be taken without erroring for trying different pieces
+            Assert that a move can be taken without erroring for trying a piece
         */
         [Test]
         public void MakeDiffPieceMove3() {
@@ -1176,7 +1176,7 @@ namespace Tests
 
 
         /*
-            Assert that a move can be taken without erroring for trying different pieces
+            Assert that a move can be taken without erroring for trying a piece
         */
         [Test]
         public void MakeDiffPieceMove4() {
@@ -1198,7 +1198,7 @@ namespace Tests
         }
 
         /*
-            Assert that a move can be taken without erroring for trying different pieces
+            Assert that a move can be taken without erroring for trying a piece
         */
         [Test]
         public void MakeDiffPieceMove5() {
