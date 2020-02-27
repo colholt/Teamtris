@@ -101,7 +101,7 @@ public class LobbyManager : WebSocketBehavior
             if (bot.action == 1)
             {
 
-            })
+            }
         }
         else
         {
