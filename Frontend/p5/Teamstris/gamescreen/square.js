@@ -92,7 +92,7 @@ class Square {
      */
 	Draw() {
 		push();
-		stroke("grey")
+		stroke("silver")
 		strokeWeight(1)
 		if (this.ID == 0) {
 			noFill()

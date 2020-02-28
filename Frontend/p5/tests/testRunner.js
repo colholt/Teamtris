@@ -87,6 +87,7 @@ global.Player = player[0];
 
 /* Team */
 global.Team = team[0];
+global.team = Team
 
 /* PlayerCard */
 global.PlayerCard = playerCard[0];
@@ -590,6 +591,11 @@ async function testNewSquare() {
     }
 }
 
+async function testNumberOfPlayers() {
+    mGameScreen = new GameScreen();
+    CheckSame(mGameScreen.NumPlayers, mGameScreen.GameArray.ShapeArray.length, "testNumberOfPlayers")
+}
+
 
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
@@ -620,6 +626,7 @@ async function testRunnerSetupStartScreen() {
     await testFourRotate();
     await testMove();
     await testNewSquare();
+    await testNumberOfPlayers();
     /* End Game Screen tests*/
 
     await integrationTest1();

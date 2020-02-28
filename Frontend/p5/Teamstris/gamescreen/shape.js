@@ -285,6 +285,11 @@ class Shape {
      * @return void
      */
 	Freeze() {
+		var boardIndices = []
+		for (var k = 0; k < this.Squares.length; k++) {
+			boardIndices.push([this.Squares[k].i,this.Squares[k].j])
+		}
+		this.SendAction(this.ID, boardIndices, "freeze");
 		this.FreezeSquares() // set all the squares to frozen
 		this.ResetSquares() // reset this shape's list of squares
 	}
@@ -299,7 +304,12 @@ class Shape {
      * @return void
      */
     SendAction(ID, boardIndices, action) {
-        var data = JSON.stringify({"lobbyID":(team.lobbyToken).toLowerCase(),"playerID":ID,"shapeIndices": boardIndices, "move": action})
+		if (typeof team.lobbyToken != String) {
+            var curr_token = "";
+        } else {
+            var curr_token = team.lobbyToken.toLowerCase()
+        }
+        var data = JSON.stringify({"lobbyID":curr_token,"playerID":ID,"shapeIndices": boardIndices, "move": action})
         socket.send(JSON.stringify({"type": "6", "data": data}))
     }
 

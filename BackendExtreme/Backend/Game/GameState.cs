@@ -10,7 +10,7 @@ public class GameState
     public Board board;
     public GameState(int m, int n)
     {
-        this.board = new Board(n, m); // is this right
+        this.board = new Board(n,m);
     }
 
 }

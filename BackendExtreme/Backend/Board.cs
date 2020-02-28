@@ -60,7 +60,7 @@ public class Board
             }
         }
 
-        Console.WriteLine("[{0}]", string.Join(", ", heights));
+        // Console.WriteLine("[{0}]", string.Join(", ", heights));
         this.maxHeights = heights;
     }
 
