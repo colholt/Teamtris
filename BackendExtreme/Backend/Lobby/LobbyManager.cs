@@ -55,25 +55,7 @@ public class LobbyManager : WebSocketBehavior
         // start packet -- 2
         else if (packet.type == 2)
         {
-            PlayPacket playPacket = JsonConvert.DeserializeObject<PlayPacket>(packet.data);
-            // 5 times number of players plus 5
-            Lobby gameLobby = lobbies[playPacket.lobbyID];
-            GameState game = new GameState(5 * gameLobby.numPlayers + 5, 20);
-            Dictionary<int, Player> players = new Dictionary<int, Player>();
-            for (int i = 0; i < gameLobby.botCount; i++)
-            {
-                Console.WriteLine("adding new bot");
-                gameLobby.bots.Add(new SingleBot());
-            }
-            for (int i = 0; i < gameLobby.players.Count; i++)
-            {
-                players[gameLobby.players[i].id] = gameLobby.players[i];
-            }
-            game.players = players;
-            gameLobby.game = game;
-            // update all players that game will start
-            alertLobby(0, playPacket.lobbyID, Packets.START);
-            gameLobby.lobbyState = LobbyState.PLAYING;
+            startGame(packet);
         }
         else if (packet.type == Packets.PLAYER_INPUT)
         {
@@ -108,15 +90,28 @@ public class LobbyManager : WebSocketBehavior
                     }
                 }
             }
-            currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
-            UpdatePacket update = new UpdatePacket();
-            update.playerID = currentPlayer.id;
-            update.move = playerInputPacket.move;
-            foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+            if (playerInputPacket.move != "freeze")
             {
-                if (player.socketID != ID)
+                currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
+                // UpdatePacket update = new UpdatePacket();
+                // update.playerID = currentPlayer.id;
+                // update.move = playerInputPacket.move;
+                playerInputPacket.playerID = currentPlayer.id;
+                UpdatePacket update = processInput(playerInputPacket);
+                foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
                 {
-                    Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
+                    if (player.socketID != ID)
+                    {
+                        Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
+                    }
+                }
+            }
+            else
+            {
+                foreach (int[] pos in playerInputPacket.shapeIndices)
+                {
+                    // FREEZE
+                    lobbies[playerInputPacket.lobbyID].game.board.board[pos[0], pos[1]] = 1;
                 }
             }
             // on place piece put on board ;GJ
@@ -140,11 +135,55 @@ public class LobbyManager : WebSocketBehavior
         }
     }
 
-    public void createLobby(int maxPlayers, string name, int id, string socketID, WebSocketSharp.WebSocket socketContext)
+    public void startGame(Packet packet)
+    {
+        PlayPacket playPacket = JsonConvert.DeserializeObject<PlayPacket>(packet.data);
+        // 5 times number of players plus 5
+        Lobby gameLobby = lobbies[playPacket.lobbyID];
+        GameState game = new GameState(5 * gameLobby.numPlayers + 5, 20);
+        Dictionary<int, Player> players = new Dictionary<int, Player>();
+        for (int i = 0; i < gameLobby.botCount; i++)
+        {
+            Console.WriteLine("adding new bot");
+            gameLobby.bots.Add(new SingleBot());
+        }
+        for (int i = 0; i < gameLobby.players.Count; i++)
+        {
+            players[gameLobby.players[i].id] = gameLobby.players[i];
+        }
+        game.players = players;
+        gameLobby.game = game;
+        // update all players that game will start
+        alertLobby(0, playPacket.lobbyID, Packets.START);
+        gameLobby.lobbyState = LobbyState.PLAYING;
+    }
+
+    public UpdatePacket processInput(PlayerInputPacket pip)
+    {
+        if (pip.move == "freeze")
+        {
+            foreach (int[] pos in pip.shapeIndices)
+            {
+                // FREEZE
+                lobbies[pip.lobbyID].game.board.board[pos[0], pos[1]] = 1;
+            }
+            return (UpdatePacket)null;
+        }
+        UpdatePacket update = new UpdatePacket();
+        update.playerID = pip.playerID;
+        update.move = pip.move;
+        return update;
+    }
+
+    public void createLobby(int maxPlayers, string name, int id, string socketID, WebSocketSharp.WebSocket socketContext, string token = "-1")
     {
         int playerID = 1;
+        if (token == "-1")
+        {
+            token = getToken();
+        }
         // initialize a new lobby, player, and list of players
-        Lobby newLobby = new Lobby(getToken(), maxPlayers);
+        Lobby newLobby = new Lobby(token, maxPlayers);
         Player newPlayer = new Player(1, name, socketID, socketContext);
         newLobby.players = new List<Player>();
         newLobby.bots = new List<Bot>();
@@ -162,7 +201,7 @@ public class LobbyManager : WebSocketBehavior
         Console.WriteLine("sending new lobby");
     }
 
-    public void joinLobby(string lobbyID, int playerID, string name, string socketID)
+    public LobbyInfoPacket joinLobby(string lobbyID, int playerID, string name, string socketID)
     {
         lobbyID = lobbyID.ToLower();
         Lobby lobby;
@@ -192,17 +231,25 @@ public class LobbyManager : WebSocketBehavior
                 lobbyInfoPacket.dataType = Packets.UPDATE;
                 Send(JsonConvert.SerializeObject(lobbyInfoPacket));
                 Send(JsonConvert.SerializeObject(confirmationPacket, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }));
+                return lobbyInfoPacket;
             }
             else
             {
                 // maxplayers reached :(
             }
         }
+        else if (lobbyID == "testing")
+        {
+            lobby = lobbies["five"];
+            lobby.players.Add(new Player(1, "bob", "no", (WebSocketSharp.WebSocket)null));
+            return alertLobby(0, "testing", Packets.UPDATE);
+        }
         else
         {
             //send message invalid ID
             Send("bad");
         }
+        return null;
     }
 
     private string getToken()
@@ -226,7 +273,7 @@ public class LobbyManager : WebSocketBehavior
 
     }
 
-    private void alertLobby(int playerID, string lobbyID, int type)
+    public LobbyInfoPacket alertLobby(int playerID, string lobbyID, int type)
     {
         Console.WriteLine("checking for lobbyid " + lobbyID);
         LobbyInfoPacket lobbyInfoPacket = new LobbyInfoPacket();
@@ -240,12 +287,30 @@ public class LobbyManager : WebSocketBehavior
                 lobbyInfoPacket.lobbyID = lobbyID;
                 lobbyInfoPacket.maxPlayers = lobby.maxPlayers;
                 lobbyInfoPacket.dataType = type;
-                Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
+                try
+                {
+                    Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
+                }
+                catch (Exception)
+                {
+                    // testing or invalid session
+                }
             }
+            return lobbyInfoPacket;
+        }
+        else if (lobbyID == "testing")
+        {
+            lobby = lobbies["five"];
+            lobbyInfoPacket.players = lobby.players;
+            lobbyInfoPacket.lobbyID = lobbyID;
+            lobbyInfoPacket.maxPlayers = lobby.maxPlayers;
+            lobbyInfoPacket.dataType = type;
+            return lobbyInfoPacket;
         }
         else
         {
             Send("invalid ID");
+            return lobbyInfoPacket;
         }
     }
 
