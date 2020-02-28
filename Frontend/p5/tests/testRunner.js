@@ -87,6 +87,7 @@ global.Player = player[0];
 
 /* Team */
 global.Team = team[0];
+global.Team.lobbyToken = "noEmpty"
 global.team = Team
 
 /* PlayerCard */
@@ -504,6 +505,7 @@ async function testFourRotate() {
 }
 
 async function testMove() {
+    team.lobbyToken = "ABCD"
     mGameScreen = new GameScreen();
     var custom_shape = [[0,0,0,0],
                         [0,0,0,0],

@@ -304,12 +304,7 @@ class Shape {
      * @return void
      */
     SendAction(ID, boardIndices, action) {
-		if (typeof team.lobbyToken != String) {
-            var curr_token = "";
-        } else {
-            var curr_token = team.lobbyToken.toLowerCase()
-        }
-        var data = JSON.stringify({"lobbyID":curr_token,"playerID":ID,"shapeIndices": boardIndices, "move": action})
+        var data = JSON.stringify({"lobbyID":team.lobbyToken.toLowerCase(),"playerID":ID,"shapeIndices": boardIndices, "move": action})
         socket.send(JSON.stringify({"type": "6", "data": data}))
     }
 
