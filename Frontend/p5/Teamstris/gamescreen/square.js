@@ -2,7 +2,7 @@
   * @classDesc Represents lowest functional unit of teamtris
   */
 class Square {
-	constructor (SquareEdgeLength, ID=0, Color="grey", DefaultGridStroke=100) {
+	constructor (SquareEdgeLength, ID=0, Color="grey") {
 		// edge length of the square
 		this.SquareEdgeLength = SquareEdgeLength
 
@@ -14,7 +14,7 @@ class Square {
 		this.Color = Color
 
 		// edge color of the square
-		this.DefaultGridStroke = DefaultGridStroke
+		//this.DefaultGridStroke = DefaultGridStroke
 
 		// i, j location of the square in the game array
 		this.i = -1
@@ -92,7 +92,8 @@ class Square {
      */
 	Draw() {
 		push();
-		stroke(this.DefaultGridStroke)
+		stroke("grey")
+		strokeWeight(1)
 		if (this.ID == 0) {
 			noFill()
 		} else {
