@@ -285,6 +285,11 @@ class Shape {
      * @return void
      */
 	Freeze() {
+		var boardIndices = []
+		for (var k = 0; k < this.Squares.length; k++) {
+			boardIndices.push([this.Squares[k].i,this.Squares[k].j])
+		}
+		this.SendAction(1, boardIndices, "freeze");
 		this.FreezeSquares() // set all the squares to frozen
 		this.ResetSquares() // reset this shape's list of squares
 	}
