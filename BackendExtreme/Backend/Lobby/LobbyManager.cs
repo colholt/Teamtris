@@ -62,6 +62,7 @@ public class LobbyManager : WebSocketBehavior
             Dictionary<int, Player> players = new Dictionary<int, Player>();
             for (int i = 0; i < gameLobby.botCount; i++)
             {
+                Console.WriteLine("adding new bot");
                 gameLobby.bots.Add(new SingleBot());
             }
             for (int i = 0; i < gameLobby.players.Count; i++)
