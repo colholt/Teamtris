@@ -44,7 +44,7 @@ public class LobbyManager : WebSocketBehavior
                 Console.WriteLine("making new create packet");
                 // Create a lobby with given parameters
                 CreatePacket createPacket = JsonConvert.DeserializeObject<CreatePacket>(packet.data);
-                createLobby(createPacket.maxPlayers, createPacket.name, createPacket.playerID, socketID);
+                createLobby(createPacket.maxPlayers, createPacket.name, createPacket.playerID, socketID, Context.WebSocket);
             }
             catch (NullReferenceException nre)
             {
@@ -139,12 +139,12 @@ public class LobbyManager : WebSocketBehavior
         }
     }
 
-    public void createLobby(int maxPlayers, string name, int id, string socketID)
+    public void createLobby(int maxPlayers, string name, int id, string socketID, WebSocketSharp.WebSocket socketContext)
     {
         int playerID = 1;
         // initialize a new lobby, player, and list of players
         Lobby newLobby = new Lobby(getToken(), maxPlayers);
-        Player newPlayer = new Player(1, name, socketID, Context.WebSocket);
+        Player newPlayer = new Player(1, name, socketID, socketContext);
         newLobby.players = new List<Player>();
         newLobby.bots = new List<Bot>();
 
