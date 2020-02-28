@@ -49,7 +49,7 @@ class LobbyScreen {
                     if(e.players[0].name == this.player.username) {
                         console.log("IM THE OWNER FAM");
                         this.player.owner = true;
-                        changeOwnerToMe();
+                        this.changeOwnerToMe();
                     }
                     return;
                 }
