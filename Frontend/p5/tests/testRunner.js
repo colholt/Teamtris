@@ -621,6 +621,25 @@ async function testRunnerSetupStartScreen() {
     await testAddAndRemoveBotsFromLobby();
     await checkPlayCardValues();
 
+    class mockSocketGameScreen{
+        constructor(){
+            this.callNumber = 1
+        }
+        send(x) {
+            var e = JSON.parse(x);
+            var d = JSON.parse(e.data);
+            if (x != null) {
+                CheckSame(1,1,"ServerReceiving_" + d.move.toUpperCase() + "_" + this.callNumber)
+            } else {
+                CheckSame(0,1,"ServerReceiving_" + d.move.toUpperCase() + "_" + this.callNumber)
+            }
+            this.callNumber += 1
+        }
+        onmessage(x) {}
+    }
+    /* socket */
+    global.socket = new mockSocketGameScreen();
+
     /* Game Screen tests*/
     await testGameArrayNotNull(); 
     await testGameScreenRotateKeyPress();
