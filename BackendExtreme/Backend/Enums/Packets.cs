@@ -8,6 +8,6 @@ public static class Packets
     public static readonly int STATE_START = 5;
     public static readonly int PLAYER_INPUT = 6;
     public static readonly int BOT_UPDATE = 7;
-    public static readonly int UPDATE = 0;
+    public static readonly int UPDATE = 8;
     public static readonly int START = 1;
 }
