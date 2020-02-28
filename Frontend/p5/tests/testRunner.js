@@ -87,6 +87,7 @@ global.Player = player[0];
 
 /* Team */
 global.Team = team[0];
+global.team = Team
 
 /* PlayerCard */
 global.PlayerCard = playerCard[0];
@@ -546,8 +547,10 @@ async function testMove() {
     mGameScreen.GameArray.ForceChangeShape(1, custom_shape,17,0,false)
     temp_row = mGameScreen.GameArray.ShapeArray[0].Squares[0].i
     mGameScreen.keyPressedGame()
+    console.log(mGameScreen.GameArray.ShapeArray)
     CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,temp_row+1, "testMoveRRRLLD_noMove")
     mGameScreen.keyPressedGame()
+    console.log(mGameScreen.GameArray.ShapeArray)
     CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,0, "testMoveRRRLLDD_resetMove")
     mGameScreen.keyPressedGame()
     CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,1, "testMoveRRRLLDDD_resetMove2")
@@ -590,6 +593,11 @@ async function testNewSquare() {
     }
 }
 
+async function testNumberOfPlayers() {
+    mGameScreen = new GameScreen();
+    CheckSame(mGameScreen.NumPlayers, mGameScreen.GameArray.ShapeArray.length, "testNumberOfPlayers")
+}
+
 
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
@@ -620,6 +628,7 @@ async function testRunnerSetupStartScreen() {
     await testFourRotate();
     await testMove();
     await testNewSquare();
+    await testNumberOfPlayers();
     /* End Game Screen tests*/
 
     await integrationTest1();
