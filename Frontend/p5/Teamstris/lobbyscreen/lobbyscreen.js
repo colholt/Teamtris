@@ -89,9 +89,13 @@ class LobbyScreen {
      */
     addAndRemoveBotButton(addOrRemove) {
         if( addOrRemove == "addbot" ) { // For add bot button
+            var data = JSON.stringify({"action": 1, "lobbyid":this.team.lobbyToken.toLowerCase()})
+            socket.send(JSON.stringify({"type": "7", "data": data}));
             /* Make sure that we are not going over 4 players + bots */
             this.newPlayerJoins(new Player(this.botNames[this.team.playersInTeam.length - 1], -1, false));
         } else if( addOrRemove == "removebot" ) { // for remove bot button
+            var data = JSON.stringify({"action": 0, "lobbyid":this.team.lobbyToken.toLowerCase()})
+            socket.send(JSON.stringify({"type": "7", "data": data}));
             for( var i = this.team.playersInTeam.length-1; i > 0; i-- ) {
                 var player = this.team.playersInTeam[i];
                 if(player.id == -1) {
