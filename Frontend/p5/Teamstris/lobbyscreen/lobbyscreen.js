@@ -44,6 +44,15 @@ class LobbyScreen {
                 return;
             }
             if(e.players != undefined) {
+                if(e.dataType === -1){
+                    console.log("YES" + e.players[0].name + ":" + this.player.username);
+                    if(e.players[0].name == this.player.username) {
+                        console.log("IM THE OWNER FAM");
+                        this.player.owner = true;
+                        changeOwnerToMe();
+                    }
+                    return;
+                }
                 console.log("players:");
                 console.log(e.players[e.players.length-1].name);
                 var newPlayer = new Player();
@@ -51,6 +60,27 @@ class LobbyScreen {
                 this.team.lobbyToken = e.lobbyID.toUpperCase();
             }
         };
+    }
+
+    changeOwnerToMe() {
+        var data = JSON.stringify({"maxPlayers":"4","name": this.player.username,"playerID": this.player.id})
+        // console.log(JSON.stringify({"type": "1", "data": data}));
+        socket.send(JSON.stringify({"type": "1", "data": data}));
+        /* 							X, Y 				 , W  			  , H 				 , gamestate, default color	*/
+        buttonList.push(new Buttons(windowWidth/2.5, windowHeight / 3.1, windowWidth / 7, windowHeight / 12, 1, "red"));
+        buttonList[buttonList.length - 1].text = "Add bot"; // Text to put in the button
+        buttonList[buttonList.length - 1].hoverColor = "yellow"; // What color to make the button on mouse hover
+        buttonList[buttonList.length - 1].id = "addbot"; // ID of the button
+
+        buttonList.push(new Buttons(windowWidth/2.5, windowHeight / 2.4, windowWidth / 7, windowHeight / 12, 1, "blue"));
+        buttonList[buttonList.length - 1].text = "Remove bot"; // Text to put in the button
+        buttonList[buttonList.length - 1].hoverColor = "yellow"; // What color to make the button on mouse hover
+        buttonList[buttonList.length - 1].id = "removebot"; // ID of the button
+
+        buttonList.push(new Buttons(windowWidth/2.5, windowHeight / 4.4, windowWidth / 7, windowHeight / 12, 1, "green"));
+        buttonList[buttonList.length - 1].text = "Start"; // Text to put in the button
+        buttonList[buttonList.length - 1].hoverColor = "yellow"; // What color to make the button on mouse hover
+        buttonList[buttonList.length - 1].id = "startgame"; // ID of the button
     }
  
     /**
