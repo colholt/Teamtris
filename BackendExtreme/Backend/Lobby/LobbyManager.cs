@@ -91,14 +91,17 @@ public class LobbyManager : WebSocketBehavior
             {
                 if (player.socketID != ID)
                 {
-                    foreach (int[] pos1 in player.currentBlockPosition)
+                    if (player.currentBlockPosition != null)
                     {
-                        foreach (int[] pos2 in playerInputPacket.shapeIndices)
+                        foreach (int[] pos1 in player.currentBlockPosition)
                         {
-                            if (pos1 == pos2)
+                            foreach (int[] pos2 in playerInputPacket.shapeIndices)
                             {
-                                Send("COLLISION");
-                                return;
+                                if (pos1 == pos2)
+                                {
+                                    Send("COLLISION");
+                                    return;
+                                }
                             }
                         }
                     }
