@@ -60,6 +60,10 @@ public class LobbyManager : WebSocketBehavior
             Lobby gameLobby = lobbies[playPacket.lobbyID];
             GameState game = new GameState(5 * gameLobby.numPlayers + 5, 20);
             Dictionary<int, Player> players = new Dictionary<int, Player>();
+            for (int i = 0; i < gameLobby.botCount; i++)
+            {
+                gameLobby.bots.Add(new SingleBot());
+            }
             for (int i = 0; i < gameLobby.players.Count; i++)
             {
                 players[gameLobby.players[i].id] = gameLobby.players[i];
@@ -82,6 +86,24 @@ public class LobbyManager : WebSocketBehavior
             if (currentPlayer == null)
                 // no valid player found in lobby
                 return;
+            // validate move
+            foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+            {
+                if (player.socketID != ID)
+                {
+                    foreach (int[] pos1 in player.currentBlockPosition)
+                    {
+                        foreach (int[] pos2 in playerInputPacket.shapeIndices)
+                        {
+                            if (pos1 == pos2)
+                            {
+                                Send("COLLISION");
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
             currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
             UpdatePacket update = new UpdatePacket();
             update.playerID = currentPlayer.id;
@@ -95,12 +117,16 @@ public class LobbyManager : WebSocketBehavior
             }
             // on place piece put on board ;GJ
         }
-        else if (packet.type == Packets.BOT_UPDATE)
+        else if (packet.type == Packets.BOT_UPDATE) // 7
         {
             BotPacket bot = JsonConvert.DeserializeObject<BotPacket>(packet.data);
             if (bot.action == 1)
             {
-
+                lobbies[bot.lobbyID].botCount++;
+            }
+            else if (bot.action == 0)
+            {
+                lobbies[bot.lobbyID].botCount--;
             }
         }
         else
@@ -117,6 +143,7 @@ public class LobbyManager : WebSocketBehavior
         Lobby newLobby = new Lobby(getToken(), maxPlayers);
         Player newPlayer = new Player(1, name, socketID, Context.WebSocket);
         newLobby.players = new List<Player>();
+        newLobby.bots = new List<Bot>();
 
         newLobby.players.Add(newPlayer);
         lobbies[newLobby.id] = newLobby;

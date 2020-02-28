@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class Lobby
 {
@@ -10,7 +11,10 @@ public class Lobby
         this.lobbyState = 0;
     }
     public long clock = 0;
+    public int botCount = 0;
     public List<Player> players;
+    [JsonIgnore]
+    public List<Bot> bots;
     public int lobbyState;
     public GameState game;
     public int numPlayers = 1;
