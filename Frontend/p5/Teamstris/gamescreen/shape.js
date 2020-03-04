@@ -282,16 +282,19 @@ class Shape {
 	/** 
      * @description Freeze the entire shape
 	 * 
-     * @return void
+     * @return Set of rows that were impacted by the freeze (used for checking if a row should be removed)
      */
 	Freeze() {
 		var boardIndices = []
+		var rowsImpacted = new Set()
 		for (var k = 0; k < this.Squares.length; k++) {
 			boardIndices.push([this.Squares[k].i,this.Squares[k].j])
+			rowsImpacted.add(this.Squares[k].i)
 		}
 		this.SendAction(this.ID, boardIndices, "freeze");
 		this.FreezeSquares() // set all the squares to frozen
 		this.ResetSquares() // reset this shape's list of squares
+		return rowsImpacted
 	}
 
 	/** 
