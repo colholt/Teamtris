@@ -4,7 +4,19 @@
  * #class FrontendTests |
  * @author Steven Dellamore, Richard Hansen |
  * @language javascript | 
- * @desc TODO |
+ * @desc This is the testing doc for all the frontend tests. 
+ * We decided to not go with a framework because we didnt think 
+ * we needed everything the framework gives us. This framework 
+ * uses the idea of dependency injection. We mock out all the 
+ * p5 variables like so:
+ * @link{testGlobalVar1}
+ * This allows us to control all aspects of the test
+ * and really unit test every line of code in our functions.
+ * More over, we are able to mock out other classes that are being 
+ * used by the class we are trying to test like so:
+ * @link{buttonListVarTest1}
+ * Once again, we can really drill down to the functions and have a really good
+ * understanding of what its doing and its return values. |
  */
 
 
@@ -70,11 +82,13 @@ global.buttons_draw                  = false;
 global.buttons_checkmouse            = false;
 
 /* Button class vars */
+// #code buttonListVarTest1 javascript
 global.buttonList = button[0];
 global.Buttons = button[1];
 global.Buttonloop = button[2];
 global.ClickedLoop = button[3];
 global.FindButtonbyID = button[4];
+// |
 
 /* Lobby */
 global.LobbyScreen = lobbyScreen[0];
@@ -116,6 +130,20 @@ var blue = "\x1b[35m";
 
 testRunnerSetupStartScreen();
 
+/**
+ * #function FrontendTests::CheckSame |
+ * @author Steven Dellamore, Richard Hansen |
+ * @desc Checks to see if the @inline{given} and @inline{expected} strings are the same.
+ * If they are not this function will return false and print what the expected was. 
+ * @link{CheckSameVar1}
+ * If its true it will print a success message. | 
+ * @header CheckSame( string, string, string, boolean = false ) |
+ * @param string given : real output |
+ * @param string expect : expected output |
+ * @param string name : name of test |
+ * @param boolean debug : @inline{true} if you want debug statments printed |
+ * @returns boolean : true if given and expected match, false otherwise | 
+ */
 function CheckSame( given, expect, name, debug = false ){
     if( debug ){
         console.log(blue, "given: " + given + " expect: " + expect + " name: " + name);
@@ -124,30 +152,71 @@ function CheckSame( given, expect, name, debug = false ){
         console.log(green, numTests++ + ". " + name + " passed");
         return true;
     } else {
-        console.log(red, numTests++ + ". " + name + " failed should have been " + expect + " but was " + given);
+        // #code CheckSameVar1 javascript
+        console.log(
+            red, numTests++ + ". " + name + " failed should have been " + 
+                                            expect + " but was " + given);
+        // |
         numFailed++;
         return false;
     }
 }
 
-
+/**
+ * #function FrontendTests::testDefaultUsername |
+ * @author Steven Dellamore |
+ * @desc Checks to see if the default @inline{mStartScreen.usernameText} is @inline{"username"}. |
+ * @header async function testDefaultUsername() |
+ */
 async function testDefaultUsername() {
     CheckSame(mStartScreen.usernameText,"username","testDefaultUsername");
 }
 
+/**
+ * #function FrontendTests::testDefaultTokenValue |
+ * @author Steven Dellamore |
+ * @desc Checks to see if the default @inline{mStartScreen.TokenBoxText} is @inline{""}. |
+ * @header async function testDefaultTokenValue() |
+ */
 async function testDefaultTokenValue() {
     CheckSame(mStartScreen.TokenBoxText,"","testDefaultUsernameUserText");
 }
 
+/**
+ * #function FrontendTests::testCheckInitStartScreenValues |
+ * @author Steven Dellamore |
+ * @desc Checks to see if all the other init startscreen values are correct.
+ * @link{testCheckInitStartScreenValuesVar1} |
+ * @header async function testCheckInitStartScreenValues() |
+ */
 async function testCheckInitStartScreenValues() {
-    CheckSame(mStartScreen.usernameTextTouched,false,"checkInitStartScreenValues.usernameTextTouched");
-    CheckSame(mStartScreen.titleAnimation[0],300,"checkInitStartScreenValues.titleAnimation[0]");
-    CheckSame(mStartScreen.titleAnimation[1],500,"checkInitStartScreenValues.titleAnimation[1]");
-    CheckSame(mStartScreen.titleAnimation[2],400,"checkInitStartScreenValues.titleAnimation[2]");
-    CheckSame(mStartScreen.titleAnimation[3],700,"checkInitStartScreenValues.titleAnimation[3]");
-    CheckSame(mStartScreen.usernameBoxStroke,false,"checkInitStartScreenValues.usernameBoxStroke");
+    CheckSame(
+        mStartScreen.usernameTextTouched,false,
+            "checkInitStartScreenValues.usernameTextTouched");
+    CheckSame(
+        mStartScreen.titleAnimation[0],300,
+            "checkInitStartScreenValues.titleAnimation[0]");
+    CheckSame(
+        mStartScreen.titleAnimation[1],500,
+            "checkInitStartScreenValues.titleAnimation[1]");
+    CheckSame(
+        mStartScreen.titleAnimation[2],400,
+            "checkInitStartScreenValues.titleAnimation[2]");
+    CheckSame(
+        mStartScreen.titleAnimation[3],700,
+            "checkInitStartScreenValues.titleAnimation[3]");
+    CheckSame(
+        mStartScreen.usernameBoxStroke,false,
+            "checkInitStartScreenValues.usernameBoxStroke");
 }
 
+/**
+ * #function FrontendTests::testCheckTitlePosAfterTwoDraw |
+ * @author Steven Dellamore |
+ * @desc Run @inline{mStartScreen.draw()} twice and check that the 
+ * title pos values have been updated correctly. |
+ * @header async function testCheckTitlePosAfterTwoDraw() |
+ */
 async function testCheckTitlePosAfterTwoDraw() {
     mStartScreen.draw();
     mStartScreen.draw();
@@ -157,6 +226,12 @@ async function testCheckTitlePosAfterTwoDraw() {
     CheckSame(mStartScreen.titleAnimation[3],680,"checkInitStartScreenValuesAfterTwoDraw.titleAnimation[3]");
 }
 
+/**
+ * #function FrontendTests::testChangeUserUsername |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testChangeUserUsername() |
+ */
 async function testChangeUserUsername() {
     global.keyCode = 65; // A
     mStartScreen.keyPressedStart();
@@ -169,6 +244,12 @@ async function testChangeUserUsername() {
     CheckSame(mStartScreen.usernameText,"AB","testChangeUserUsername2");
 }
 
+/**
+ * #function FrontendTests::testChangeMaxUsername |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testChangeMaxUsername() |
+ */
 async function testChangeMaxUsername() {
     mStartScreen.usernameText = "";
     CheckSame(mStartScreen.usernameText,"","testUsernameTextReset");
@@ -185,6 +266,12 @@ async function testChangeMaxUsername() {
     }
 }
 
+/**
+ * #function FrontendTests::testDeleteUsername |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testDeleteUsername() |
+ */
 async function testDeleteUsername() {
     global.keyCode = 8; // delete
     mStartScreen.keyPressedStart();
@@ -201,6 +288,12 @@ async function testDeleteUsername() {
     }
 }
 
+/**
+ * #function FrontendTests::testCheckSpecialChars |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testCheckSpecialChars() |
+ */
 async function testCheckSpecialChars() {
     global.keyCode = 10; // special
     mStartScreen.keyPressedStart();
@@ -215,6 +308,12 @@ async function testCheckSpecialChars() {
     CheckSame(mStartScreen.usernameText,"","testCheckSpecialChars");
 }
 
+/**
+ * #function FrontendTests::testHighScoreButton |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testHighScoreButton() |
+ */
 async function testHighScoreButton() {
     global.mouseX = mStartScreen.RightX + 1;
     global.mouseY = mStartScreen.TopY + 1;
@@ -237,6 +336,12 @@ async function testHighScoreButton() {
     CheckSame(global.gameState,0,"testMouseClickedScoreButtonMissedRealGamestate");
 }
 
+/**
+ * #function FrontendTests::testCreateGameButton |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testCreateGameButton() |
+ */
 async function testCreateGameButton() {
     mStartScreen.usernameText = "";
     CheckSame(mStartScreen.usernameText,"","testResetUsernametext");
@@ -252,6 +357,12 @@ async function testCreateGameButton() {
     CheckSame(global.gameState,1,"testClickCreateButtonWithUsername");
 }
 
+/**
+ * #function FrontendTests::testJoinLobbyButton |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testJoinLobbyButton() |
+ */
 async function testJoinLobbyButton() {
     mStartScreen.usernameText = "";
     global.gameState = 0;
@@ -267,6 +378,12 @@ async function testJoinLobbyButton() {
     CheckSame(mStartScreen.gameStateStartScreen,1,"testClickJoinButtonWithUsername");
 }
 
+/**
+ * #function FrontendTests::testCheckLobbyInitValues |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testCheckLobbyInitValues() |
+ */
 async function testCheckLobbyInitValues() {
     CheckSame(mLobbyScreen.player.username,"Steven","testCheckInitUsername");
     CheckSame(mLobbyScreen.player.owner,true,"testCheckInitOwnerTrue");
@@ -284,6 +401,12 @@ async function testCheckLobbyInitValues() {
     CheckSame(mLobbyScreen.playerCards[0].player,mLobbyScreen.player,"checkTheInitPlayerValuesAreTheSame");
 }
 
+/**
+ * #function FrontendTests::testCheckTokenIsBeingDisplayed |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testCheckTokenIsBeingDisplayed() |
+ */
 async function testCheckTokenIsBeingDisplayed() {
     var strInside;
     var x;
@@ -306,6 +429,12 @@ async function testCheckTokenIsBeingDisplayed() {
     CheckSame(y,1454.5454545454545,"testCheckYOfTextCall");
 }
 
+/**
+ * #function FrontendTests::testAddAndRemoveBotsFromLobby |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function testAddAndRemoveBotsFromLobby() |
+ */
 async function testAddAndRemoveBotsFromLobby() {
     global.mouseX = 1039;
     global.mouseY = 1039;
@@ -388,6 +517,12 @@ async function testAddAndRemoveBotsFromLobby() {
     CheckSame(mLobbyScreen.team.playersInTeam[0].owner,true,"checkMakeSureDataForNonRemovedPlayerIsGood");
 }
 
+/**
+ * #function FrontendTests::checkPlayCardValues |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function checkPlayCardValues() |
+ */
 async function checkPlayCardValues() {
     CheckSame(mLobbyScreen.playerCards[0].scale,1,"checkPlayCardValuesScale");
     if(mLobbyScreen.playerCards[0].x <= global.windowWidth && mLobbyScreen.playerCards[0].x > 0){
@@ -421,6 +556,12 @@ async function checkPlayCardValues() {
     }
 }
 
+/**
+ * #function FrontendTests::integrationTest1 |
+ * @author Steven Dellamore |
+ * @desc TODO |
+ * @header async function integrationTest1() |
+ */
 async function integrationTest1() {
     mStartScreen = new startScreen[0];
     console.log(mStartScreen);
@@ -448,11 +589,23 @@ async function integrationTest1() {
     console.log(mStartScreen);
 }
 
+/**
+ * #function FrontendTests::testGameArrayNotNull |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testGameArrayNotNull() |
+ */
 async function testGameArrayNotNull() {
     mGameScreen = new GameScreen();
     CheckSame(mGameScreen.GameArray != null, true, "testGameboardNotNull")
 }
 
+/**
+ * #function FrontendTests::testGameScreenRotateKeyPress |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testGameScreenRotateKeyPress() |
+ */
 async function testGameScreenRotateKeyPress() {
     mGameScreen = new GameScreen();
     var custom_shape = [[0,0,0,0],
@@ -465,6 +618,12 @@ async function testGameScreenRotateKeyPress() {
     CheckSame(mGameScreen.GameArray.ShapeArray[0].RotateSign, -1, "testGameScreenRotateKeyPress")
 }
 
+/**
+ * #function FrontendTests::testGameScreenFailRotateKeyPress |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testGameScreenFailRotateKeyPress() |
+ */
 async function testGameScreenFailRotateKeyPress() {
     mGameScreen = new GameScreen();
     var custom_shape = [[0,0,0,0],
@@ -477,6 +636,12 @@ async function testGameScreenFailRotateKeyPress() {
     CheckSame(mGameScreen.GameArray.ShapeArray[0].RotateSign, 1, "testGameScreenFailRotateKeyPress")
 }
 
+/**
+ * #function FrontendTests::testGameScreenFailRotateKeyPress |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testGameScreenFailRotateKeyPress() |
+ */
 async function testGameScreenFailRotateKeyPress() {
     mGameScreen = new GameScreen();
     var custom_shape = [[0,0,0,0],
@@ -489,6 +654,12 @@ async function testGameScreenFailRotateKeyPress() {
     CheckSame(mGameScreen.GameArray.ShapeArray[0].RotateSign, 1, "testGameScreenFailRotateKeyPress")
 }
 
+/**
+ * #function FrontendTests::testFourRotate |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testFourRotate() |
+ */
 async function testFourRotate() {
     mGameScreen = new GameScreen();
     var custom_shape = [[0,0,0,0],
@@ -512,6 +683,12 @@ async function testFourRotate() {
     CheckSame(1,1, "TestFourRotate")
 }
 
+/**
+ * #function FrontendTests::testMove |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testMove() |
+ */
 async function testMove() {
     team.lobbyToken = "ABCD"
     mGameScreen = new GameScreen();
@@ -566,6 +743,12 @@ async function testMove() {
     CheckSame(1,1, "testMove")
 }
 
+/**
+ * #function FrontendTests::testNewSquare |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testNewSquare() |
+ */
 async function testNewSquare() {
     mGameScreen = new GameScreen();
     var custom_shape = [[0,0,0,0],
@@ -601,12 +784,23 @@ async function testNewSquare() {
     }
 }
 
+/**
+ * #function FrontendTests::testNumberOfPlayers |
+ * @author Richard Hansen |
+ * @desc TODO |
+ * @header async function testNumberOfPlayers() |
+ */
 async function testNumberOfPlayers() {
     mGameScreen = new GameScreen();
     CheckSame(mGameScreen.NumPlayers, mGameScreen.GameArray.ShapeArray.length, "testNumberOfPlayers")
 }
 
-
+/**
+ * #function FrontendTests::testRunnerSetupStartScreen |
+ * @author Steven Dellamore, Richard Hansen |
+ * @desc TODO |
+ * @header async function testRunnerSetupStartScreen() |
+ */
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
     mStartScreen = new startScreen[0];

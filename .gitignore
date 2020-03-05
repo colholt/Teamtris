@@ -5,6 +5,7 @@ Backend/obj
 BackendExtreme/Backend.Tests/bin/Debug/
 BackendExtreme/Backend.Tests/bin/Debug/
 BackendExtreme/Backend/bin/*
+output/_minted-output/*
 BackendExtreme/Backend/obj/*
 BackendExtreme/Backend.Tests/bin/*
 BackendExtreme/Backend.Tests/obj/*
