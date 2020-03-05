@@ -1,0 +1,6 @@
+
+
+\section{CLASS}
+\textbf{Author}: AUTHOR \\
+\textbf{Description}: DESC \\
+

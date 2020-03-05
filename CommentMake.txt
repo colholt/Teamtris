@@ -1,0 +1,12 @@
+Frontend/p5/Teamstris/startscreen/startscreen.js
+Frontend/p5/Teamstris/general/player.js
+Frontend/p5/Teamstris/general/team.js
+Frontend/p5/Teamstris/general/mouseClicked.js
+Frontend/p5/Teamstris/general/keyPressed.js
+Frontend/p5/Teamstris/general/dummy.js
+BackendExtreme/Backend/Bot/Bot.cs
+BackendExtreme/Backend/Bot/BotManager.cs
+
+
+
+Frontend/p5/tests/testRunner.js

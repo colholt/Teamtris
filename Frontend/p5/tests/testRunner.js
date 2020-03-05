@@ -1,5 +1,13 @@
 
 
+/**
+ * #class FrontendTests |
+ * @author Steven Dellamore, Richard Hansen |
+ * @language javascript | 
+ * @desc TODO |
+ */
+
+
 //const WebSocket = require('ws');
 
 // const expect = require('chai').expect;
@@ -657,12 +665,8 @@ async function testRunnerSetupStartScreen() {
     console.log(red, numFailed + " failed");
 }
 
-/**********
- *
- *
- *
- *
- *     BUTTON FINDER 3700
+/** 
+BUTTON FINDER 3700
 for(var i = 0 ; i < 10000; i++) {
     global.mouseX += 1;
     global.mouseY = 0;
