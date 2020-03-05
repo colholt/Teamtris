@@ -40,3 +40,13 @@ CheckSame(
     mStartScreen.usernameBoxStroke,false,
         "checkInitStartScreenValues.usernameBoxStroke");
 // |
+
+
+// #code testChangeMaxUsernameVar1 javascript
+for(var i = 0; i < 15; i++) {
+    mStartScreen.keyPressedStart(); // Press Key
+    str += strFull.charAt(i);
+    CheckSame(mStartScreen.usernameText,str,"testUsernameText" + str);
+    global.keyCode++; // go next key
+}
+// |

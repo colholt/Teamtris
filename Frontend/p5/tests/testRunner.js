@@ -229,7 +229,11 @@ async function testCheckTitlePosAfterTwoDraw() {
 /**
  * #function FrontendTests::testChangeUserUsername |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Will set the @inline{keyCode} equal to @inline{65} 
+ * and @inline{66} and call the @inline{keyPressedStart()} 
+ * function. Which tells the start screen that a key has been
+ * presesed. We then check if @inline{mStartScreen.usernameText} 
+ * was changed to @inline{"A"} and @inline{"AB"}. |
  * @header async function testChangeUserUsername() |
  */
 async function testChangeUserUsername() {
@@ -247,7 +251,11 @@ async function testChangeUserUsername() {
 /**
  * #function FrontendTests::testChangeMaxUsername |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Will call the @inline{keyPressedStart()} function 
+ * with letters ABCDEFGHIJKLMNOPQRS and check to ensure that 
+ * the @inline{mStartScreen.usernameText} does not get above 
+ * 11 chars.
+ * @link{testChangeMaxUsernameVar1} |
  * @header async function testChangeMaxUsername() |
  */
 async function testChangeMaxUsername() {
@@ -269,7 +277,10 @@ async function testChangeMaxUsername() {
 /**
  * #function FrontendTests::testDeleteUsername |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Does the same thing as testChangeMaxUsername but 
+ * deletes characters 15 times and checks @inline{mStartScreen.usernameText}
+ * to ensure that everything has been deleted. \\Note: @inline{KeyCode=8} is
+ * the delete key. |
  * @header async function testDeleteUsername() |
  */
 async function testDeleteUsername() {
@@ -291,7 +302,10 @@ async function testDeleteUsername() {
 /**
  * #function FrontendTests::testCheckSpecialChars |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Will try to add special chars like ASCII codes @inline{10},
+ * @inline{240}, @inline{33} and then make sure 
+ * @inline{mStartScreen.usernameText} is unchanged because
+ * you can't have special chars in ur username. |
  * @header async function testCheckSpecialChars() |
  */
 async function testCheckSpecialChars() {
@@ -311,14 +325,23 @@ async function testCheckSpecialChars() {
 /**
  * #function FrontendTests::testHighScoreButton |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Sets the mouse positions to be over the high score button.
+ * @link{testHighScoreButtonVar1}
+ * Then we check that @inline{gameStateStartScreen == 0} still
+ * equals zero since we havent clicked yet, and check that the high score
+ * button is being highlighted correctly. The test then checks if we click on
+ * the Score Button @inline{gameState == 1}. |
  * @header async function testHighScoreButton() |
  */
 async function testHighScoreButton() {
+    // #code testHighScoreButtonVar1 javascript
     global.mouseX = mStartScreen.RightX + 1;
     global.mouseY = mStartScreen.TopY + 1;
-    CheckSame(mStartScreen.gameStateStartScreen,0,"testCheckInitGameStateScoreButton");
-    CheckSame(mStartScreen.drawHighScoreButtonCheckMouse(),true,"testDrawHighScoreButtonCheckMouse");
+    CheckSame(mStartScreen.gameStateStartScreen,0,
+        "testCheckInitGameStateScoreButton");
+    CheckSame(mStartScreen.drawHighScoreButtonCheckMouse(),true,
+        "testDrawHighScoreButtonCheckMouse");
+    // |
     mStartScreen.mouseClickedStart();
     CheckSame(mStartScreen.gameStateStartScreen,-1,"testMouseClickedScoreButton1");
     mStartScreen.gameStateStartScreen = 0; //reset gameState;
@@ -339,7 +362,7 @@ async function testHighScoreButton() {
 /**
  * #function FrontendTests::testCreateGameButton |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Sets the mouse to be over the Create game Button |
  * @header async function testCreateGameButton() |
  */
 async function testCreateGameButton() {
