@@ -362,7 +362,12 @@ async function testHighScoreButton() {
 /**
  * #function FrontendTests::testCreateGameButton |
  * @author Steven Dellamore |
- * @desc Sets the mouse to be over the Create game Button |
+ * @desc Sets the mouse to be over the "Create Game" Button and checks
+ * to see if it gets highlighted correctly. Then we click on the button 
+ * with  an empty @inline{mStartScreen.usernameText} and check to make sure
+ * we did not get moved into the Lobby screen. Finally we add a username \\
+ * @inline{mStartScreen.usernameText = "Steven"} and click on the 
+ * "Create Game" button. We then check we got moved into the lobby screen correctly. |
  * @header async function testCreateGameButton() |
  */
 async function testCreateGameButton() {
@@ -383,7 +388,9 @@ async function testCreateGameButton() {
 /**
  * #function FrontendTests::testJoinLobbyButton |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Sets the @inline{mouseX} and @inline{mouseY} to be over the 
+ * "Join Game" button. Then we call @inline{mStartScreen.mouseClickedStart()}
+ * and check to that we are being put into the token screen correctly.  |
  * @header async function testJoinLobbyButton() |
  */
 async function testJoinLobbyButton() {
@@ -404,20 +411,28 @@ async function testJoinLobbyButton() {
 /**
  * #function FrontendTests::testCheckLobbyInitValues |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Check the init values when moving to the lobby screen
+ * from the start screen. We first check to make sure the 
+ * @inline{Player} object is set corretly like so:
+ * @link{testCheckLobbyInitValuesVar1}
+ * Then we need to check the @inline{Team} object like so:
+ * @link{testCheckLobbyInitValuesVar2} 
+ * Once these are checked we know that we have good init values. |
  * @header async function testCheckLobbyInitValues() |
  */
 async function testCheckLobbyInitValues() {
+    // #code testCheckLobbyInitValuesVar1 javascript
     CheckSame(mLobbyScreen.player.username,"Steven","testCheckInitUsername");
     CheckSame(mLobbyScreen.player.owner,true,"testCheckInitOwnerTrue");
     CheckSame(typeof mLobbyScreen.player.id,"number","testCheckInitID");
-
+    // |
+    // #code testCheckLobbyInitValuesVar2 javascript
     CheckSame(mLobbyScreen.team.playersInTeam[0].username,"Steven","testCheckInitTeamUsername");
     CheckSame(mLobbyScreen.team.playersInTeam[0].owner,true,"testCheckInitTeamOwnerTrue");
     CheckSame(typeof mLobbyScreen.team.playersInTeam[0].id,"number","testCheckInitTeamID");
-
     CheckSame(mLobbyScreen.team.teamName,"","testCheckInitTeamName");
     CheckSame(typeof mLobbyScreen.team.lobbyToken,"string","testCheckInitLobbyToken");
+    // |
     CheckSame(mLobbyScreen.botNames[0],"Arnold","testInitBot0");
     CheckSame(mLobbyScreen.botNames[1],"Steve","testInitBot1");
     CheckSame(mLobbyScreen.botNames[2],"John","testInitBot2");
@@ -427,10 +442,17 @@ async function testCheckLobbyInitValues() {
 /**
  * #function FrontendTests::testCheckTokenIsBeingDisplayed |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Checks to see if the Token is being displayed 
+ * by the frontend in the correct position. This is an example of 
+ * how we can use Dependency Injection:
+ * @link{exampleOfDEVar1}
+ * As you can see we are checking what @inline{drawToken()} is sending 
+ * the p5 function @inline{text()}, which is sent the token, 
+ * xPos and yPos. |
  * @header async function testCheckTokenIsBeingDisplayed() |
  */
 async function testCheckTokenIsBeingDisplayed() {
+    // #code exampleOfDEVar1 javascript
     var strInside;
     var x;
     var y;
@@ -438,12 +460,12 @@ async function testCheckTokenIsBeingDisplayed() {
         x = xx;
         y = yy;
         strInside = str;
-        // console.log("strInside: " + strInside + " x: " + x + " y: " + y);
     };
     mLobbyScreen.drawToken();
     CheckSame(strInside,"Token: ","testCheckTextPositionWithNoValue");
     CheckSame(x,256,"testCheckYOfTextCall");
     CheckSame(y,1454.5454545454545,"testCheckYOfTextCall");
+    // |
 
     mLobbyScreen.team.lobbyToken = "abcd";
     mLobbyScreen.drawToken();
@@ -455,7 +477,11 @@ async function testCheckTokenIsBeingDisplayed() {
 /**
  * #function FrontendTests::testAddAndRemoveBotsFromLobby |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Checks to see if the owner of the lobby can add
+ * and remove bots from their lobby. We set @inline{mouseX} and 
+ * @inline{mouseY} to the position of the add bot button and then 
+ * call @inline{mouseClickedLobby()} and check if the bot has been 
+ * increased. |
  * @header async function testAddAndRemoveBotsFromLobby() |
  */
 async function testAddAndRemoveBotsFromLobby() {
@@ -543,7 +569,9 @@ async function testAddAndRemoveBotsFromLobby() {
 /**
  * #function FrontendTests::checkPlayCardValues |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc Checks the init values of the player cards.
+ * Also check that the playcards are being rendered 
+ * within the bounds of @inline{windowWidth} and @inline{windowHeight}. |
  * @header async function checkPlayCardValues() |
  */
 async function checkPlayCardValues() {
@@ -582,7 +610,12 @@ async function checkPlayCardValues() {
 /**
  * #function FrontendTests::integrationTest1 |
  * @author Steven Dellamore |
- * @desc TODO |
+ * @desc This integration test will render the start screen
+ * 90,000 times and do different actions at certain times
+ * to ensure the start screen as a whole is working correctly. 
+ * @link{testintergrationVar1}
+ * Here we are rending the draw method 90,000 times and at different
+ * renders we are doing different actions (like mouse clicking, or key pressing).  |
  * @header async function integrationTest1() |
  */
 async function integrationTest1() {

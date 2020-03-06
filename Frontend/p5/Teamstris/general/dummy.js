@@ -50,3 +50,18 @@ for(var i = 0; i < 15; i++) {
     global.keyCode++; // go next key
 }
 // |
+
+// #code testintergrationVar1
+for(var i = 0; i < 90000; i++) {
+    mStartScreen.draw();
+    if(i == 500) { 
+        // Do Action
+    } else if(i == 700) { 
+        // Do another action
+    } else if(i == 1000) { 
+        // Do another action
+    } else if(i == 55000) { 
+        // Do another action
+    }
+}
+// |
