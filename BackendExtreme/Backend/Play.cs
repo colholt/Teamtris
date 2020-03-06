@@ -5,6 +5,12 @@ using System.Threading;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
+/**
+ * #class Play |
+ * @author ??? | 
+ * @language csharp | 
+ * @desc TODO |
+ */
 public class Play : WebSocketBehavior
 {
     private Dictionary<string, Lobby> lobbies;
@@ -13,6 +19,12 @@ public class Play : WebSocketBehavior
     private string bean;
     private int no;
 
+    /**
+     * #function Play::Play |
+     * @author ??? |
+	 * @desc TODO |
+     * @header public Play() | 
+	 */
     public Play() : this(null)
     {
     }

@@ -51,7 +51,7 @@ for(var i = 0; i < 15; i++) {
 }
 // |
 
-// #code testintergrationVar1
+// #code testintergrationVar1 javascript
 for(var i = 0; i < 90000; i++) {
     mStartScreen.draw();
     if(i == 500) { 

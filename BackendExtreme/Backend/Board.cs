@@ -2,14 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-/*
-    Board class to include the information that the board will need to have for a bot
+/**
+ * #class Board |
+ * @author ??? | 
+ * @language csharp | 
+ * @desc Board class to include the information that 
+ * the board will need to have for a bot |
  */
 public class Board
 {
+    /**
+     * #function Board::board |
+     * @author ??? |
+	 * @desc TODO |
+     * @header public int[,] board() | 
+	 * @param type name : what it does |
+	 * @returns type : what it does | 
+	 */
     public int[,] board { get; set; }
 
-    // has the number of heights that are not 0 - meaning that they have already been filled
+    /**
+     * #function Board::numFilledFloor |
+     * @author ??? |
+	 * @desc has the number of heights that are 
+     * not 0 - meaning that they have already been filled |
+     * @header public int numFilledFloor() | 
+	 * @param type name : what it does |
+	 * @returns type : what it does | 
+	 */
     public int numFilledFloor { get; set; }
 
     public int[] maxHeights { get; set; }
