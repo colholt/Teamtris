@@ -171,8 +171,6 @@ public class Prints {
             int[] arr - array to be printed
      */
     public void PrintArr(int[] arr, bool normalMode = true) {
-        Console.WriteLine("HER HERE");
-
         for(int i = 0; i < arr.Length; i++) {
             Console.Write("{0} ", arr[i]);
         } 
@@ -180,5 +178,43 @@ public class Prints {
         Console.WriteLine();
     }
 
+
+    /**
+        @@param 
+            ScoresInfo scoresInfo - information to be printed
+     */
+    public void PrintScoreInfo(ScoresInfo scoresInfo, bool normalMode = true) {
+        if(scoresInfo == null) {
+            Console.WriteLine("No scores \n");
+            return;
+        }
+        
+        Console.WriteLine("Team Name " + scoresInfo.teamName);
+        Console.WriteLine("Players Info ");
+        foreach(String p in scoresInfo.playerNames) {
+            if(p != null) {
+                Console.WriteLine("Player: " + p);
+            }
+        }
+        Console.WriteLine("Team Score " + scoresInfo.teamScore);
+        Console.WriteLine("Time Played " + scoresInfo.timePlayed);
+        Console.WriteLine();
+    }
+
+    /**
+        @@param 
+            List<ScoresInfo> scoresInfo - information to be printed
+     */
+    public void PrintScoreList(List<ScoresInfo> scoresInfo, bool normalMode = true) {
+        if(scoresInfo == null) {
+            Console.WriteLine("No scores \n");
+            return;
+        }
+
+        foreach(ScoresInfo score in scoresInfo){
+            PrintScoreInfo(score);
+        }
+        Console.WriteLine();
+    }
 
 }
