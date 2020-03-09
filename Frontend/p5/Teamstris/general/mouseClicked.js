@@ -29,6 +29,7 @@ function mouseClicked() {
         case 2:
             break;
         case 3:
+            mScoreScreen.mouseClickedScore();
             break;
     }
     // |
