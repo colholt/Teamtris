@@ -1,4 +1,28 @@
+/**
+ * #class LobbyScreen |
+ * @author Steven Dellamore |
+ * @language javascript | 
+ * @desc The lobby screen is where players will create or 
+ * join lobbys and wait to be put into game. The owner will 
+ * be the one that has the start button and will bring
+ * everyone into game. |
+ */
 class LobbyScreen {
+
+    /**
+     * #function LobbyScreen::constructor |
+     * @author Steven Dellamore |
+	 * @desc The Constructor is in chage of
+     * createing all the init values for the lobby
+     * screen to use and create all the buttons. The owner
+     * will be the only ones with the "add bot", "remove bot"
+     * , "Start". The lobby screen will also be communicating to 
+     * and from the backend, the setup starts in this function.
+     * @link{contorLobbyScreenVar1} |
+     * @header constructor(player) | 
+     * @param Player player : The player that is joining the lobby |
+	 * @returns LobbyScreen : An object of Lobby Screen | 
+	 */
     constructor(player) {
         this.player = player;
         this.team = new Team();
@@ -62,6 +86,17 @@ class LobbyScreen {
         };
     }
 
+    /**
+     * #function LobbyScreen::changeOwnerToMe |
+     * @author Steven Dellamore |
+	 * @desc When the owner leaves the backend will send
+     * a notification with the new owner. If the new owner
+     * is this current player, then we will have to start
+     * drawing the owner buttons on the screen so they 
+     * can start the game. We use the @inline{Buttons()} class
+     * to aid us in this process. |
+     * @header changeOwnerToMe() | 
+	 */
     changeOwnerToMe() {
         var data = JSON.stringify({"maxPlayers":"4","name": this.player.username,"playerID": this.player.id})
         // console.log(JSON.stringify({"type": "1", "data": data}));
@@ -84,13 +119,13 @@ class LobbyScreen {
     }
  
     /**
-     * draw: This function will be called 60 times a second by sketch.js
-     * 
-     * @param void
-     * 
-     * @returns void
-     * 
-     */
+     * #function LobbyScreen::draw |
+     * @author Steven Dellamore |
+	 * @desc This will be called 60 times a second when
+     * @inline{gameState == 1}. @inline{"sketch.js"} is where 
+     * it takes care of the routing for this. |
+     * @header draw() | 
+	 */
     draw() {
         this.drawTitle();
         this.drawToken();
@@ -107,63 +142,79 @@ class LobbyScreen {
         }
     }
 
+
     /**
-     * addAndRemoveBotButton: This function will be called when a person 
-     *                        clicks add or remove bot in the lobby screen.
-     * 
-     * @param addOrRemove - This param can either be the following
-     *                      "addbot": Clicked add bot button
-     *                      "removebot": Clicked remove bot button
-     * @returns void
-     * 
-     */
+     * #function LobbyScreen::addAndRemoveBotButton |
+     * @author Steven Dellamore |
+	 * @desc Will be called when the user clicks on either the "Add bot"
+     * or "Remove bot" button. @inline{mouseClickedLobby()} is who calls this 
+     * function. This function will form and send a response based on which button you 
+     * clicked. \\Add Bot: 
+     * @link{addBotVar1} 
+     * Remove bot:
+     * @link{removeBotVar1} |
+     * @param addOrRemove : This param can either be the following \\
+     * "addbot": Clicked add bot button. \\
+     * "removebot": Clicked remove bot button |
+     * @header addAndRemoveBotButton(addOrRemove) | 
+	 */
     addAndRemoveBotButton(addOrRemove) {
+       
         if( addOrRemove == "addbot" ) { // For add bot button
+            // #code addBotVar1 javascript 
             var data = JSON.stringify({"action": 1, "lobbyid":this.team.lobbyToken.toLowerCase()})
             socket.send(JSON.stringify({"type": "7", "data": data}));
+            // |
             /* Make sure that we are not going over 4 players + bots */
-            this.newPlayerJoins(new Player(this.botNames[this.team.playersInTeam.length - 1], -1, false));
+            this.newPlayerJoins(new Player(
+                this.botNames[this.team.playersInTeam.length - 1], -1, false));
+        
+        
         } else if( addOrRemove == "removebot" ) { // for remove bot button
+            
             for( var i = this.team.playersInTeam.length-1; i > 0; i-- ) {
                 var player = this.team.playersInTeam[i];
                 if(player.id == -1) {
+                    // #code removeBotVar1 javascript 
                     var data = JSON.stringify({"action": 0, "lobbyid":this.team.lobbyToken.toLowerCase()})
                     socket.send(JSON.stringify({"type": "7", "data": data}));
+                    // |
                     this.playerLeaves(player);
                     break;
                 }
             }
         }
+       
     }
 
     /**
-     * drawToken: This function will draw the token for the owner and all the 
-     *            players.
-     * 
-     * @param void
-     * 
-     * @returns void
-     * 
-     */
+     * #function LobbyScreen::drawToken |
+     * @author Steven Dellamore |
+	 * @desc draws the token onto the screen for everyone
+     * in the lobby
+     * @link{drawToken1} |
+     * @header drawToken() | 
+	 */
     drawToken() {
         push(); // push the settings
         fill(255); // fill white
         textSize(windowWidth/30) // text size relative to screen width
         // if(this.team.lobbyToken.length == 4) {
-            text("Token: " + this.team.lobbyToken,windowWidth/10,windowHeight/1.1) // draw the token
+        // #code drawToken1 javascript
+        // draw the token with p5 text() function
+        text("Token: " + this.team.lobbyToken,windowWidth/10,windowHeight/1.1) 
+        // |
         // } 
         pop(); // pop the settings
     }
 
     /**
-     * drawTitle: This function will draw the title (Lobby) onto the 
-     *            Lobby screen.
-     * 
-     * @param void
-     * 
-     * @returns void
-     * 
-     */
+     * #function LobbyScreen::drawTitle |
+     * @author Steven Dellamore |
+	 * @desc draws the title (@inline{"lobby"}) onto the screen for all
+     * players in the lobby. |
+     * @header drawTitle() | 
+	 */
     drawTitle() {
         push(); // Push my settings
         let squareSize = windowWidth / 40; // The size of all the squares making up the T's
@@ -190,22 +241,30 @@ class LobbyScreen {
     }
 
     /**
-     * newPlayerJoins - this function will be called when a new user joins
-     *                  the lobby.
-     * 
-     * @param player 
-     * 
-     * @returns true: if new player was added
-     *          false: if new player was denied from lobby (Lobby is full)
-     * 
-     */
+     * #function LobbyScreen::newPlayerJoins |
+     * @author Steven Dellamore |
+	 * @desc Will check if a new player can be added to the lobby. 
+     * If they can, a new player card will be made for the new user.
+     * @link{playerCardExp} Otherwise the function will return false 
+     * and nothing will be changed. |
+     * @header newPlayerJoins(player) | 
+     * @param Player player : The player trying to join the lobby |
+     * @returns boolean : If the new player is added. \\
+     * true: if new player was added. \\
+     * false: if new player was denied from lobby (Lobby is full). |
+	 */
     newPlayerJoins(player) {
         console.log("New player joined! " + this.team.playersInTeam.length);
         if((this.team.playersInTeam.length) == 4) return false;
         this.team.playersInTeam.push(player);
         switch(this.team.playersInTeam.length) {
             case 2: 
-                this.playerCards.push(new PlayerCard(player, windowWidth/6, (windowHeight/4), .6, windowHeight/60));
+                // #code playerCardExp javascript
+                // add a new playercard to the playerCard array
+                this.playerCards.push(
+                    new PlayerCard(
+                        player, windowWidth/6, (windowHeight/4), .6, windowHeight/60));
+                // |
                 break;
             case 3:
                 this.playerCards.push(new PlayerCard(player, windowWidth/6, (windowHeight/1.5), .6, windowHeight/60));
@@ -219,22 +278,25 @@ class LobbyScreen {
     }
 
     /**
-     * playerLeaves - this function will be called when a user leaves
-     *                the lobby.
-     * 
-     * @param player 
-     * 
-     * @returns void
-     * 
-     */
+     * #function LobbyScreen::playerLeaves |
+     * @author Steven Dellamore |
+	 * @desc Will eject a player from the team's list and 
+     * allow another spot for a new player to join. @link{playerLeavesExp}
+     * This shows how we go through the array and splice out the player
+     * that has left. |
+     * @header playerLeaves(player) | 
+     * @param Player player : The player trying to leave the lobby |
+	 */
     playerLeaves(player) {
         console.log("Player leaves!");
         console.log(player);
+        // #code playerLeavesExp javascript
         this.team.playersInTeam.forEach(function(playerInList, index, object) {
             if(playerInList == player) {
                 object.splice(index, 1);
             }
         });
+        // |
         this.playerCards.forEach(function(playercard, index, object) {
             if(playercard.player == player) {
                 object.splice(index, 1);
@@ -243,16 +305,17 @@ class LobbyScreen {
     }
 
     /**
-     * keyPressedLobby: Is called when the user clicks a key
-     * 
-     * @param void (but really given a keycode)
-     * 
-     * @returns void
-     * 
-     */
+     * #function LobbyScreen::keyPressedLobby |
+     * @author Steven Dellamore |
+	 * @desc This function will handle all key presses by the user.
+     * Since we only have one place to press a key, the team box, when
+     * @inline{this.lobbyGameState} is set to @inline{0}, we will append
+     * to the teamname. The teamname cannot go above 11 chars or below 0. |
+     * @header keyPressedLobby() | 
+	 */
     keyPressedLobby() {
         switch (this.lobbyGameState) {
-            case 0: // If we are on the username text box
+            case 0: 
                 if (keyCode == 8) { // "pressed delete"
                     /* Remove the last char from the username field */
                     this.team.teamName = this.team.teamName.substring(0, this.team.teamName.length - 1);
@@ -266,13 +329,14 @@ class LobbyScreen {
     }
 
     /**
-     * mouseClickedLobby: Is called when the user clicks anywhere on the screen
-     * 
-     * @param void
-     * 
-     * @returns void
-     * 
-     */
+     * #function LobbyScreen::mouseClickedLobby |
+     * @author Steven Dellamore |
+	 * @desc Handles all the mouse clicks when the user clicks
+     * on the lobby screen. @link{keypressLobbyExp}
+     * @inline{"mouseClicked.js"} is responsible for routing 
+     * clicks to the correct screen. |
+     * @header mouseClickedLobby() | 
+	 */
     mouseClickedLobby() {
         switch (this.lobbyGameState) {
             case 0: //if owner is entering username

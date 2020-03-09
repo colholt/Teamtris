@@ -65,3 +65,22 @@ for(var i = 0; i < 90000; i++) {
     }
 }
 // |
+
+// #code contorLobbyScreenVar1 javascript
+socket.onmessage = (event) => {
+    // Listen for backend packets.
+    // Parse them and call the correct functions
+    ...
+};
+// |
+
+// #code keypressLobbyExp javascript
+switch (this.lobbyGameState) {
+    case 0:
+        // check if owner accepted the team name
+        ...
+    case 1: 
+        // check addbot, removebot, start game buttons
+        ...
+}
+// |

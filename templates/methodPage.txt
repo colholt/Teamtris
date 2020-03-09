@@ -1,6 +1,6 @@
 
 
-\subsection{CLASS}
+\subsubsection{CLASS}
 \textbf{Author}: AUTHOR 
 \vspace*{1\baselineskip}
 \begin{lstlisting}
