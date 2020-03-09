@@ -20,6 +20,8 @@ class Team {
         this.playersInTeam = [];
         this.teamName = "";
         this.lobbyToken = "";
+        this.score = 0;
+        this.time = 0;
     }
 
     // #function Team::addPlayer |

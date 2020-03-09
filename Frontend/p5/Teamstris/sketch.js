@@ -6,6 +6,7 @@ var socket;
  */
 var mLobbyScreen;
 var mStartScreen;
+var mScoreScreen;
 var mGameScreen;
 
 var team;
@@ -30,6 +31,8 @@ function setup() {
   // mLobbyScreen = new LobbyScreen();
   /* Createing my gamescreen object */
   mGameScreen = new GameScreen();
+
+  mScoreScreen = new ScoreScreen();
 }
 
 function draw() {
@@ -45,7 +48,7 @@ function draw() {
       mGameScreen.draw();
       break;
     case 3:
-
+      mScoreScreen.draw();
       break;
   }
 }

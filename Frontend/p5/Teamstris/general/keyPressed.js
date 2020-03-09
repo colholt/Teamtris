@@ -23,7 +23,7 @@ function keyPressed() {
       mGameScreen.keyPressedGame();
       break;
     case 3:
-      // mScoreScreen.keyPressedScore();
+      mScoreScreen.keyPressedScore();
       break;
   }
   // |

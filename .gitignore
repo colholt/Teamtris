@@ -8,6 +8,8 @@ BackendExtreme/Backend/bin/*
 output/_minted-output/*
 BackendExtreme/Backend/obj/*
 BackendExtreme/Backend.Tests/bin/*
+output/output.aux
+output/output.log
 BackendExtreme/Backend.Tests/obj/*
 *.deb
 .DS_Store

@@ -1,6 +1,7 @@
 
 
 \section{CLASS}
-\textbf{Author}: AUTHOR \\
+\opt\textbf{Author}: AUTHOR \\\opt
+\noindent
 \textbf{Description}: DESC \\
 

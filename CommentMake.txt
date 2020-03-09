@@ -1,5 +1,6 @@
 Frontend/p5/Teamstris/startscreen/startscreen.js
 Frontend/p5/Teamstris/lobbyscreen/lobbyscreen.js
+Frontend/p5/Teamstris/scorescreen/scorescreen.js
 Frontend/p5/Teamstris/general/player.js
 Frontend/p5/Teamstris/general/team.js
 Frontend/p5/Teamstris/general/mouseClicked.js

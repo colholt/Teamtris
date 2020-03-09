@@ -1,11 +1,12 @@
 
 
 \subsection{CLASS}
-\textbf{Author}: AUTHOR 
-\vspace*{1\baselineskip}
-\begin{lstlisting}
+\opt\textbf{Author}: AUTHOR 
+\vspace*{1\baselineskip}\opt
+\opt\begin{lstlisting}
 HEADER
 \end{lstlisting} 
-\vspace*{1\baselineskip}
+\vspace*{1\baselineskip}\opt
+\noindent
 \textbf{Description}: DESC 
 
