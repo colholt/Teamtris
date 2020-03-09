@@ -1482,7 +1482,7 @@ namespace Tests
                 bool gameDone = false;
                 int count = 0;
                 int x = 0;
-                while(x < 100) {
+                while(true) {
                     for(int i = 11; i < 13; i++) {
                         x++;
                         Block block = blocks[i];
