@@ -14,11 +14,13 @@ namespace Tests
         private string lastMsg;
         private Dictionary<string, Lobby> lobbies;
         private LobbyManager lobbyManager;
+        private ScoresManager scoresManager;
         [SetUp]
         public void Setup()
         {
             lobbies = new Dictionary<string, Lobby>();
             lobbyManager = new LobbyManager(lobbies);
+            scoresManager = new ScoresManager();
         }
 
         [Test]
@@ -78,6 +80,48 @@ namespace Tests
             pip.shapeIndices = indices;
             UpdatePacket up = lobbyManager.processInput(pip);
             Assert.That(lobbies["five"].game.board.board[1, 2] == 1);
+        }
+
+
+        [Test]
+        public void ScoreInfoWithOnePlayer()
+        {
+            String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\"],\"teamScore\":3,\"timePlayed\":50}";
+            ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
+
+            ScoresInfo scoresInfo = scoresManager.CreateScoresInfo(sPacket);
+
+            Assert.That(scoresInfo.playerNames.Count, Is.EqualTo(4));
+            Assert.That(scoresInfo.playerNames[0], Is.EqualTo("Player1"));
+            Assert.That(scoresInfo.playerNames[1], Is.EqualTo(null));
+            Assert.That(scoresInfo.playerNames[2], Is.EqualTo(null));
+            Assert.That(scoresInfo.playerNames[3], Is.EqualTo(null));
+        }
+
+        [Test]
+        public void ScoreInfoWithTwoPlayers()
+        {
+            String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\"],\"teamScore\":3,\"timePlayed\":50}";
+            ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
+
+            ScoresInfo scoresInfo = scoresManager.CreateScoresInfo(sPacket);
+
+            Assert.That(scoresInfo.playerNames.Count, Is.EqualTo(4));
+            Assert.That(scoresInfo.playerNames[0], Is.EqualTo("Player1"));
+            Assert.That(scoresInfo.playerNames[1], Is.EqualTo("Player2"));
+            Assert.That(scoresInfo.playerNames[2], Is.EqualTo(null));
+            Assert.That(scoresInfo.playerNames[3], Is.EqualTo(null));
+        }
+
+        [Test]
+        public void ScoreInfoWithOnePlayer()
+        {
+            String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\"],\"teamScore\":3,\"timePlayed\":50}";
+            ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
+
+            ScoresInfo scoresInfo = scoresManager.CreateScoresInfo(sPacket);
+
+            Assert.That(scoresInfo.playerNames.Count, Is.EqualTo(4));
         }
     }
 }

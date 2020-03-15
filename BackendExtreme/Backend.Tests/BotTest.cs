@@ -1402,7 +1402,7 @@ namespace Tests
                 bool gameDone = false;
                 int count = 0;
                 int x = 0;
-                while(true) {
+                while(x < 10) {
                     for(int i = 0; i < 13; i++) {
                         x++;
                         Block block = blocks[i];
@@ -1482,7 +1482,7 @@ namespace Tests
                 bool gameDone = false;
                 int count = 0;
                 int x = 0;
-                while(true) {
+                while(x < 10) {
                     for(int i = 11; i < 13; i++) {
                         x++;
                         Block block = blocks[i];
@@ -1557,7 +1557,7 @@ namespace Tests
                 bool gameDone = false;
                 int count = 0;
                 int x = 0;
-                while(true) {
+                while(x < 10) {
                     for(int i = 9; i < 13; i++) {
                         x++;
                         Block block = blocks[i];
@@ -1646,7 +1646,7 @@ namespace Tests
                 bool gameDone = false;
                 int count = 0;
                 int x = 0;
-                while(true) {
+                while(x < 10) {
                     for(int i = 9; i < 13; i++) {
                         x++;
                         Block block = blocks[i];
