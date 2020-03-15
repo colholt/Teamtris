@@ -10,4 +10,5 @@ public static class Packets
     public static readonly int BOT_UPDATE = 7;
     public static readonly int UPDATE = 8;
     public static readonly int START = 1;
+    public static readonly int SCORES = 10;
 }
