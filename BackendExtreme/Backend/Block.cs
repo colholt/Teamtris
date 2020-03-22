@@ -166,8 +166,21 @@ public class Block
         return isValid;
     }
 
-}
 
+
+    public override bool Equals(object b1) {
+        Console.WriteLine("EQUALS");
+        for(int i = 0; i < this.data.Length; i++) {
+            for(int j = 0; j < this.data[0].Length; j++) {
+                Block b = (Block)b1;
+                if(this.data[i][j] != b.data[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
 
 class BlockEqualityComparer:IEqualityComparer<Block> {
 
