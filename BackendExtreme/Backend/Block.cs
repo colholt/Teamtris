@@ -167,3 +167,24 @@ public class Block
     }
 
 }
+
+
+class BlockEqualityComparer:IEqualityComparer<Block> {
+
+    public bool Equals(Block b1, Block b2) {
+        Console.WriteLine("IN THE EUQLS");
+        for(int i = 0; i < b1.data.Length; i++) {
+            for(int j = 0; j < b1.data[0].Length; j++) {
+                if(b1.data[i][j] != b2.data[i][j]) {
+                    return false;
+                }
+            }
+        }
+         Console.WriteLine("RETURNING VALUE");
+        return true;
+    }
+
+    public int GetHashCode(Block b) {
+        return b.GetHashCode();
+    }
+}

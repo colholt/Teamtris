@@ -217,4 +217,24 @@ public class Prints {
         Console.WriteLine();
     }
 
+
+    /**
+        @@param 
+            List<Tuple<int [][], int [][]>> all orientations - information to be printed
+     */
+    public void PrintAllOrientations(List<Tuple<Block, Block>> allOrientations, bool normalMode = true) {
+        int rotationNum = 0;
+
+        foreach(Tuple<Block, Block> blockShape in allOrientations) {
+            rotationNum++;
+            Console.WriteLine("BLOCK ROTATION " + rotationNum);
+            Console.WriteLine("BOT 1");
+            PrintJaggedArr(blockShape.Item1.data);
+            Console.WriteLine("BOT 2");
+            PrintJaggedArr(blockShape.Item2.data);
+        }
+
+        Console.WriteLine();
+    }
+
 }
