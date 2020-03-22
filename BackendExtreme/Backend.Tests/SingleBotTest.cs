@@ -8,7 +8,9 @@ namespace Tests
     public class Tests
     {
         private GameState game;
-        private List<Block> blocks;
+        private List<Block> bot1Blocks;
+        private List<Block> blocks = new List<Block>();
+        private List<List<Block>> allBlocks;
         Prints botInfoPrinter;
 
         /* 
@@ -138,21 +140,26 @@ namespace Tests
             Block block12 = new Block(b12, 1);
             Block block13= new Block(b13, 1);
 
-            blocks = new List<Block>();
+            bot1Blocks = new List<Block>();
 
-            blocks.Add(block1);
-            blocks.Add(block2);
-            blocks.Add(block3);
-            blocks.Add(block4);
-            blocks.Add(block5);
-            blocks.Add(block6);
-            blocks.Add(block7);
-            blocks.Add(block8);
-            blocks.Add(block9);
-            blocks.Add(block10);
-            blocks.Add(block11);
-            blocks.Add(block12);
-            blocks.Add(block13);
+            bot1Blocks.Add(block1);
+            bot1Blocks.Add(block2);
+            bot1Blocks.Add(block3);
+            bot1Blocks.Add(block4);
+            bot1Blocks.Add(block5);
+            bot1Blocks.Add(block6);
+            bot1Blocks.Add(block7);
+            bot1Blocks.Add(block8);
+            bot1Blocks.Add(block9);
+            bot1Blocks.Add(block10);
+            bot1Blocks.Add(block11);
+            bot1Blocks.Add(block12);
+            bot1Blocks.Add(block13);
+
+            allBlocks = new List<List<Block>>();
+            allBlocks.Add(bot1Blocks); 
+
+            blocks = allBlocks[0];
         }
 
 
@@ -1120,7 +1127,9 @@ namespace Tests
                 Block block = blocks[0];
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(block.data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.Write("Board with piece");
                 botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
                 TestContext.Progress.WriteLine("--------------------------------------");
@@ -1142,7 +1151,9 @@ namespace Tests
                 newBlocks.Add(blocks[1]);
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(block.data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.Write("Board with piece");
                 botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
                 TestContext.Progress.WriteLine("--------------------------------------");
@@ -1165,7 +1176,9 @@ namespace Tests
                 newBlocks.Add(blocks[2]);
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(block.data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.Write("Board with piece");
                 botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
                 TestContext.Progress.WriteLine("--------------------------------------");
@@ -1188,7 +1201,9 @@ namespace Tests
                 newBlocks.Add(blocks[3]);
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(block.data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.Write("Board with piece");
                 botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
                 TestContext.Progress.WriteLine("--------------------------------------");
@@ -1210,7 +1225,9 @@ namespace Tests
                 newBlocks.Add(blocks[4]);
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(block.data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.Write("Board with piece");
                 botInfoPrinter.PrintBoardWithPiece(game.board.board, piecePlaced, false);
                 TestContext.Progress.WriteLine("--------------------------------------");
@@ -1355,7 +1372,9 @@ namespace Tests
                 };
 
                 for(int i = 0; i < 2; i++) {
-                    List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                    List<List<Block>> b = new List<List<Block>>();
+                    b.Add(newBlocks);
+                    List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                     Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced);
 
@@ -1417,8 +1436,9 @@ namespace Tests
 
                         // TestContext.Progress.Write("Board BEFORE piece placed");
                         // botInfoPrinter.PrintMultiDimArr(game.board.board, false);
-
-                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                        List<List<Block>> b = new List<List<Block>>();
+                        b.Add(newBlocks);
+                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                         // TestContext.Progress.Write(piecePlaced[0].Item1 + " " + piecePlaced[0].Item2);
                         if(piecePlaced == null) {
@@ -1494,7 +1514,9 @@ namespace Tests
                         TestContext.Progress.Write(count);
                         count++;
 
-                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks, true); 
+                        List<List<Block>> b = new List<List<Block>>();
+                        b.Add(newBlocks);
+                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b, true); 
 
                         if(piecePlaced == null) {
                             TestContext.Progress.Write("Piece that could not be placed");
@@ -1573,7 +1595,9 @@ namespace Tests
                         // TestContext.Progress.Write("Board BEFORE piece placed");
                         // botInfoPrinter.PrintMultiDimArr(game.board.board, false);
 
-                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                        List<List<Block>> b = new List<List<Block>>();
+                        b.Add(newBlocks);
+                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                         // TestContext.Progress.Write(piecePlaced[0].Item1 + " " + piecePlaced[0].Item2);
                         if(piecePlaced == null) {
@@ -1662,7 +1686,9 @@ namespace Tests
                         // TestContext.Progress.Write("Board BEFORE piece placed");
                         // botInfoPrinter.PrintMultiDimArr(game.board.board, false);
 
-                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                        List<List<Block>> b = new List<List<Block>>();
+                        b.Add(newBlocks);
+                        List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                         // TestContext.Progress.Write(piecePlaced[0].Item1 + " " + piecePlaced[0].Item2);
                         if(piecePlaced == null) {
@@ -1727,7 +1753,9 @@ namespace Tests
                 Block block = blocks[0];
                 newBlocks.Add(blocks[0]);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.WriteLine("--------------------------------------");
             } catch (Exception e) {
                 Assert.Fail("Expected no exception but recieved" + e.Message);
@@ -1747,7 +1775,9 @@ namespace Tests
                 Block block = blocks[1];
                 newBlocks.Add(blocks[1]);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.WriteLine("--------------------------------------");
             } catch (Exception e) {
                 Assert.Fail("Expected no exception but recieved" + e.Message);
@@ -1767,7 +1797,9 @@ namespace Tests
                 Block block = blocks[2];
                 newBlocks.Add(blocks[2]);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.WriteLine("--------------------------------------");
             } catch (Exception e) {
                 Assert.Fail("Expected no exception but recieved" + e.Message);
@@ -1787,7 +1819,9 @@ namespace Tests
                 Block block = blocks[3];
                 newBlocks.Add(blocks[3]);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.WriteLine("--------------------------------------");
             } catch (Exception e) {
                 Assert.Fail("Expected no exception but recieved" + e.Message);
@@ -1807,7 +1841,9 @@ namespace Tests
                 Block block = blocks[4];
                 newBlocks.Add(blocks[4]);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
                 TestContext.Progress.WriteLine("--------------------------------------");
             } catch (Exception e) {
                 Assert.Fail("Expected no exception but recieved" + e.Message);
@@ -1833,7 +1869,9 @@ namespace Tests
                 Block b = new Block(b1, 1);
                 newBlocks.Add(b);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
             } catch (Exception e) {
@@ -1861,7 +1899,9 @@ namespace Tests
                 Block b = new Block(b1, 1);
                 newBlocks.Add(b);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
             } catch (Exception e) {
@@ -1888,7 +1928,9 @@ namespace Tests
                 Block b = new Block(b1, 1);
                 newBlocks.Add(b);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
             } catch (Exception e) {
@@ -1915,7 +1957,9 @@ namespace Tests
                 Block b = new Block(b1, 1);
                 newBlocks.Add(b);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board,allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
             } catch (Exception e) {
@@ -1942,7 +1986,9 @@ namespace Tests
                 Block b = new Block(b1, 1);
                 newBlocks.Add(b);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
             } catch (Exception e) {
@@ -1982,7 +2028,9 @@ namespace Tests
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB= new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2048,7 +2096,9 @@ namespace Tests
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2113,8 +2163,10 @@ namespace Tests
                 newBlocks.Add(b);
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
-
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2180,7 +2232,9 @@ namespace Tests
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2246,7 +2300,9 @@ namespace Tests
                 TestContext.Progress.Write("Piece to be placed");
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, allB); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2323,7 +2379,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2399,7 +2457,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2475,7 +2535,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2551,7 +2613,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2627,7 +2691,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2713,7 +2779,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[2].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2798,8 +2866,10 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[2].data, false);
-
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2885,7 +2955,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[2].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -2971,7 +3043,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[2].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
@@ -3057,7 +3131,9 @@ namespace Tests
                 botInfoPrinter.PrintJaggedArr(newBlocks[1].data, false);
                 botInfoPrinter.PrintJaggedArr(newBlocks[2].data, false);
 
-                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, newBlocks); 
+                List<List<Block>> b = new List<List<Block>>();
+                b.Add(newBlocks);
+                List<Tuple<int, int>> piecePlaced = game.bot.GetMove(game.board, b); 
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
                     
