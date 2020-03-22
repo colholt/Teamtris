@@ -1,0 +1,136 @@
+
+// DEMO USER STORY 13 - a - shows placement as is
+game.board.board = new int[,]{
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 1, 0, 0, 0},
+    {0, 0, 1, 0, 0, 1},
+    {0, 0, 1, 0, 0, 1},
+    {0, 1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 1, 1},
+};
+int[][] b1 = new int[][] {
+    new int[] {1, 1, 0, 0},
+    new int[] {1, 1, 0, 0},
+    new int[] {1, 0, 0, 0},
+    new int[] {1, 0, 0, 0},
+};
+Block block1 = new Block(b1, 1);
+blocks.Add(block1);
+
+// DEMO USER STORY 13 - b - shows placement with rotation
+game.board.board = new int[,]{
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 0, 1},
+    {1, 0, 0, 1, 1, 1},
+    {1, 0, 1, 1, 1, 1},
+};
+int[][] b1 = new int[][] {
+    new int[] {1, 1, 1, 0},
+    new int[] {0, 1, 0, 0},
+    new int[] {0, 0, 0, 0},
+    new int[] {0, 0, 0, 0},
+};
+Block block1 = new Block(b1, 1);
+blocks.Add(block1);
+
+
+ // DEMO USER STORY 13 - c - shows placement with area covered
+game.board.board = new int[,]{
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1},
+    {1, 0, 0, 1, 0, 1},
+    {1, 0, 0, 1, 1, 1},
+    {1, 0, 1, 1, 0, 1},
+};
+int[][] b1 = new int[][] {
+    new int[] {0, 1, 0, 0},
+    new int[] {0, 1, 0, 0},
+    new int[] {0, 1, 0, 0},
+    new int[] {0, 0, 0, 0},
+};
+Block block1 = new Block(b1, 1);
+blocks.Add(block1);
+
+
+// DEMO USER STORY 13 - d - fit piece on board with invalid piece
+game.board.board = new int[,]{
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1},
+    {1, 0, 0, 1, 0, 1},
+    {1, 0, 0, 1, 1, 1},
+    {1, 0, 1, 1, 0, 1},
+};
+int[][] b1 = new int[][] {
+    new int[] {0, 1, 0, 0},
+    new int[] {0, 0, 1, 0},
+    new int[] {0, 0, 0, 0},
+    new int[] {0, 0, 0, 0},
+};
+Block block1 = new Block(b1, 1);
+blocks.Add(block1);
+
+
+// DEMO USER STORY 15 - 1 shape ahead
+game.board.board = new int[,]{
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 1, 0, 0, 0},
+    {0, 0, 1, 0, 0, 1},
+    {0, 0, 1, 0, 0, 1},
+    {0, 1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 1, 1},
+};
+int[][] b1 = new int[][] {
+    new int[] {1, 1, 0, 0},
+    new int[] {1, 1, 0, 0},
+    new int[] {0, 0, 0, 0},
+    new int[] {0, 0, 0, 0},
+};
+int[][] b2 = new int[][] {
+    new int[] {1, 1, 0, 0},
+    new int[] {1, 1, 0, 0},
+    new int[] {1, 0, 0, 0},
+    new int[] {1, 0, 0, 0},
+};
+Block block1 = new Block(b1, 1);
+Block block2 = new Block(b2, 1);
+blocks.Add(block1);
+blocks.Add(block2);
+
+
+// DEMO USER STORY 15 - 2 shapes ahead
+game.board.board = new int[,]{
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 1, 0, 0, 0},
+    {0, 0, 1, 0, 0, 1},
+    {0, 0, 1, 0, 0, 1},
+    {0, 1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 1, 1},
+};
+int[][] b1 = new int[][] {
+    new int[] {1, 1, 0, 0},
+    new int[] {1, 1, 0, 0},
+    new int[] {0, 0, 0, 0},
+    new int[] {0, 0, 0, 0},
+};
+int[][] b2 = new int[][] {
+    new int[] {1, 1, 0, 0},
+    new int[] {1, 1, 0, 0},
+    new int[] {0, 0, 0, 0},
+    new int[] {0, 0, 0, 0},
+};
+int[][] b3 = new int[][] {
+    new int[] {0, 0, 0, 0},
+    new int[] {1, 0, 0, 0},
+    new int[] {0, 0, 0, 0},
+    new int[] {0, 0, 0, 0},
+};
+Block block1 = new Block(b1, 1);
+Block block2 = new Block(b2, 1);
+Block block3 = new Block(b3, 1);
+blocks.Add(block1);
+blocks.Add(block2);
+blocks.Add(block3);
