@@ -13,13 +13,12 @@ class Shape {
 		// blueprint of the shape
 		if (ShapeBlueprint == null) {
 			this.BlueprintDimensions = 4;
-			this.ShapeBlueprint = this.DefaultShape1()
+			this.ShapeBlueprint = this.GenerateRandomShape()
 		} else {
 			this.BlueprintDimensions = ShapeBlueprint.length;
 			this.ShapeBlueprint = ShapeBlueprint
 		}
 		
-
 		// calculate Dimensions of the shape in the form [rowTop, colLeft, width, height]
 		this.ShapeDimensions = this.CalculateDimensions(this.ShapeBlueprint)
 		this.ShapeCenter = this.CalculateCentering()
@@ -307,9 +306,74 @@ class Shape {
      * @return void
      */
     SendAction(ID, boardIndices, action) {
+		if (!team) {
+			return
+		}
         var data = JSON.stringify({"lobbyID":team.lobbyToken.toLowerCase(),"playerID":ID,"shapeIndices": boardIndices, "move": action})
         socket.send(JSON.stringify({"type": "6", "data": data}))
-    }
+	}
+	
+	GenerateRandomShape() {
+		var randShape = new Array(this.BlueprintDimensions)
+		console.log(randShape)
+        for (var r = 0; r < this.BlueprintDimensions; r++) {
+            randShape[r] = new Array(this.BlueprintDimensions)
+		}
+
+		// get the size of the shape we will generate
+		var shapeSizes = [1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,8,8,9,9,10]
+		var count = shapeSizes[Math.floor(Math.random() * shapeSizes.length)]
+		
+		var curri = Math.floor(Math.random() * this.BlueprintDimensions)
+		var currj = Math.floor(Math.random() * this.BlueprintDimensions)
+		randShape[curri][currj] = 1
+		count--
+		var priorityList = [0,0,0,0]
+		while(count > 0) {
+			priorityList[0] = this.GetNewSquarePriority(curri,currj-1)
+			priorityList[1] = this.GetNewSquarePriority(curri-1,currj)
+			priorityList[2] = this.GetNewSquarePriority(curri,currj+1)
+			priorityList[3] = this.GetNewSquarePriority(curri+1,currj)
+			var maxPriority = Math.max(priorityList)
+			var chosenInd = this.argmax(priorityList)
+			console.log(chosenInd)
+			//console.log(priorityList, maxPriority)
+
+			if (maxPriority == 0) {
+				break
+			} else {
+				curri += (chosenInd == 1 ? -1 : 0) + (chosenInd == 3 ? 1 : 0)
+				currj += (chosenInd == 0 ? -1 : 0) + (chosenInd == 2 ? 1 : 0)
+				console.log(curri,currj)
+				randShape[curri][currj] = 1
+			}
+			count--;
+		}
+
+		// for (var i = 0; i < randShape.length; i++) {
+		// 	for (var j = 0; j < randShape.length; j++) {
+		// 		randShape[i][j] = Math.round(Math.random())
+		// 	}
+		// }
+		return randShape
+	}
+
+	GetNewSquarePriority(i, j) {
+		if (i < 0 || i >= this.BlueprintDimensions || j < 0 || j >= this.BlueprintDimensions) {
+			return 0;
+		}
+		return Math.random()
+	}
+
+	argmax(arr) {
+		var maxV = arr[0]
+		var argmax = 0;
+		for (var i = 1; i < arr.length; i++) {
+			maxV = (arr[i] > maxV) ? arr[i] : maxV
+			argmax = (arr[i] == maxV) ? i : argmax
+		}
+		return argmax
+	}
 
 	/** 
      * @description Used for testing
