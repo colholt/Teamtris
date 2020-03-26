@@ -2,7 +2,7 @@
   * @classDesc Represents lowest functional unit of teamtris
   */
 class Square {
-	constructor (SquareEdgeLength, ID=0, Color="grey") {
+	constructor (SquareEdgeLength, ID=0, Color="grey", RandomPowerCube=true, eps=0.3) {
 		// edge length of the square
 		this.SquareEdgeLength = SquareEdgeLength
 
@@ -19,6 +19,26 @@ class Square {
 		// i, j location of the square in the game array
 		this.i = -1
 		this.j = -1
+
+		this.eps = eps
+
+		this.PowerCubeTypes = {
+            DEFAULT : 1,
+            DESTROYCOL : 2,
+            DESTROYAREA : 3,
+		}
+
+		this.PowerCubeType = this.PowerCubeTypes.DEFAULT
+		if (RandomPowerCube && Math.random() < this.eps) {
+			this.PowerCubeType = this.PowerCubeTypes.DESTROYCOL
+		}
+
+		// once this power cube has been used, set applied to true
+		this.applied = false
+		
+
+		// // define the power cube for this square
+		// this.PowerCube = new PowerCube(this.PowerCubeTypes.DEFAULT)
 	}
 
 	/** 
@@ -42,6 +62,8 @@ class Square {
 	SetEmpty() {
 		this.ID = 0
 		this.Color = this.DefaultColor
+		this.PowerCubeType = this.PowerCubeTypes.DEFAULT
+		this.applied = false;
 	}
 
 	/** 
@@ -52,6 +74,29 @@ class Square {
 	SetFrozen() {
 		this.ID = 5
 		this.Color = "grey"
+	}
+
+	/** 
+     * @description Sets the power cube type of this square
+	 * 
+	 * @param PowerCube - Type of powercube, defined under this.PowerCubeTypes
+	 * 
+     * @return void
+     */
+	SetPowerCube(PowerCube) {
+		this.PowerCubeType = PowerCube
+	}
+
+	/** 
+     * @description Randomly sets the PowerCubeType of the square
+	 * 
+     * @return void
+     */
+	SetRandomPowerCube() {
+		this.PowerCubeType = this.PowerCubeTypes.DEFAULT
+		if (Math.random() < this.eps) {
+			this.PowerCubeType = this.PowerCubeTypes.DESTROYCOL
+		}
 	}
 
 	/** 
@@ -73,6 +118,15 @@ class Square {
 	}
 
 	/** 
+     * @description Sets the applied variable of the square
+	 * 
+     * @return void
+     */
+	SetApplied() {
+		this.applied = true
+	}
+
+	/** 
      * @description Changes the owner of the square
 	 * 
 	 * @param ID - ID of the owner of the square
@@ -80,9 +134,10 @@ class Square {
 	 * 
      * @return boolean
      */
-	ChangeOwner(ID, Color) {
+	ChangeOwner(ID, Color, PowerCubeType=this.PowerCubeTypes.DEFAULT) {
 		this.ID = ID
 		this.Color = Color
+		this.PowerCubeType = PowerCubeType
 	}
 
 	/** 
@@ -100,6 +155,11 @@ class Square {
 			fill(this.Color)
 		}
 		rect(this.j * this.SquareEdgeLength, this.i * this.SquareEdgeLength, this.SquareEdgeLength, this.SquareEdgeLength)
+		//console.log(this.PowerCubeType)
+		if (this.PowerCubeType != this.PowerCubeTypes.DEFAULT) {
+			fill("purple")
+			rect(this.j * this.SquareEdgeLength + this.SquareEdgeLength*0.25, this.i * this.SquareEdgeLength+this.SquareEdgeLength*0.25, this.SquareEdgeLength*0.5, this.SquareEdgeLength*0.5)
+		}
 		pop();
 	}
 }
