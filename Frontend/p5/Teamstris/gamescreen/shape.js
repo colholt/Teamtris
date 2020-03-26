@@ -47,7 +47,7 @@ class Shape {
      */
 	AddSquare(Square) {
 		this.Squares.push(Square)
-		Square.ChangeOwner(this.ID, this.Color)
+		Square.ChangeOwner(this.ID, this.Color, Square.PowerCubeType)
 	}
 
 	/** 
@@ -105,18 +105,12 @@ class Shape {
      * @return void
      */
 	MoveShape(GameArray, left=0, right=0, down=0, reply=true) {
-		this.RemoveShape() // remove the shape from the game array
 		var boardIndices = []
 		var newSquares = []
 		for (var k = 0; k < this.Squares.length; k++) {
-
 			boardIndices.push([this.Squares[k].i + down,this.Squares[k].j - left + right])
-			newSquares.push(GameArray[this.Squares[k].i + down][this.Squares[k].j - left + right])
-			// get the next square
-			//this.Squares[k] = GameArray[this.Squares[k].i + down][this.Squares[k].j - left + right]
-			
-			// set this shape to be the owner of the square
-			//this.Squares[k].ChangeOwner(this.ID, this.Color)
+
+			newSquares.push([this.Squares[k].i + down,this.Squares[k].j - left + right,this.Squares[k].PowerCubeType])
 		}
 
 		// determine which action to send to the server
@@ -129,9 +123,9 @@ class Shape {
 				this.SendAction(this.ID, boardIndices, "down")
 			}
 		}
-
-		// adopt all new squares
-		this.AdoptSquares(newSquares)
+		this.RemoveShape() // remove the current shape from the game array
+		//this.ResetSquares()
+		this.AdoptSquareIndices(GameArray, newSquares) // adopt all new squares
 	}
 
 	/** 
@@ -149,7 +143,7 @@ class Shape {
 		for (var i = 0; i < arr.length; i++) {
 			for (var j = 0; j < arr[0].length; j++) {
 			// if the blueprint has a square at this location, we check to see if it is a significant part of the bounding box
-				if (arr[i][j] == 1) {
+				if (arr[i][j] != 0) {
 					rowTop = Math.min(rowTop,i)
 					colLeft = Math.min(colLeft,j)
 					rowBot = Math.max(rowBot,i)
@@ -204,10 +198,10 @@ class Shape {
 		var squareCoords = []
 		for (var i = ShapeDims[0]; i < ShapeDims[0] + ShapeDims[3]; i++) {
 			for (var j = ShapeDims[1]; j < ShapeDims[1] + ShapeDims[2]; j++) {
-				if (RotatedBlueprint[i][j] == 1) {
+				if (RotatedBlueprint[i][j] != 0) {
 					var p1 = rowTop  + i - ShapeDims[0] + this.ShapeCenter*this.RotateSign
 					var p2 = colLeft + j - ShapeDims[1] - this.ShapeCenter*this.RotateSign
-					squareCoords.push([p1,p2])
+					squareCoords.push([p1,p2,RotatedBlueprint[i][j]])
 	
 				}
 			}
@@ -218,36 +212,54 @@ class Shape {
 	/** 
      * @description Changes every square in the provided array to be owned by this shape
 	 * 
+	 * @param GameArray - 2D array of squares
+	 * @param SquareArray - Array of Squares indices
+	 * 
+     * @return void
+     */
+	AdoptSquareIndices(GameArray, SquareArray){
+		this.ResetSquares()
+		for (var i = 0; i < SquareArray.length; i++) {
+			var newSquare = GameArray[SquareArray[i][0]][SquareArray[i][1]]
+			newSquare.ChangeOwner(this.ID, this.Color, SquareArray[i][2])
+			this.Squares.push(newSquare)
+		}
+	}
+
+	/** 
+     * @description Changes every square in the provided array to be owned by this shape
+	 * 
 	 * @param SquareArray - Array of Squares
 	 * 
      * @return void
      */
-	AdoptSquares(SquareArray){
+	AdoptSquares(SquareArray) {
 		this.Squares = SquareArray
-		for (var i = 0; i < SquareArray.length; i++) {
-			SquareArray[i].ChangeOwner(this.ID, this.Color)
+		for (var i = 0; i < this.Squares.length; i++) {
+			this.Squares[i].ChangeOwner(this.ID,this.Color,this.Squares[i].PowerCubeType)
 		}
 	}
 
 	/** 
      * @description After a successful rotation, update the necessary values for this shape
 	 * 
-	 * @param newSquares - Array of Squares to be adopted into this shape
+	 * @param GameArray - 2D array of squares
+	 * @param newSquares - Array of square indices
 	 * @param Blueprint - New, rotated, shape blueprint
 	 * @param Dimension - Dimensions of the new, rotated shape
 	 * 
      * @return void
      */
-	UpdateAfterRotate(newSquares, Blueprint, Dimensions) {
+	UpdateAfterRotate(GameArray, newSquares, Blueprint, Dimensions) {
 		// update rotation specific completion variables
 		this.RotateSign = -1*this.RotateSign
 
 		this.RemoveShape() // remove the shape from the game board
-		this.ResetSquares() // set our list of squares to an empty array
-		this.AdoptSquares(newSquares) // set this shape as the owner of each square
+		this.ResetSquares()
+		this.AdoptSquareIndices(GameArray, newSquares) // set this shape as the owner of each square
 
 		// set associated class variables
-		this.Squares = newSquares
+		//this.Squares = newSquares
 		this.ShapeBlueprint = Blueprint
 		this.ShapeDimensions = Dimensions
 	}
@@ -313,53 +325,57 @@ class Shape {
         socket.send(JSON.stringify({"type": "6", "data": data}))
 	}
 	
-	GenerateRandomShape() {
+	/** 
+     * @description Generates the shape blueprint for a random shape
+     * 
+     * @return shape blueprint (2D array)
+     */
+	GenerateRandomShape(eps=0.1) {
 		var randShape = new Array(this.BlueprintDimensions)
-		console.log(randShape)
         for (var r = 0; r < this.BlueprintDimensions; r++) {
-            randShape[r] = new Array(this.BlueprintDimensions)
+            randShape[r] = new Array(this.BlueprintDimensions).fill(0)
 		}
 
 		// get the size of the shape we will generate
-		var shapeSizes = [1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,8,8,9,9,10]
+		//var shapeSizes = [1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,8,8,9,9,10]
+		var shapeSizes = [1,2,3]
 		var count = shapeSizes[Math.floor(Math.random() * shapeSizes.length)]
 		
-		var curri = Math.floor(Math.random() * this.BlueprintDimensions)
-		var currj = Math.floor(Math.random() * this.BlueprintDimensions)
-		randShape[curri][currj] = 1
+		var curri = Math.min(Math.floor(Math.random() * this.BlueprintDimensions),this.BlueprintDimensions-1)
+		var currj = Math.min(Math.floor(Math.random() * this.BlueprintDimensions),this.BlueprintDimensions-1)
+		randShape[curri][currj] = Math.random() < eps ? 2 : 1
 		count--
 		var priorityList = [0,0,0,0]
 		while(count > 0) {
-			priorityList[0] = this.GetNewSquarePriority(curri,currj-1)
-			priorityList[1] = this.GetNewSquarePriority(curri-1,currj)
-			priorityList[2] = this.GetNewSquarePriority(curri,currj+1)
-			priorityList[3] = this.GetNewSquarePriority(curri+1,currj)
+			priorityList[0] = this.GetNewSquarePriority(curri,currj-1, randShape)
+			priorityList[1] = this.GetNewSquarePriority(curri-1,currj, randShape)
+			priorityList[2] = this.GetNewSquarePriority(curri,currj+1, randShape)
+			priorityList[3] = this.GetNewSquarePriority(curri+1,currj, randShape)
 			var maxPriority = Math.max(priorityList)
 			var chosenInd = this.argmax(priorityList)
-			console.log(chosenInd)
-			//console.log(priorityList, maxPriority)
 
 			if (maxPriority == 0) {
 				break
 			} else {
 				curri += (chosenInd == 1 ? -1 : 0) + (chosenInd == 3 ? 1 : 0)
 				currj += (chosenInd == 0 ? -1 : 0) + (chosenInd == 2 ? 1 : 0)
-				console.log(curri,currj)
-				randShape[curri][currj] = 1
+				curri = Math.min(Math.max(0, curri),this.BlueprintDimensions-1)
+				currj = Math.min(Math.max(0, currj),this.BlueprintDimensions-1)
+				randShape[curri][currj] = Math.random() < eps ? 2 : 1
 			}
 			count--;
 		}
-
-		// for (var i = 0; i < randShape.length; i++) {
-		// 	for (var j = 0; j < randShape.length; j++) {
-		// 		randShape[i][j] = Math.round(Math.random())
-		// 	}
-		// }
+		// this function can potentially go back to squares that have already been visited.
 		return randShape
 	}
 
-	GetNewSquarePriority(i, j) {
-		if (i < 0 || i >= this.BlueprintDimensions || j < 0 || j >= this.BlueprintDimensions) {
+	/** 
+     * @description Given a pair of indices, returns a random priority value, or 0 if the provided indices is out of bound
+     * 
+     * @return double
+     */
+	GetNewSquarePriority(i, j, arr) {
+		if (i < 0 || i >= this.BlueprintDimensions || j < 0 || j >= this.BlueprintDimensions || arr[i][j] == 1) {
 			return 0;
 		}
 		return Math.random()
