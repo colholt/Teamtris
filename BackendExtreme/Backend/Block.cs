@@ -118,6 +118,51 @@ public class Block
 
 
     /** 
+        @return shifted data for the block to the bottommost corner
+     */
+    public int[][] ShiftDataBottom() {
+        // positions of where the piece exists in the data in a tuple with both the ints for row and column
+        List<Tuple<int, int>> dotPositions = new List<Tuple<int, int>>();
+        
+        // go through all the rows and get all the places where there is a true
+        for(int row = 0; row < this.data.Length; row++) {
+            dotPositions.AddRange(this.data[row].Select((b,i) => b == 1 ? i : -1).Where(i => i != -1).Select(index => new Tuple<int, int>(row, index)));
+        }
+
+        // get the bottom most left piece
+        Tuple<int, int> bottomLeft = this.FindBottomLeft();
+        int bottomLeftRow = bottomLeft.Item1;
+        int bottomLeftCol = bottomLeft.Item2;
+
+        // shifted over piece information
+        int[][] shiftedOverPiece = new int[][] {
+                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 0, 0}, 
+                new int[] {0, 0, 0, 0}, 
+            };
+
+        // shift over the dot positions
+        foreach(Tuple<int, int>  positionOfDot in dotPositions) {
+            // dot to be tested
+            int dotRowOnPiece = positionOfDot.Item1;
+            int dotColOnPiece = positionOfDot.Item2;
+
+            // shift over the dot to get rid of extra space
+            int modRowOnPiece = 3 - (bottomLeftRow - dotRowOnPiece);
+            int modDotCol = dotColOnPiece - bottomLeftCol;
+
+            // fill in new piece with this dot and this is the piece we have to fit on the board at this specific column
+            shiftedOverPiece[modRowOnPiece][modDotCol] = 1;
+        }
+
+        this.data = shiftedOverPiece;
+
+        return shiftedOverPiece;
+    }
+
+
+    /** 
         @@return 
             bool valid - return whether the shape is valid
      */
