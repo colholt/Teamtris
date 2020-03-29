@@ -330,7 +330,7 @@ class Shape {
      * 
      * @return shape blueprint (2D array)
      */
-	GenerateRandomShape(eps=0.1) {
+	GenerateRandomShape(eps=0.5, max=4) {
 		var randShape = new Array(this.BlueprintDimensions)
         for (var r = 0; r < this.BlueprintDimensions; r++) {
             randShape[r] = new Array(this.BlueprintDimensions).fill(0)
@@ -338,7 +338,7 @@ class Shape {
 
 		// get the size of the shape we will generate
 		//var shapeSizes = [1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,8,8,9,9,10]
-		var shapeSizes = [1,2,3]
+		var shapeSizes = [2,3,4]
 		var count = shapeSizes[Math.floor(Math.random() * shapeSizes.length)]
 		
 		var curri = Math.min(Math.floor(Math.random() * this.BlueprintDimensions),this.BlueprintDimensions-1)
@@ -355,13 +355,14 @@ class Shape {
 			var chosenInd = this.argmax(priorityList)
 
 			if (maxPriority == 0) {
+				count = 0
 				break
 			} else {
 				curri += (chosenInd == 1 ? -1 : 0) + (chosenInd == 3 ? 1 : 0)
 				currj += (chosenInd == 0 ? -1 : 0) + (chosenInd == 2 ? 1 : 0)
 				curri = Math.min(Math.max(0, curri),this.BlueprintDimensions-1)
 				currj = Math.min(Math.max(0, currj),this.BlueprintDimensions-1)
-				randShape[curri][currj] = Math.random() < eps ? 2 : 1
+				randShape[curri][currj] = Math.random() < eps ? Math.max(2,Math.floor(Math.random() * max)) : 1
 			}
 			count--;
 		}

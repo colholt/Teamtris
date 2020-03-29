@@ -29,9 +29,10 @@ class Square {
 		}
 
 		this.PowerCubeType = this.PowerCubeTypes.DEFAULT
-		if (RandomPowerCube && Math.random() < this.eps) {
-			this.PowerCubeType = this.PowerCubeTypes.DESTROYCOL
-		}
+		// if (RandomPowerCube && Math.random() < this.eps) {
+		// 	this.PowerCubeType = Math.max(Math.floor(Math.random()+1 * 2),3)
+		// 	this.PowerCubeType = 3;
+		// }
 
 		// once this power cube has been used, set applied to true
 		this.applied = false
@@ -69,11 +70,17 @@ class Square {
 	/** 
      * @description Sets this square to be a frozen square
 	 * 
+	 * @param pct - Power cube type
+	 * 
      * @return void
      */
-	SetFrozen() {
+	SetFrozen(pct=null) {
+		if (pct != null) {
+			this.PowerCubeType = pct
+		}
 		this.ID = 5
 		this.Color = "grey"
+		this.applied = false
 	}
 
 	/** 
@@ -97,6 +104,16 @@ class Square {
 		if (Math.random() < this.eps) {
 			this.PowerCubeType = this.PowerCubeTypes.DESTROYCOL
 		}
+	}
+
+	GetPowerCubeColor() {
+		switch (this.PowerCubeType) {
+			case this.PowerCubeTypes.DESTROYCOL:
+				return "green"
+			case this.PowerCubeTypes.DESTROYAREA:
+				return "purple"
+		}
+		return "black"
 	}
 
 	/** 
@@ -127,6 +144,15 @@ class Square {
 	}
 
 	/** 
+     * @description returns if the square has been applied
+	 * 
+     * @return boolean
+     */
+	IsApplied() {
+		return this.applied
+	}
+
+	/** 
      * @description Changes the owner of the square
 	 * 
 	 * @param ID - ID of the owner of the square
@@ -138,6 +164,7 @@ class Square {
 		this.ID = ID
 		this.Color = Color
 		this.PowerCubeType = PowerCubeType
+		this.applied = false
 	}
 
 	/** 
@@ -157,7 +184,7 @@ class Square {
 		rect(this.j * this.SquareEdgeLength, this.i * this.SquareEdgeLength, this.SquareEdgeLength, this.SquareEdgeLength)
 		//console.log(this.PowerCubeType)
 		if (this.PowerCubeType != this.PowerCubeTypes.DEFAULT) {
-			fill("purple")
+			fill(this.GetPowerCubeColor())
 			rect(this.j * this.SquareEdgeLength + this.SquareEdgeLength*0.25, this.i * this.SquareEdgeLength+this.SquareEdgeLength*0.25, this.SquareEdgeLength*0.5, this.SquareEdgeLength*0.5)
 		}
 		pop();
