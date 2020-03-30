@@ -198,6 +198,9 @@ public class Prints {
         }
         Console.WriteLine("Team Score " + scoresInfo.teamScore);
         Console.WriteLine("Time Played " + scoresInfo.timePlayed);
+        if(scoresInfo.rank != -1) {
+            Console.WriteLine("Rank " + scoresInfo.rank);
+        }
         Console.WriteLine();
     }
 
