@@ -12,4 +12,5 @@ public static class Packets
     public static readonly int START = 1;
     public static readonly int SCORES = 10;
     public static readonly int SHAPE_BLUEPRINT = 11;
+    public static readonly int SCORES_DIRECT = 12;
 }
