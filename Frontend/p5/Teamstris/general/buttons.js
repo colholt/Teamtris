@@ -24,6 +24,11 @@ class Buttons {
     this.currentColor = this.color;
 
     this.invalid = false;
+
+    this.border = 0;
+    this.borderWeight = 0;
+
+    this.textColor = 0;
   }
 
   draw() {
@@ -34,10 +39,13 @@ class Buttons {
       if (this.checkMouse() && !this.invalid) { // Checking to see if the mouse is over the button
         this.currentColor = this.hoverColor;
       }
+      strokeWeight(this.borderWeight);
+      stroke(this.border)
       fill(this.currentColor);
       rect(this.x, this.y, this.w, this.h, this.round);
 
-      fill(0);
+      strokeWeight(0);
+      fill(this.textColor);
       textSize(windowWidth/50);
       text(this.text, this.x, this.y);
       // if (buttons_draw) console.log(this.checkMouse());
