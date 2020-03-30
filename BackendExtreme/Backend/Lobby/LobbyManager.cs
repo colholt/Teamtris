@@ -137,7 +137,8 @@ public class LobbyManager : WebSocketBehavior
                 {
                     Sessions.SendTo(JsonConvert.SerializeObject(sbp), player.socketID);
                 }
-                else {
+                else
+                {
                     //player.currentBlock = sbp.shapeBlueprint;
                 }
             }
@@ -156,6 +157,7 @@ public class LobbyManager : WebSocketBehavior
         // 5 times number of players plus 5
         Lobby gameLobby = lobbies[playPacket.lobbyID];
         GameState game = new GameState(5 * gameLobby.numPlayers + 5, 20);
+        game.start_time = DateTime.Now.Millisecond;
         Dictionary<int, Player> players = new Dictionary<int, Player>();
         for (int i = 0; i < gameLobby.botCount; i++)
         {
@@ -175,6 +177,7 @@ public class LobbyManager : WebSocketBehavior
 
     public UpdatePacket processInput(PlayerInputPacket pip)
     {
+        UpdatePacket update = new UpdatePacket();
         if (pip.move == "freeze")
         {
             foreach (int[] pos in pip.shapeIndices)
@@ -182,9 +185,7 @@ public class LobbyManager : WebSocketBehavior
                 // FREEZE
                 lobbies[pip.lobbyID].game.board.board[pos[0], pos[1]] = 1;
             }
-            return (UpdatePacket)null;
         }
-        UpdatePacket update = new UpdatePacket();
         update.playerID = pip.playerID;
         update.move = pip.move;
         return update;
