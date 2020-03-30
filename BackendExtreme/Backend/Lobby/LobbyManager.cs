@@ -128,9 +128,24 @@ public class LobbyManager : WebSocketBehavior
                 lobbies[bot.lobbyID].botCount--;
             }
         }
+        else if (packet.type == Packets.SHAPE_BLUEPRINT)
+        {
+            ShapeBlueprintPacket sbp = JsonConvert.DeserializeObject<ShapeBlueprintPacket>(packet.data);
+            foreach (Player player in lobbies[sbp.lobbyID].players)
+            {
+                if (player.socketID != ID)
+                {
+                    Sessions.SendTo(JsonConvert.SerializeObject(sbp), player.socketID);
+                }
+                else {
+                    //player.currentBlock = sbp.shapeBlueprint;
+                }
+            }
+        }
         else
         {
             Console.WriteLine("bad packet");
+            Console.WriteLine(packet.type);
             Send("bad packet!!! :(");
         }
     }
