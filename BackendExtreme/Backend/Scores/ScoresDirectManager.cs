@@ -26,11 +26,9 @@ public class ScoresDirectManager : WebSocketBehavior
         
         Console.WriteLine("DIRECT MANAGER ");
         // score packet -- 11
-        if (packet.type == Packets.SCORES_DIRECT) {
-            Console.WriteLine("IN THE PACKET ");
-            // just get top 10 scores
-            GetTopScores();
-        }
+        Console.WriteLine("IN THE PACKET ");
+        // just get top 10 scores
+        GetTopScores();
     }
 
     public ManyScoresPacket GetTopScores() {
