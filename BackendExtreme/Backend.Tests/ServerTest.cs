@@ -141,6 +141,12 @@ namespace Tests
         public void ScoreInfoWithAllPlayers()
         {
            String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\", \"Player3\", \"Player4\"],\"teamScore\":3,\"timePlayed\":50}";
+        //    {
+        //     "teamName":"Team1",
+        //     "playerNames":["Player1", "Player2", "Player3", "Player4"],
+        //     "teamScorw":3,
+        //     "timePlayed":50
+        //     }
             ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
 
             ScoresInfo scoresInfo = scoresManager.CreateScoresInfo(sPacket);
