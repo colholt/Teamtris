@@ -145,6 +145,7 @@ public class LobbyManager : WebSocketBehavior
         else
         {
             Console.WriteLine("bad packet");
+            Console.WriteLine(packet.type);
             Send("bad packet!!! :(");
         }
     }
