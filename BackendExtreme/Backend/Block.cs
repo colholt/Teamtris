@@ -75,6 +75,34 @@ public class Block
         return bottomIndicies;
      }
 
+      /** 
+        @@param
+            Tuple<int, int>data - the data at the bottommost positions across all columns
+     */
+     public int[] GetBottomBlocksAsJaggedArray(int[][] shiftedOverPiece) {
+        int[] bottomIndicies = new int[4];
+
+        int numRows = 4;
+        int numCols = 4;
+
+        // Console.WriteLine("HERE " + numRows + " " + numCols);
+
+        for(int i = 0; i < numCols; i++) {
+            bool found1 = false;
+            for(int j = numRows - 1; j >= 0; j--) {
+                if(shiftedOverPiece[j][i] == 1) {
+                    bottomIndicies[i] = j;
+                    found1 = true;
+                    break;
+                }
+            }
+            if(!found1) {
+                bottomIndicies[i] = 4;
+            }
+        }
+        return bottomIndicies;
+     }
+
 
      /** 
         @@return 

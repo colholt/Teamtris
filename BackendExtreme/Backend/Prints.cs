@@ -222,10 +222,10 @@ public class Prints {
         @@param 
             List<Tuple<int [][], int [][]>> all orientations - information to be printed
      */
-    public void PrintAllOrientationsAsList(List<Tuple<Block, Block>> allOrientations, bool normalMode = true) {
+    public void PrintAllOrientationsAsList(List<Tuple<Block, Block, int>> allOrientations, bool normalMode = true) {
         int rotationNum = 0;
 
-        foreach(Tuple<Block, Block> blockShape in allOrientations) {
+        foreach(Tuple<Block, Block, int> blockShape in allOrientations) {
             rotationNum++;
             Console.WriteLine("BLOCK ROTATION " + rotationNum);
             Console.WriteLine("BOT 1");
@@ -242,10 +242,10 @@ public class Prints {
         @@param 
             Set<Tuple<int [][], int [][]>> all orientations - information to be printed
      */
-    public void PrintAllOrientationsAsSet(HashSet<Tuple<Block, Block>> allOrientations, bool normalMode = true) {
+    public void PrintAllOrientationsAsSet(HashSet<Tuple<Block, Block, int>> allOrientations, bool normalMode = true) {
         int rotationNum = 0;
 
-        foreach(Tuple<Block, Block> blockShape in allOrientations) {
+        foreach(Tuple<Block, Block, int> blockShape in allOrientations) {
             rotationNum++;
             Console.WriteLine("BLOCK ROTATION " + rotationNum);
             Console.WriteLine("BOT 1");
@@ -254,6 +254,22 @@ public class Prints {
             PrintJaggedArr(blockShape.Item2.data);
         }
 
+        Console.WriteLine();
+    }
+
+
+    /**
+        @@param 
+            List<CompatiblePiece> compatiblePieces
+     */
+    public void PrintCompatiblePieces(int[,] board, List<CompatiblePiece> compatiblePieces, bool normalMode = true) {
+        foreach(CompatiblePiece compatiblePiece in compatiblePieces) {
+           Console.WriteLine("LOCATION ON BOARD");
+           PrintBoardWithPiece(board, compatiblePiece.locationOnBoard);
+           Console.WriteLine("AREA COVERED " + compatiblePiece.area);
+           Console.WriteLine("ROWS CLEARED " + compatiblePiece.numLinesCleared);
+        }
+        
         Console.WriteLine();
     }
 
