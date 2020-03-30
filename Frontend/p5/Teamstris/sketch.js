@@ -22,6 +22,7 @@ function setup() {
 
   /* Connecting to our WebSocket the backend */
   socket = new WebSocket('ws://198.199.64.158:5202/lobby');
+  socketScore = new WebSocket('ws://198.199.64.158:5202/scores');
 
   /* Tells us what screen we are in */
   gameState = 0;
