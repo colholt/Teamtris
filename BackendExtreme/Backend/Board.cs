@@ -134,4 +134,23 @@ public class Board
        return data;
     }
 
+
+    /*
+        @@param int[,] board - board to be checked
+        @@return int[,] filledBoard - board with next piece considered
+    */
+    public int[,] FillBoardWithPiece(int[,] data, List<Tuple<int, int>> nextDots) {
+       foreach(Tuple<int, int> dot in nextDots) {
+            // make that one be filled
+            data[dot.Item1, dot.Item2] = 1;
+
+            // make that whole column be filled
+            // for(int i = dot.Item1; i < data.GetLength(0); i++) {
+            //     data[i, dot.Item2] = 1;
+            // }
+       }
+
+       return data;
+    }
+
 }
