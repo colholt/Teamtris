@@ -324,6 +324,22 @@ class Shape {
         var data = JSON.stringify({"lobbyID":team.lobbyToken.toLowerCase(),"playerID":ID,"shapeIndices": boardIndices, "move": action})
         socket.send(JSON.stringify({"type": "6", "data": data}))
 	}
+
+	/** 
+     * @description Sends a newly created shape to the server
+     * 
+     * @param ID - ID of a shape object
+     * @param shapeBlueprint - The blueprint the new shape will be instantiated using
+     * 
+     * @return void
+     */
+    SendNewShape(ID, shapeBlueprint) {
+        if (!team) {
+            return
+        }
+        var data = JSON.stringify({"lobbyID":team.lobbyToken.toLowerCase(),"playerID":ID,"shapeBlueprint": shapeBlueprint})
+        socket.send(JSON.stringify({"type": "11", "data": data}))
+    }
 	
 	/** 
      * @description Generates the shape blueprint for a random shape
@@ -366,6 +382,7 @@ class Shape {
 			}
 			count--;
 		}
+		this.SendNewShape(this.ID, randShape)
 		// this function can potentially go back to squares that have already been visited.
 		return randShape
 	}
