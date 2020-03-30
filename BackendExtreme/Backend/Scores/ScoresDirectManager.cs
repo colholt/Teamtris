@@ -23,9 +23,11 @@ public class ScoresDirectManager : WebSocketBehavior
         Console.WriteLine(e.Data);
         Packet packet = JsonConvert.DeserializeObject<Packet>(e.Data);
         string socketID = ID;
-
-        // score packet -- 10
+        
+        Console.WriteLine("DIRECT MANAGER ");
+        // score packet -- 11
         if (packet.type == Packets.SCORES_DIRECT) {
+            Console.WriteLine("IN THE PACKET ");
             // just get top 10 scores
             GetTopScores();
         }
@@ -43,5 +45,5 @@ public class ScoresDirectManager : WebSocketBehavior
 
         return multipleScoresPacket;
     }
-    
+
 }
