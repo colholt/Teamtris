@@ -316,6 +316,27 @@ public class Prints {
 
         Console.WriteLine();
     }
+
+
+    /**
+        @@param 
+            List<CompatiblePiece> compatiblePieces
+     */
+    public void PrintAllCompatiblePiecesTriple(int[,] board, List<Tuple<CompatiblePiece, CompatiblePiece, CompatiblePiece>> allCompatiblePieces, bool normalMode = true) {
+        foreach(Tuple<CompatiblePiece, CompatiblePiece, CompatiblePiece> compatiblePieces in allCompatiblePieces) {
+            Console.WriteLine("-----------------------------------");
+            Console.WriteLine("BOT 1");
+            PrintBoardWithPiece(board, compatiblePieces.Item1.locationOnBoard);
+            Console.WriteLine("BOT 2");
+            PrintBoardWithPiece(board, compatiblePieces.Item2.locationOnBoard);
+            Console.WriteLine("BOT 3");
+            PrintBoardWithPiece(board, compatiblePieces.Item3.locationOnBoard);
+            Console.WriteLine("ROWS CLEARED " + compatiblePieces.Item3.numLinesCleared);
+            Console.WriteLine("-----------------------------------");
+        }
+        
+        Console.WriteLine();
+    }
 }
 
 
