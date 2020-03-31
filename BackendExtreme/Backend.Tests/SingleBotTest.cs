@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Tests
 {
-    public class Tests
+    public class SingleBotTests
     {
         private GameState game;
         private List<Block> bot1Blocks;
