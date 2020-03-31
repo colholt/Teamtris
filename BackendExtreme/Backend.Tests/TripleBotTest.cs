@@ -5,15 +5,16 @@ using System.Linq;
 
 namespace Tests
 {
-    public class DoubleBotTests
+    public class TripleBotTests
     {
         private GameState game;
         private List<Block> bot1Blocks;
         private List<Block> bot2Blocks;
+        private List<Block> bot3Blocks;
         private List<Block> blocks = new List<Block>();
         private List<List<Block>> allBlocks;
 
-        private DoubleBot bot;
+        private TripleBot bot;
         Prints botInfoPrinter;
 
         /* 
@@ -25,9 +26,9 @@ namespace Tests
             botInfoPrinter = new Prints();
 
             game = new GameState(8, 8);
-            game.bot = new DoubleBot();
+            game.bot = new TripleBot();
 
-            bot = new DoubleBot();
+            bot = new TripleBot();
 
 
             game.board.board =  new int[,]{
@@ -191,9 +192,40 @@ namespace Tests
             bot1Blocks.Add(block12B);
             bot1Blocks.Add(block13B);
 
+
+            // BOT 3 BLOCKS
+            Block block1C = new Block(b1, 1);
+            Block block2C = new Block(b2, 1);
+            Block block3C = new Block(b3, 1);
+            Block block4C = new Block(b4, 1);
+            Block block5C = new Block(b5, 1);
+            Block block6C = new Block(b6, 1);
+            Block block7C = new Block(b7, 1);
+            Block block8C = new Block(b8, 1);
+            Block block9C = new Block(b9, 1);
+            Block block10C = new Block(b10, 1);
+            Block block11C = new Block(b11, 1);
+            Block block12C = new Block(b12, 1);
+            Block block13C = new Block(b13, 1);
+            bot3Blocks = new List<Block>();
+            bot3Blocks.Add(block1C);
+            bot3Blocks.Add(block2C);
+            bot3Blocks.Add(block3C);
+            bot3Blocks.Add(block4C);
+            bot3Blocks.Add(block5C);
+            bot3Blocks.Add(block6C);
+            bot3Blocks.Add(block7C);
+            bot3Blocks.Add(block8C);
+            bot3Blocks.Add(block9C);
+            bot3Blocks.Add(block10C);
+            bot3Blocks.Add(block11C);
+            bot3Blocks.Add(block12C);
+            bot3Blocks.Add(block13C);
+
             allBlocks = new List<List<Block>>();
             allBlocks.Add(bot1Blocks); 
             allBlocks.Add(bot2Blocks);
+            allBlocks.Add(bot3Blocks);
         }
 
 
@@ -266,7 +298,7 @@ namespace Tests
         */
         [Test]
         public void BlockOrientations1() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BLOCK ORIENTATIONS 1--------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MULTIPLE BLOCK ORIENTATIONS 1--------------------------------------");
             try {
                 int[][] b1 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
@@ -280,19 +312,34 @@ namespace Tests
                     new int[] {0, 0, 1, 0}, 
                     new int[] {0, 0, 1, 0}, 
                 };
+                int[][] b3 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                };
 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Block block1 = new Block(b1, 1);
                 Block block2 = new Block(b2, 1);
-                botInfoPrinter.PrintJaggedArr(block1.data, false);
-                botInfoPrinter.PrintJaggedArr(block2.data, false);
+                Block block3 = new Block(b3, 1);
+                List<Block> a = new List<Block>();
+                a.Add(block1);
+                List<Block> b = new List<Block>();
+                b.Add(block2);
+                List<Block> c = new List<Block>();
+                c.Add(block3);
+                var d = new List<List<Block>>();
+                d.Add(a);
+                d.Add(b);
+                d.Add(c);
                 TestContext.Progress.WriteLine("--------------------------------------");
 
-                int expectedOrientations = 8;
+                int expectedOrientations = 48;
 
-                int orientations = bot.GetAllOrientations(block1, block2).Count;
+                int orientations = bot.GenerateAllOrientations(d).Count;
 
-                Assert.That(orientations, Is.EqualTo(expectedOrientations));
+                Assert.That(orientations, Is.LessThanOrEqualTo(expectedOrientations));
 
             } catch (Exception e) {
                 Assert.Fail("Expected no exception recieved " + e.Message);
@@ -305,7 +352,7 @@ namespace Tests
         */
         [Test]
         public void BlockOrientations2() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BLOCK ORIENTATIONS 2--------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------MULTIPLE BLOCK ORIENTATIONS 2--------------------------------------");
             try {
                 int[][] b1 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
@@ -319,79 +366,7 @@ namespace Tests
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
-
-                TestContext.Progress.WriteLine("--------------------------------------");
-                Block block1 = new Block(b1, 1);
-                Block block2 = new Block(b2, 1);
-                botInfoPrinter.PrintJaggedArr(block1.data, false);
-                botInfoPrinter.PrintJaggedArr(block2.data, false);
-                TestContext.Progress.WriteLine("--------------------------------------");
-
-                int expectedOrientations = 4;
-
-                int orientations = bot.GetAllOrientations(block1, block2).Count;
-
-                Assert.That(orientations, Is.EqualTo(expectedOrientations));
-
-            } catch (Exception e) {
-                Assert.Fail("Expected no exception recieved " + e.Message);
-            }        
-        }
-
-
-        /*
-            Assert that only block orientations are in the list
-        */
-        [Test]
-        public void BlockOrientations3() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BLOCK ORIENTATIONS 3--------------------------------------");
-            try {
-                int[][] b1 = new int[][] {
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 0, 1, 0}, 
-                };
-                int[][] b2 = new int[][] {
-                    new int[] {0, 1, 1, 0}, 
-                    new int[] {0, 1, 0, 0}, 
-                    new int[] {0, 0, 0, 0}, 
-                    new int[] {0, 0, 0, 0}, 
-                };
-
-                TestContext.Progress.WriteLine("--------------------------------------");
-                Block block1 = new Block(b1, 1);
-                Block block2 = new Block(b2, 1);
-                botInfoPrinter.PrintJaggedArr(block1.data, false);
-                botInfoPrinter.PrintJaggedArr(block2.data, false);
-                TestContext.Progress.WriteLine("--------------------------------------");
-
-                int expectedOrientations = 16;
-
-                int orientations = bot.GetAllOrientations(block1, block2).Count;
-
-                Assert.That(orientations, Is.EqualTo(expectedOrientations));
-
-            } catch (Exception e) {
-                Assert.Fail("Expected no exception recieved " + e.Message);
-            }        
-        }
-
-
-        /*
-            Assert that only block orientations are in the list
-        */
-        [Test]
-        public void BlockOrientations4() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BLOCK ORIENTATIONS 4--------------------------------------");
-            try {
-                int[][] b1 = new int[][] {
-                    new int[] {0, 0, 0, 0}, 
-                    new int[] {0, 0, 0, 0}, 
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 0, 0, 0}, 
-                };
-                int[][] b2 = new int[][] {
+                int[][] b3 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
@@ -401,54 +376,28 @@ namespace Tests
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Block block1 = new Block(b1, 1);
                 Block block2 = new Block(b2, 1);
+                Block block3 = new Block(b3, 1);
+                List<Block> a = new List<Block>();
+                a.Add(block1);
+                List<Block> b = new List<Block>();
+                b.Add(block2);
+                List<Block> c = new List<Block>();
+                c.Add(block3);
+                var d = new List<List<Block>>();
+                d.Add(a);
+                d.Add(b);
+                d.Add(c);
                 botInfoPrinter.PrintJaggedArr(block1.data, false);
                 botInfoPrinter.PrintJaggedArr(block2.data, false);
+                botInfoPrinter.PrintJaggedArr(block3.data, false);
                 TestContext.Progress.WriteLine("--------------------------------------");
 
-                int expectedOrientations = 2;
 
-                int orientations = bot.GetAllOrientations(block1, block2).Count;
+                int expectedOrientations = 12;
 
-                Assert.That(orientations, Is.EqualTo(expectedOrientations));
+                int orientations = bot.GenerateAllOrientations(d).Count;
 
-            } catch (Exception e) {
-                Assert.Fail("Expected no exception recieved " + e.Message);
-            }        
-        }
-
-
-        /*
-            Assert that only block orientations are in the list
-        */
-        [Test]
-        public void BlockOrientations5() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------BLOCK ORIENTATIONS 5--------------------------------------");
-            try {
-                int[][] b1 = new int[][] {
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 0, 1, 0}, 
-                };
-                int[][] b2 = new int[][] {
-                    new int[] {0, 0, 0, 0}, 
-                    new int[] {0, 0, 0, 0}, 
-                    new int[] {0, 0, 1, 1}, 
-                    new int[] {0, 0, 1, 0}, 
-                };
-
-                TestContext.Progress.WriteLine("--------------------------------------");
-                Block block1 = new Block(b1, 1);
-                Block block2 = new Block(b2, 1);
-                botInfoPrinter.PrintJaggedArr(block1.data, false);
-                botInfoPrinter.PrintJaggedArr(block2.data, false);
-                TestContext.Progress.WriteLine("--------------------------------------");
-
-                int expectedOrientations = 16;
-
-                int orientations = bot.GetAllOrientations(block1, block2).Count;
-
-                Assert.That(orientations, Is.EqualTo(expectedOrientations));
+                Assert.That(orientations, Is.LessThanOrEqualTo(expectedOrientations));
 
             } catch (Exception e) {
                 Assert.Fail("Expected no exception recieved " + e.Message);
@@ -477,15 +426,25 @@ namespace Tests
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
+                int[][] b3 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 0, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
                 List<Block> newBlocks2 = new List<Block>();
+                List<Block> newBlocks3 = new List<Block>();
                 Block b = new Block(b1, 1);
                 Block a = new Block(b2, 1);
+                Block c = new Block(b3, 1);
                 newBlocks.Add(b);
                 newBlocks2.Add(a);
+                newBlocks3.Add(c);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocks);
                 allB.Add(newBlocks2);
+                allB.Add(newBlocks3);
                 List<Tuple<int, int>> piecePlaced = bot.GetSingleMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
@@ -506,26 +465,36 @@ namespace Tests
                 TestContext.Progress.WriteLine("--------------------------------------");
                 List<Block> newBlocks = new List<Block>();
                 int[][] b1 = new int[][] {
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                int[][] b2 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
                     new int[] {0, 1, 0, 1}, 
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
-               int[][] b2 = new int[][] {
+                int[][] b3 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
                     new int[] {0, 1, 0, 1}, 
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
                 List<Block> newBlocks2 = new List<Block>();
+                List<Block> newBlocks3 = new List<Block>();
                 Block b = new Block(b1, 1);
                 Block a = new Block(b2, 1);
+                Block c = new Block(b3, 1);
                 newBlocks.Add(b);
                 newBlocks2.Add(a);
+                newBlocks3.Add(c);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocks);
                 allB.Add(newBlocks2);
+                allB.Add(newBlocks3);
                 List<Tuple<int, int>> piecePlaced = bot.GetSingleMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
@@ -535,6 +504,7 @@ namespace Tests
             }        
         }
 
+
          /*
             Assert that the shape provided to the bot is valid with invalid shape
         */
@@ -542,29 +512,39 @@ namespace Tests
         public void TestShapeFormationInvalid3() {
             TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE PROVIDED INVALID 3-------------------------------------");
             try {
-                TestContext.Progress.WriteLine("--------------------------------------");
+               TestContext.Progress.WriteLine("--------------------------------------");
                 List<Block> newBlocks = new List<Block>();
                 int[][] b1 = new int[][] {
-                    new int[] {0, 0, 1, 0}, 
-                    new int[] {0, 1, 0, 1}, 
-                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
-               int[][] b2 = new int[][] {
+                int[][] b2 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                int[][] b3 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
                     new int[] {0, 1, 0, 1}, 
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
                 List<Block> newBlocks2 = new List<Block>();
+                List<Block> newBlocks3 = new List<Block>();
                 Block b = new Block(b1, 1);
                 Block a = new Block(b2, 1);
+                Block c = new Block(b3, 1);
                 newBlocks.Add(b);
                 newBlocks2.Add(a);
+                newBlocks3.Add(c);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocks);
                 allB.Add(newBlocks2);
+                allB.Add(newBlocks3);
                 List<Tuple<int, int>> piecePlaced = bot.GetSingleMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
@@ -573,6 +553,7 @@ namespace Tests
                 Assert.AreEqual(expectedMessage, e.Message);
             }        
         }
+
 
          /*
             Assert that the shape provided to the bot is valid with invalid shape
@@ -585,26 +566,36 @@ namespace Tests
                 List<Block> newBlocks = new List<Block>();
                 int[][] b1 = new int[][] {
                     new int[] {0, 0, 0, 0}, 
-                    new int[] {0, 1, 0, 0}, 
-                    new int[] {1, 0, 0, 0}, 
-                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
                 };
                 int[][] b2 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 1, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                int[][] b3 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
                     new int[] {0, 1, 0, 1}, 
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
                 List<Block> newBlocks2 = new List<Block>();
+                List<Block> newBlocks3 = new List<Block>();
                 Block b = new Block(b1, 1);
                 Block a = new Block(b2, 1);
+                Block c = new Block(b3, 1);
                 newBlocks.Add(b);
                 newBlocks2.Add(a);
+                newBlocks3.Add(c);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocks);
                 allB.Add(newBlocks2);
-                List<Tuple<int, int>> piecePlaced = bot.GetSingleMove(game.board,allB); 
+                allB.Add(newBlocks3);
+                List<Tuple<int, int>> piecePlaced = bot.GetSingleMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
             } catch (Exception e) {
@@ -612,6 +603,8 @@ namespace Tests
                 Assert.AreEqual(expectedMessage, e.Message);
             }        
         }
+
+
 
         /*
             Assert that the shape provided to the bot is valid with invalid shape
@@ -623,10 +616,10 @@ namespace Tests
                 TestContext.Progress.WriteLine("--------------------------------------");
                 List<Block> newBlocks = new List<Block>();
                 int[][] b1 = new int[][] {
-                    new int[] {1, 0, 0, 1}, 
+                    new int[] {0, 0, 1, 0}, 
                     new int[] {0, 1, 0, 0}, 
-                    new int[] {0, 0, 0, 0}, 
-                    new int[] {1, 0, 0, 1}, 
+                    new int[] {0, 0, 0, 1}, 
+                    new int[] {0, 1, 0, 0}, 
                 };
                 int[][] b2 = new int[][] {
                     new int[] {0, 0, 1, 0}, 
@@ -634,15 +627,25 @@ namespace Tests
                     new int[] {0, 0, 0, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
+                int[][] b3 = new int[][] {
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 1, 0, 1}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
                 List<Block> newBlocks2 = new List<Block>();
+                List<Block> newBlocks3 = new List<Block>();
                 Block b = new Block(b1, 1);
                 Block a = new Block(b2, 1);
+                Block c = new Block(b3, 1);
                 newBlocks.Add(b);
                 newBlocks2.Add(a);
+                newBlocks3.Add(c);
                 botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocks);
                 allB.Add(newBlocks2);
+                allB.Add(newBlocks3);
                 List<Tuple<int, int>> piecePlaced = bot.GetSingleMove(game.board, allB); 
                 TestContext.Progress.WriteLine("--------------------------------------");
                 Assert.Fail("Expected exception not thrown");
@@ -658,7 +661,7 @@ namespace Tests
         */
         [Test]
         public void ShapePlacement1() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 1-------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------TRIPLE BOT SHAPE PLACEMENT 1-------------------------------------");
             try {
                 TestContext.Progress.WriteLine("--------------------------------------");
 
@@ -698,17 +701,33 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot3Pieces, 4, false);
                 TestContext.Progress.Write("Board AFTER bots placed");
                 botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
 
@@ -717,9 +736,9 @@ namespace Tests
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
-                    {0, 0, 0, 0, 2, 0, 1, 1},
-                    {1, 3, 3, 1, 2, 1, 1, 1},
-                    {1, 1, 3, 1, 1, 1, 1, 1},
+                    {0, 0, 0, 0, 3, 2, 1, 1},
+                    {1, 4, 4, 1, 3, 1, 1, 1},
+                    {1, 1, 4, 1, 1, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1, 1, 1}
                 };
 
@@ -748,7 +767,7 @@ namespace Tests
         */
         [Test]
         public void ShapePlacement2() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 2-------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------TRIPLE BOT SHAPE PLACEMENT 2-------------------------------------");
             try {
                 TestContext.Progress.WriteLine("--------------------------------------");
 
@@ -788,17 +807,33 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot3Pieces, 4, false);
                 TestContext.Progress.Write("Board AFTER bots placed");
                 botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
 
@@ -806,10 +841,10 @@ namespace Tests
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
-                    {0, 0, 0, 0, 0, 0, 0, 0},
-                    {2, 3, 3, 0, 0, 0, 1, 1},
-                    {1, 0, 3, 1, 0, 1, 1, 1},
-                    {1, 1, 3, 1, 1, 1, 1, 1},
+                    {0, 0, 0, 0, 0, 3, 0, 0},
+                    {0, 0, 4, 3, 3, 3, 1, 1},
+                    {1, 4, 4, 1, 2, 1, 1, 1},
+                    {1, 1, 4, 1, 1, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1, 1, 1}
                 };
 
@@ -838,7 +873,7 @@ namespace Tests
         */
         [Test]
         public void ShapePlacement3() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 3-------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------TRIPLE BOT SHAPE PLACEMENT 3-------------------------------------");
             try {
                 TestContext.Progress.WriteLine("--------------------------------------");
 
@@ -857,7 +892,7 @@ namespace Tests
                 List<Block> newBlocksBot1 = new List<Block>();
                 int[][] b1 = new int[][] {
                     new int[] {1, 0, 0, 0}, 
-                    new int[] {1, 1, 0, 0}, 
+                    new int[] {1, 0, 0, 0}, 
                     new int[] {1, 1, 1, 0}, 
                     new int[] {0, 0, 0, 0}, 
                 };
@@ -879,28 +914,44 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot3Pieces, 4, false);
                 TestContext.Progress.Write("Board AFTER bots placed");
                 botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
 
                 int[,] expectedBoard = new int[,]{
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
-                    {0, 0, 0, 0, 0, 0, 0, 0},
-                    {0, 0, 0, 0, 0, 0, 0, 0},
-                    {3, 3, 3, 2, 2, 2, 1, 1},
-                    {1, 3, 3, 1, 2, 1, 1, 1},
-                    {1, 1, 3, 1, 1, 1, 1, 1},
+                    {0, 0, 3, 0, 0, 0, 0, 0},
+                    {0, 0, 3, 0, 0, 0, 0, 0},
+                    {3, 3, 3, 4, 4, 4, 1, 1},
+                    {1, 2, 2, 1, 4, 1, 1, 1},
+                    {1, 1, 2, 1, 1, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1, 1, 1}
                 };
 
@@ -929,7 +980,7 @@ namespace Tests
         */
         [Test]
         public void ShapePlacement4() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 4-------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------TRIPLE BOT SHAPE PLACEMENT 4-------------------------------------");
             try {
                 TestContext.Progress.WriteLine("--------------------------------------");
 
@@ -970,17 +1021,33 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {0, 0, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot3Pieces, 4, false);
                 TestContext.Progress.Write("Board AFTER bots placed");
                 botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
 
@@ -988,10 +1055,10 @@ namespace Tests
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
-                    {0, 0, 0, 0, 0, 0, 0, 0},
-                    {3, 3, 3, 0, 0, 0, 1, 1},
-                    {1, 2, 3, 1, 0, 1, 1, 1},
-                    {1, 1, 3, 1, 1, 1, 1, 1},
+                    {0, 0, 0, 4, 3, 3, 3, 0},
+                    {0, 0, 4, 4, 3, 0, 1, 1},
+                    {1, 4, 4, 1, 3, 1, 1, 1},
+                    {1, 1, 2, 1, 1, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1, 1, 1}
                 };
 
@@ -1020,7 +1087,7 @@ namespace Tests
         */
         [Test]
         public void ShapePlacement5() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 5-------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------TRIPLE BOT SHAPE PLACEMENT 5-------------------------------------");
             try {
                 TestContext.Progress.WriteLine("--------------------------------------");
 
@@ -1061,17 +1128,34 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 1, 1, 0}, 
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot3Pieces, 4, false);
                 TestContext.Progress.Write("Board AFTER bots placed");
                 botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
 
@@ -1080,10 +1164,10 @@ namespace Tests
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
-                    {0, 0, 0, 0, 0, 0, 1, 1},
-                    {2, 2, 0, 1, 0, 1, 1, 1},
-                    {2, 1, 3, 1, 1, 1, 1, 1},
-                    {0, 0, 1, 1, 1, 1, 1, 1}
+                    {0, 4, 4, 3, 3, 0, 1, 1},
+                    {4, 4, 4, 1, 3, 1, 1, 1},
+                    {4, 1, 4, 1, 1, 1, 1, 1},
+                    {2, 0, 1, 1, 1, 1, 1, 1}
                 };
 
                 Assert.That(allBoards.Item2, Is.EqualTo(expectedBoard));
@@ -1112,7 +1196,7 @@ namespace Tests
         */
         [Test]
         public void ShapePlacement6() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 6-------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------TRIPLE BOT SHAPE PLACEMENT 6-------------------------------------");
             try {
                 TestContext.Progress.WriteLine("--------------------------------------");
 
@@ -1153,23 +1237,39 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot3Pieces, 4, false);
                 TestContext.Progress.Write("Board AFTER bots placed");
                 botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
 
                 int[,] expectedBoard = new int[,]{
-                    {0, 0, 2, 3, 3, 0, 0, 0},
-                    {1, 1, 1, 1, 3, 1, 1, 1},
+                    {0, 0, 0, 2, 4, 4, 3, 3},
+                    {1, 1, 1, 1, 4, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 0, 0, 0, 0, 0},
                     {1, 1, 1, 0, 0, 0, 1, 1},
@@ -1203,7 +1303,7 @@ namespace Tests
         */
         [Test]
         public void ShapePlacement7() {
-            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 7-------------------------------------");
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------TRIPLE BOT SHAPE PLACEMENT 7-------------------------------------");
             try {
                 TestContext.Progress.WriteLine("--------------------------------------");
 
@@ -1244,23 +1344,39 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot3Pieces, 4, false);
                 TestContext.Progress.Write("Board AFTER bots placed");
                 botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
 
                 int[,] expectedBoard = new int[,]{
-                    {3, 3, 3, 3, 2, 2, 2, 0},
-                    {1, 1, 1, 1, 0, 1, 1, 1},
+                    {3, 3, 3, 3, 4, 2, 2, 2},
+                    {1, 1, 1, 1, 4, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 0, 0, 0, 0, 0},
                     {1, 1, 1, 0, 0, 0, 1, 1},
@@ -1335,9 +1451,22 @@ namespace Tests
                 TestContext.Progress.Write("Bot 2 Block");
                 botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
 
+                List<Block> newBlocksBot3 = new List<Block>();
+                int[][] b3 = new int[][] {
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot3Block = new Block(b3, 1);
+                newBlocksBot3.Add(bot3Block);
+                TestContext.Progress.Write("Bot 3 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot3[0].data, false);
+
                 List<List<Block>> allB = new List<List<Block>>();
                 allB.Add(newBlocksBot1);
                 allB.Add(newBlocksBot2);
+                allB.Add(newBlocksBot3);
                 var piecePlaced = bot.GetMove(game.board, allB); 
 
                 Assert.That(piecePlaced, Is.EqualTo(null));
