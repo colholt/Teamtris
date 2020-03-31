@@ -223,7 +223,7 @@ public class Prints {
 
     /**
         @@param 
-            List<Tuple<int [][], int [][]>> all orientations - information to be printed
+            List<Tuple<Block, Block, int>> allOrientations all orientations - information to be printed
      */
     public void PrintAllOrientationsAsList(List<Tuple<Block, Block, int>> allOrientations, bool normalMode = true) {
         int rotationNum = 0;
@@ -243,7 +243,7 @@ public class Prints {
 
     /**
         @@param 
-            Set<Tuple<int [][], int [][]>> all orientations - information to be printed
+            List<Tuple<Block, Block, int>> allOrientations all orientations - information to be printed
      */
     public void PrintAllOrientationsAsSet(HashSet<Tuple<Block, Block, int>> allOrientations, bool normalMode = true) {
         int rotationNum = 0;
@@ -292,6 +292,28 @@ public class Prints {
             Console.WriteLine("-----------------------------------");
         }
         
+        Console.WriteLine();
+    }
+
+
+     /**
+        @@param 
+            List<Tuple<Block, Block, Block>> allOrientations all orientations - information to be printed
+     */
+    public void PrintAllOrientationsThreeBlocksAsList(List<Tuple<Block, Block, Block>> allOrientations, bool normalMode = true) {
+        int rotationNum = 0;
+
+        foreach(Tuple<Block, Block, Block> blockShape in allOrientations) {
+            rotationNum++;
+            Console.WriteLine("ORIENTATION " + rotationNum);
+            Console.WriteLine("BOT 1");
+            PrintJaggedArr(blockShape.Item1.data);
+            Console.WriteLine("BOT 2");
+            PrintJaggedArr(blockShape.Item2.data);
+            Console.WriteLine("BOT 3");
+            PrintJaggedArr(blockShape.Item3.data);
+        }
+
         Console.WriteLine();
     }
 }
