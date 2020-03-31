@@ -11,9 +11,9 @@ public class GameState
     public Dictionary<int, Player> players;
     public Bot bot;
     public Board board;
-    public GameState(int m, int n)
+    public GameState(int rows, int cols)
     {
-        this.board = new Board(n,m);
+        this.board = new Board(rows,cols);
     }
 
 }

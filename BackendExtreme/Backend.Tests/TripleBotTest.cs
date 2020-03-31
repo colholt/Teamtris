@@ -1487,5 +1487,63 @@ namespace Tests
                 Assert.Fail("Expected no exception but recieved " + e.Message);
             }        
         }
+
+        /*
+            Assert that there are enough blocks
+        */
+        [Test]
+        public void EnoughBlocks() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------ENOUGH BLOCKSs 1-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1}
+                };
+
+                List<Block> newBlocksBot1 = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot1Block = new Block(b1, 1);
+                newBlocksBot1.Add(bot1Block);
+                TestContext.Progress.Write("Bot 1 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot1[0].data, false);
+
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocksBot1);
+                var piecePlaced = bot.GetMove(game.board, allB); 
+
+                Assert.That(piecePlaced, Is.EqualTo(null));
+
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {1, 1, 0, 1, 1, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1, 1, 1}
+                };
+                TestContext.Progress.WriteLine("--------------------------------------");
+                Assert.Fail("Expected exception not thrown");
+            } catch (Exception e) {
+                string expectedMessage = "Not enough blocks";
+                Assert.AreEqual(expectedMessage, e.Message);
+            }  
+        }
     }
 }
