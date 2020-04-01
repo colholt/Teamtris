@@ -58,11 +58,12 @@ class LobbyScreen {
         socket.onmessage = (event) => {
 
             var e = JSON.parse(event.data);
-            console.log("HERE WE GO ");
-            console.log(e);
+            // console.log("HERE WE GO ");
+            // console.log(e);
             if(e.board != undefined ){
                 team = this.team;
                 player = this.player;
+                console.log("ID: " + player.id)
                 mGameScreen.SetupSocket();
                 gameState = 2;
                 return;
@@ -76,10 +77,18 @@ class LobbyScreen {
                         this.changeOwnerToMe();
                     }
                     return;
+                } else if(e.dataType === 8){
+                    console.log("players:");
+                    for(var i = 0; i < e.players.length; i++){
+                        console.log(e.players[i].name);
+                        if(e.players[i].name == this.player.username){
+                            console.log("My name is " + e.players[i].name)
+                            this.player.id = e.players[i].id
+                        } else {
+                            console.log("his name is " + e.players[i].name)
+                        }
+                    }
                 }
-                console.log("players:");
-                console.log(e.players[e.players.length-1].name);
-                var newPlayer = new Player();
             } else if(e.lobbyID !== undefined) { 
                 this.team.lobbyToken = e.lobbyID.toUpperCase();
             }
@@ -353,6 +362,7 @@ class LobbyScreen {
                     team = this.team;
                     player = this.player;
                     mGameScreen.SetupSocket();
+                    console.log("ID: " + player.id)
                     gameState = 2;
                 }
                 break;
