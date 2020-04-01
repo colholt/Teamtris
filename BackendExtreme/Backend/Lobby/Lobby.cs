@@ -14,7 +14,7 @@ public class Lobby
     public int botCount = 0;
     public List<Player> players;
     [JsonIgnore]
-    public List<Bot> bots;
+    public Bot bot;
     public int lobbyState;
     public GameState game;
     public int numPlayers = 1;
