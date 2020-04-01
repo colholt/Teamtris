@@ -63,7 +63,7 @@ class LobbyScreen {
             if(e.board != undefined ){
                 team = this.team;
                 player = this.player;
-                console.log("ID: " + player.id)
+                console.log("ID: " + player.id + " Num players: " + team.numPlayers)
                 mGameScreen.SetupSocket();
                 gameState = 2;
                 return;
@@ -84,6 +84,7 @@ class LobbyScreen {
                         if(e.players[i].name == this.player.username){
                             console.log("My name is " + e.players[i].name)
                             this.player.id = e.players[i].id
+                            this.team.numPlayers = e.players.length
                         } else {
                             console.log("his name is " + e.players[i].name)
                         }
@@ -362,7 +363,7 @@ class LobbyScreen {
                     team = this.team;
                     player = this.player;
                     mGameScreen.SetupSocket();
-                    console.log("ID: " + player.id)
+                    console.log("ID: " + player.id + " Num players: " + team.numPlayers)
                     gameState = 2;
                 }
                 break;
