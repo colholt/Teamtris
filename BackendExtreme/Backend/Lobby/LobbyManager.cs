@@ -156,7 +156,7 @@ public class LobbyManager : WebSocketBehavior
         PlayPacket playPacket = JsonConvert.DeserializeObject<PlayPacket>(packet.data);
         // 5 times number of players plus 5
         Lobby gameLobby = lobbies[playPacket.lobbyID];
-        GameState game = new GameState(5 * gameLobby.numPlayers + 5, 20);
+        GameState game = new GameState(20, 5 * gameLobby.numPlayers + 5);
         // game.board.board[0,1] = 2;
         // game.board.board[1,1] = 2;
         // game.board.board[2,1] = 2;
