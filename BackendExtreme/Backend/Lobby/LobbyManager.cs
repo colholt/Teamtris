@@ -220,7 +220,6 @@ public class LobbyManager : WebSocketBehavior
         Lobby newLobby = new Lobby(token, maxPlayers);
         Player newPlayer = new Player(1, name, socketID, socketContext);
         newLobby.players = new List<Player>();
-        newLobby.bots = new List<Bot>();
 
         newLobby.players.Add(newPlayer);
         lobbies[newLobby.id] = newLobby;
