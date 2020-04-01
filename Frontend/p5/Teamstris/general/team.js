@@ -18,6 +18,7 @@ class Team {
 	// @returns Team : A object of the class | 
     constructor(){
         this.playersInTeam = [];
+        this.numPlayers = 1;
         this.teamName = "";
         this.lobbyToken = "";
         this.score = 0;
