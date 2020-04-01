@@ -167,10 +167,17 @@ public class LobbyManager : WebSocketBehavior
         // game.board.board[7,1] = 2;
         game.start_time = DateTime.Now.Millisecond;
         Dictionary<int, Player> players = new Dictionary<int, Player>();
-        for (int i = 0; i < gameLobby.botCount; i++)
+        if (gameLobby.botCount == 1)
         {
-            Console.WriteLine("adding new bot");
-            gameLobby.bots.Add(new SingleBot());
+            gameLobby.bot = new SingleBot();
+        }
+        if (gameLobby.botCount == 2)
+        {
+            gameLobby.bot = new DoubleBot();
+        }
+        if (gameLobby.botCount == 3)
+        {
+            gameLobby.bot = new TripleBot();
         }
         for (int i = 0; i < gameLobby.players.Count; i++)
         {
