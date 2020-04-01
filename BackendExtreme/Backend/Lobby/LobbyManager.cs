@@ -157,14 +157,14 @@ public class LobbyManager : WebSocketBehavior
         // 5 times number of players plus 5
         Lobby gameLobby = lobbies[playPacket.lobbyID];
         GameState game = new GameState(20, 5 * gameLobby.numPlayers + 5);
-        game.board.board[0,1] = 2;
-        game.board.board[1,1] = 2;
-        game.board.board[2,1] = 2;
-        game.board.board[3,1] = 2;
-        game.board.board[4,1] = 2;
-        game.board.board[5,1] = 2;
-        game.board.board[6,1] = 2;
-        game.board.board[7,1] = 2;
+        // game.board.board[0,1] = 2;
+        // game.board.board[1,1] = 2;
+        // game.board.board[2,1] = 2;
+        // game.board.board[3,1] = 2;
+        // game.board.board[4,1] = 2;
+        // game.board.board[5,1] = 2;
+        // game.board.board[6,1] = 2;
+        // game.board.board[7,1] = 2;
         game.start_time = DateTime.Now.Millisecond;
         Dictionary<int, Player> players = new Dictionary<int, Player>();
         for (int i = 0; i < gameLobby.botCount; i++)
