@@ -361,6 +361,9 @@ class LobbyScreen {
                 } else if(ClickedLoop() == "startgame") {
                     var data = JSON.stringify({"lobbyid":this.team.lobbyToken.toLowerCase()})
                     socket.send(JSON.stringify({"type": "2", "data": data}));
+                    if(this.team.numPlayers == 1){
+                        this.player.id = 1;
+                    }
                     mGameScreen = new GameScreen(this.team.numPlayers, this.player.id);
                     team = this.team;
                     player = this.player;
