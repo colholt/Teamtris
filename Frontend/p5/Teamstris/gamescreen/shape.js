@@ -299,7 +299,7 @@ class Shape {
 		var boardIndices = []
 		var rowsImpacted = new Set()
 		for (var k = 0; k < this.Squares.length; k++) {
-			boardIndices.push([this.Squares[k].i,this.Squares[k].j])
+			boardIndices.push([this.Squares[k].i, this.Squares[k].j, this.Squares[k].PowerCubeType])
 			rowsImpacted.add(this.Squares[k].i)
 		}
 		this.SendAction(this.ID, boardIndices, "freeze");
