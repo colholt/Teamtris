@@ -13,7 +13,7 @@ public class GameState
     public Board board;
     public GameState(int rows, int cols)
     {
-        this.board = new Board(rows,cols);
+        this.board = new Board(rows, cols);
     }
 
 }
