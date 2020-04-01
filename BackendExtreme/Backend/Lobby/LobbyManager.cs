@@ -111,7 +111,7 @@ public class LobbyManager : WebSocketBehavior
                 foreach (int[] pos in playerInputPacket.shapeIndices)
                 {
                     // FREEZE
-                    lobbies[playerInputPacket.lobbyID].game.board.board[pos[0], pos[1]] = 1;
+                    lobbies[playerInputPacket.lobbyID].game.board.board[pos[0], pos[1]] = pos[2];
                 }
             }
             // on place piece put on board ;GJ
