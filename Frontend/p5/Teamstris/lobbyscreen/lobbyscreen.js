@@ -61,6 +61,7 @@ class LobbyScreen {
             // console.log("HERE WE GO ");
             // console.log(e);
             if(e.board != undefined ){
+                mGameScreen = new GameScreen(this.team.numPlayers, this.player.id);
                 team = this.team;
                 player = this.player;
                 console.log("ID: " + player.id + " Num players: " + team.numPlayers)
@@ -360,6 +361,7 @@ class LobbyScreen {
                 } else if(ClickedLoop() == "startgame") {
                     var data = JSON.stringify({"lobbyid":this.team.lobbyToken.toLowerCase()})
                     socket.send(JSON.stringify({"type": "2", "data": data}));
+                    mGameScreen = new GameScreen(this.team.numPlayers, this.player.id);
                     team = this.team;
                     player = this.player;
                     mGameScreen.SetupSocket();
