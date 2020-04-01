@@ -302,7 +302,7 @@ class Shape {
 			boardIndices.push([this.Squares[k].i, this.Squares[k].j, this.Squares[k].PowerCubeType])
 			rowsImpacted.add(this.Squares[k].i)
 		}
-		this.SendAction(this.ID, boardIndices, "freeze");
+		this.SendAction(this.ID, boardIndices, "freeze")
 		this.FreezeSquares() // set all the squares to frozen
 		this.ResetSquares() // reset this shape's list of squares
 		return rowsImpacted
