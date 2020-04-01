@@ -31,7 +31,7 @@ function setup() {
   /* Creating my lobbyscreen object */
   // mLobbyScreen = new LobbyScreen();
   /* Createing my gamescreen object */
-  mGameScreen = new GameScreen();
+  mGameScreen;
 
   mScoreScreen = new ScoreScreen();
 }
