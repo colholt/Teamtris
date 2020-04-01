@@ -14,10 +14,6 @@ public class GameState
     public GameState(int rows, int cols)
     {
         this.board = new Board(rows, cols);
-        for (int i = 0; i < rows; i++)
-        {
-            this.board.board[i, 0] = 1;
-        }
     }
 
 }
