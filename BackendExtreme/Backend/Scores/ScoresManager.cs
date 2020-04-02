@@ -46,8 +46,8 @@ public class ScoresManager : WebSocketBehavior
 
     protected ManyScoresPacket PutScores(ScoresInfo scores) {
         // add the scores to the database and retrieve the team information including the current team
-        long id = SQLConnection.AddTeamScore(scores);   
-        Tuple<List<ScoresInfo>, ScoresInfo> retrievedInfo = SQLConnection.GetTopTeamsAndCurrentTeam(id);
+        SQLConnection.AddTeamScore(scores);   
+        Tuple<List<ScoresInfo>, ScoresInfo> retrievedInfo = SQLConnection.GetTopTeamsAndCurrentTeam(scores.teamName);
 
         // make into json a packet with the top teams info and current team info to return back
         ManyScoresPacket multipleScoresPacket = new ManyScoresPacket();
