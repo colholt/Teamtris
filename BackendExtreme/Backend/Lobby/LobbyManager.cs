@@ -342,7 +342,13 @@ public class LobbyManager : WebSocketBehavior
             }
             else
             {
-                // maxplayers reached :(
+                if (lobby.botCount > 0)
+                {
+                    lobbies[lobbyID].botCount--;
+                    lobbies[lobbyID].numPlayers--;
+                    alertLobby(-2, lobbyID, Packets.REMOVE_BOT);
+                    joinLobby(lobbyID, playerID, name, socketID);
+                }
             }
         }
         else if (lobbyID == "testing")
