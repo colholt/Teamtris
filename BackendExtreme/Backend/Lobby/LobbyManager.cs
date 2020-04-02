@@ -198,14 +198,6 @@ public class LobbyManager : WebSocketBehavior
     public UpdatePacket processInput(PlayerInputPacket pip)
     {
         UpdatePacket update = new UpdatePacket();
-        if (pip.move == "freeze")
-        {
-            foreach (int[] pos in pip.shapeIndices)
-            {
-                // FREEZE
-                lobbies[pip.lobbyID].game.board.board[pos[0], pos[1]] = pos[2];
-            }
-        }
         update.playerID = pip.playerID;
         update.move = pip.move;
         return update;
