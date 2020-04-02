@@ -90,29 +90,37 @@ public class LobbyManager : WebSocketBehavior
                     }
                 }
             }
-
-            currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
-            // UpdatePacket update = new UpdatePacket();
-            // update.playerID = currentPlayer.id;
-            // update.move = playerInputPacket.move;
-            playerInputPacket.playerID = currentPlayer.id;
             UpdatePacket update = processInput(playerInputPacket);
-            foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+            if (playerInputPacket.move != "freeze")
             {
-                if (update.move == "FREEZE")
+                currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
+                // UpdatePacket update = new UpdatePacket();
+                // update.playerID = currentPlayer.id;
+                // update.move = playerInputPacket.move;
+                playerInputPacket.playerID = currentPlayer.id;
+                foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
                 {
-                    foreach (int[] pos in playerInputPacket.shapeIndices)
+                    if (player.socketID != ID)
                     {
-                        // FREEZE
-                        lobbies[playerInputPacket.lobbyID].game.board.board[pos[0], pos[1]] = pos[2];
+                        Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
                     }
                 }
-                if (player.socketID != ID)
+            }
+            else
+            {
+                foreach (int[] pos in playerInputPacket.shapeIndices)
                 {
-                    Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
+                    // FREEZE
+                    lobbies[playerInputPacket.lobbyID].game.board.board[pos[0], pos[1]] = pos[2];
+                    foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+                    {
+                        if (player.socketID != ID)
+                        {
+                            Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
+                        }
+                    }
                 }
             }
-
             // on place piece put on board ;GJ
         }
         else if (packet.type == Packets.BOT_UPDATE) // 7
