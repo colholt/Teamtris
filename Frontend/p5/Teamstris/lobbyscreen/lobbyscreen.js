@@ -80,14 +80,27 @@ class LobbyScreen {
                     return;
                 } else if(e.dataType === 8){
                     console.log("players:");
+                    this.team.playersInTeam = [];
+                    for(var i = 0; i < e.players.length; i++) {
+                        var ownerr = false;
+                        if(e.players.id == 1) {ownerr = true}
+                        var newPlayer = new Player(e.players[i].name, e.players[i].id, ownerr);
+                        if(newPlayer.id == player.id) {
+                            this.team.playersInTeam.push(newPlayer)
+                        }
+                    }
                     for(var i = 0; i < e.players.length; i++){
-                        console.log(e.players[i].name);
+                        var ownerr = false;
+                        if(e.players.id == 1) {ownerr = true}
+                        var newPlayer = new Player(e.players[i].name, e.players[i].id, ownerr);
                         if(e.players[i].name == this.player.username){
                             console.log("My name is " + e.players[i].name)
                             this.player.id = e.players[i].id
                             this.team.numPlayers = e.players.length
+                            this.team.playersInTeam.push(newPlayer)
                         } else {
                             console.log("his name is " + e.players[i].name)
+                            this.newPlayerJoins(newPlayer)
                         }
                     }
                 }
