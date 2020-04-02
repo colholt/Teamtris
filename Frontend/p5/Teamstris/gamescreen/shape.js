@@ -108,9 +108,9 @@ class Shape {
 		var boardIndices = []
 		var newSquares = []
 		for (var k = 0; k < this.Squares.length; k++) {
-			boardIndices.push([this.Squares[k].i + down,this.Squares[k].j - left + right])
+			boardIndices.push([this.Squares[k].i + down, this.Squares[k].j - left + right, this.Squares[k].PowerCubeType])
 
-			newSquares.push([this.Squares[k].i + down,this.Squares[k].j - left + right,this.Squares[k].PowerCubeType])
+			newSquares.push([this.Squares[k].i + down, this.Squares[k].j - left + right, this.Squares[k].PowerCubeType])
 		}
 
 		// determine which action to send to the server
