@@ -29,6 +29,7 @@ class LobbyScreen {
         this.team.addPlayer(this.player);
         this.lobbyGameState = 0;
         this.botNames = ["Arnold", "Steve", "John"];
+        this.numBots = 0;
         this.playerCards = [];
         this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
         /** @todo. Make the L in lobby fall with this thing! */
@@ -75,7 +76,7 @@ class LobbyScreen {
                 }
             } else if(e.dataType === 16){
                 if(!player.owner){
-                    this.addAndRemoveBotButton("removebot");
+                    this.addAndRemoveBotButton("removebot", false);
                 }
             } else if(e.team != undefined ) {
                 this.team.teamName = e.team.team;
@@ -205,6 +206,7 @@ class LobbyScreen {
             /* Make sure that we are not going over 4 players + bots */
             this.newPlayerJoins(new Player(
                 this.botNames[this.team.playersInTeam.length - 1], -1, false));
+            this.numBots++;
         
         
         } else if( addOrRemove == "removebot" ) { // for remove bot button
@@ -218,6 +220,7 @@ class LobbyScreen {
                     }
                     // |
                     this.playerLeaves(player);
+                    this.numBots--;
                     break;
                 }
             }
@@ -391,11 +394,12 @@ class LobbyScreen {
                     if(this.team.numPlayers == 1){
                         this.player.id = 1;
                     }
-                    mGameScreen = new GameScreen(this.team.numPlayers, this.player.id);
                     team = this.team;
                     player = this.player;
+                    mGameScreen = new GameScreen(this.team.numPlayers, this.player.id, (this.playerCards.length - team.numPlayers));
                     mGameScreen.SetupSocket();
                     console.log("ID: " + player.id + " Num players: " + team.numPlayers)
+                    console.log(" numbots: " + (this.playerCards.length - team.numPlayers));
                     socket.send(JSON.stringify({"type": "14", "team": this.team.teamName, "lobbyid":this.team.lobbyToken.toLowerCase()}));
                     gameState = 2;
                 }
