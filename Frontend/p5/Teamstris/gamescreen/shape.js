@@ -405,6 +405,13 @@ class Shape {
 		return Math.random()
 	}
 
+	/** 
+	 * @description - Returns the argmax of an array
+	 *  
+	 * @param arr - array
+	 * 
+     * @return integer
+     */
 	argmax(arr) {
 		var maxV = arr[0]
 		var argmax = 0;
