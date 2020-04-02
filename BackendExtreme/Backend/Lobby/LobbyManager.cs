@@ -159,17 +159,11 @@ public class LobbyManager : WebSocketBehavior
         {
             // format the packet to be a scors packet with all the team information
             TeamPacket tPacket = JsonConvert.DeserializeObject<TeamPacket>(packet.data);
-
+            Console.WriteLine("TEAM BANE PACKET");
             foreach (Player player in lobbies[tPacket.lobbyid].players)
             {
-                if (player.socketID != ID)
-                {
-                    Sessions.SendTo(JsonConvert.SerializeObject(tPacket), player.socketID);
-                }
-                else
-                {
-                    //player.currentBlock = sbp.shapeBlueprint;
-                }
+                Console.WriteLine("IN THE PLAYER SERALIZE");
+                Sessions.SendTo(JsonConvert.SerializeObject(tPacket), player.socketID);
             }
         }
         else
