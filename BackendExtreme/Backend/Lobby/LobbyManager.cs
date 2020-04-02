@@ -231,6 +231,14 @@ public class LobbyManager : WebSocketBehavior
                 }
             }
         }
+        else if (packet.type == Packets.GAME_END)
+        {
+            EndPacket end = JsonConvert.DeserializeObject<EndPacket>(packet.data);
+            foreach (Player player in lobbies[end.lobbyID].players)
+            {
+                Sessions.SendTo(JsonConvert.SerializeObject(end), player.socketID);
+            }
+        }
         else
         {
             Console.WriteLine("bad packet");
