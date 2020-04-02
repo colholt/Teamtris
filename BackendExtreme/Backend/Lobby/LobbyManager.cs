@@ -122,10 +122,12 @@ public class LobbyManager : WebSocketBehavior
             if (bot.action == 1)
             {
                 lobbies[bot.lobbyID].botCount++;
+                lobbies[bot.lobbyID].numPlayers++;
             }
             else if (bot.action == 0)
             {
                 lobbies[bot.lobbyID].botCount--;
+                lobbies[bot.lobbyID].numPlayers--;
             }
         }
         else if (packet.type == Packets.SHAPE_BLUEPRINT)
