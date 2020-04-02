@@ -5,4 +5,5 @@ public class LobbyInfoPacket
     public string lobbyID { get; set; }
     public int maxPlayers { get; set; }
     public int dataType { get; set; }
+    public int numBots { get; set; }
 }
