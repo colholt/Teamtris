@@ -58,8 +58,8 @@ class LobbyScreen {
         socket.onmessage = (event) => {
 
             var e = JSON.parse(event.data);
-            // console.log("HERE WE GO ");
-            // console.log(e);
+            console.log("HERE WE GO ");
+            console.log(e);
             if(e.board != undefined ){
                 mGameScreen = new GameScreen(this.team.numPlayers, this.player.id);
                 team = this.team;
@@ -69,7 +69,17 @@ class LobbyScreen {
                 gameState = 2;
                 return;
             }
-            if(e.players != undefined) {
+            if(e.dataType === 15) {
+                if(player.owner){
+                    this.addAndRemoveBotButton("addbot");
+                }
+            } else if(e.dataType === 16){
+                if(player.owner){
+                    this.addAndRemoveBotButton("removebot");
+                }
+            } else if(e.team != undefined ) {
+                this.team.teamName = e.team.team;
+            } else if(e.players != undefined) {
                 if(e.dataType === -1){
                     console.log("YES" + e.players[0].name + ":" + this.player.username);
                     if(e.players[0].name == this.player.username) {
@@ -185,7 +195,6 @@ class LobbyScreen {
      * @header addAndRemoveBotButton(addOrRemove) | 
 	 */
     addAndRemoveBotButton(addOrRemove) {
-       
         if( addOrRemove == "addbot" ) { // For add bot button
             // #code addBotVar1 javascript 
             var data = JSON.stringify({"action": 1, "lobbyid":this.team.lobbyToken.toLowerCase()})
@@ -197,7 +206,6 @@ class LobbyScreen {
         
         
         } else if( addOrRemove == "removebot" ) { // for remove bot button
-            
             for( var i = this.team.playersInTeam.length-1; i > 0; i-- ) {
                 var player = this.team.playersInTeam[i];
                 if(player.id == -1) {
@@ -384,6 +392,7 @@ class LobbyScreen {
                     player = this.player;
                     mGameScreen.SetupSocket();
                     console.log("ID: " + player.id + " Num players: " + team.numPlayers)
+                    socket.send(JSON.stringify({"type": "14", "team": this.team.teamName, "lobbyid":this.team.lobbyToken.toLowerCase()}));
                     gameState = 2;
                 }
                 break;
