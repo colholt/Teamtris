@@ -131,11 +131,13 @@ public class LobbyManager : WebSocketBehavior
             {
                 lobbies[bot.lobbyID].botCount++;
                 lobbies[bot.lobbyID].numPlayers++;
+                alertLobby(-2, bot.lobbyID, Packets.ADD_BOT);
             }
             else if (bot.action == 0)
             {
                 lobbies[bot.lobbyID].botCount--;
                 lobbies[bot.lobbyID].numPlayers--;
+                alertLobby(-2, bot.lobbyID, Packets.REMOVE_BOT);
             }
         }
         else if (packet.type == Packets.SHAPE_BLUEPRINT)
