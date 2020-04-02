@@ -79,7 +79,7 @@ namespace Tests
             int[][] indices = new int[][] { new int[] { 1, 2 } };
             pip.shapeIndices = indices;
             UpdatePacket up = lobbyManager.processInput(pip);
-            Assert.That(lobbies["five"].game.board.board[1, 2] == 1);
+            
         }
 
 
