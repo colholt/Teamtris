@@ -108,16 +108,17 @@ public class LobbyManager : WebSocketBehavior
             }
             else
             {
+                update.shapeIndices = playerInputPacket.shapeIndices;
                 foreach (int[] pos in playerInputPacket.shapeIndices)
                 {
                     // FREEZE
                     lobbies[playerInputPacket.lobbyID].game.board.board[pos[0], pos[1]] = pos[2];
-                    foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+                }
+                foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+                {
+                    if (player.socketID != ID)
                     {
-                        if (player.socketID != ID)
-                        {
-                            Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
-                        }
+                        Sessions.SendTo(JsonConvert.SerializeObject(update), player.socketID);
                     }
                 }
             }
