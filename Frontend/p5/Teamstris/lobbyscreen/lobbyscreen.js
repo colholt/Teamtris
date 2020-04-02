@@ -70,11 +70,11 @@ class LobbyScreen {
                 return;
             }
             if(e.dataType === 15) {
-                if(player.owner){
-                    this.addAndRemoveBotButton("addbot");
+                if(!player.owner){
+                    this.addAndRemoveBotButton("addbot", false);
                 }
             } else if(e.dataType === 16){
-                if(player.owner){
+                if(!player.owner){
                     this.addAndRemoveBotButton("removebot");
                 }
             } else if(e.team != undefined ) {
@@ -194,11 +194,13 @@ class LobbyScreen {
      * "removebot": Clicked remove bot button |
      * @header addAndRemoveBotButton(addOrRemove) | 
 	 */
-    addAndRemoveBotButton(addOrRemove) {
+    addAndRemoveBotButton(addOrRemove, t = true) {
         if( addOrRemove == "addbot" ) { // For add bot button
             // #code addBotVar1 javascript 
-            var data = JSON.stringify({"action": 1, "lobbyid":this.team.lobbyToken.toLowerCase()})
-            socket.send(JSON.stringify({"type": "7", "data": data}));
+            if(t){
+                var data = JSON.stringify({"action": 1, "lobbyid":this.team.lobbyToken.toLowerCase()})
+                socket.send(JSON.stringify({"type": "7", "data": data}));
+            }
             // |
             /* Make sure that we are not going over 4 players + bots */
             this.newPlayerJoins(new Player(
@@ -209,9 +211,11 @@ class LobbyScreen {
             for( var i = this.team.playersInTeam.length-1; i > 0; i-- ) {
                 var player = this.team.playersInTeam[i];
                 if(player.id == -1) {
+                    if(t){
                     // #code removeBotVar1 javascript 
-                    var data = JSON.stringify({"action": 0, "lobbyid":this.team.lobbyToken.toLowerCase()})
-                    socket.send(JSON.stringify({"type": "7", "data": data}));
+                        var data = JSON.stringify({"action": 0, "lobbyid":this.team.lobbyToken.toLowerCase()})
+                        socket.send(JSON.stringify({"type": "7", "data": data}));
+                    }
                     // |
                     this.playerLeaves(player);
                     break;
