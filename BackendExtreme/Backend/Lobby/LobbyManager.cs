@@ -108,13 +108,57 @@ public class LobbyManager : WebSocketBehavior
             }
             else
             {
+                Lobby lobby = lobbies[playerInputPacket.lobbyID];
+                int[,] board = lobby.game.board.board;
+                int[,] newBoard = new int[board.GetLength(0), board.GetLength(1)];
                 update.shapeIndices = playerInputPacket.shapeIndices;
                 foreach (int[] pos in playerInputPacket.shapeIndices)
                 {
                     // FREEZE
-                    lobbies[playerInputPacket.lobbyID].game.board.board[pos[0], pos[1]] = pos[2];
+                    lobby.game.board.board[pos[0], pos[1]] = pos[2];
                 }
-                foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
+                // check for completed row
+                int rows = board.GetLength(0);
+                int cols = board.GetLength(1);
+
+                // remove the line completed
+                for (int i = rows - 1; i >= 0; i--)
+                {
+                    // check to see if all the columns have a value of 1
+                    bool hasAllFilled = true;
+                    for (int j = 0; j < cols; j++)
+                    {
+                        if (board[i, j] == 0)
+                        {
+                            hasAllFilled = false;
+                            break;
+                        }
+                    }
+
+                    // everything is filled in the row, so need to shift all the rows down by 1
+                    if (hasAllFilled)
+                    {
+                        for (int k = i - 1; k > 0; k--)
+                        {
+                            for (int y = 0; y < cols; y++)
+                            {
+                                board[k + 1, y] = board[k, y];
+                                newBoard[k + 1, y] = newBoard[k, y];
+                            }
+                        }
+
+                        // if first row, just need to replace no need to fill again
+                        for (int j = 0; j < cols; j++)
+                        {
+                            board[0, j] = 0;
+                            newBoard[0, j] = 0;
+                        }
+
+                        i = i + 1;
+                    }
+                }
+                lobby.game.board.board = newBoard;
+                foreach (Player player in lobby.players)
                 {
                     if (player.socketID != ID)
                     {
@@ -154,16 +198,22 @@ public class LobbyManager : WebSocketBehavior
                     //player.currentBlock = sbp.shapeBlueprint;
                 }
             }
-        } 
+        }
         else if (packet.type == Packets.TEAM_NAME)
         {
             // format the packet to be a scors packet with all the team information
             TeamPacket tPacket = JsonConvert.DeserializeObject<TeamPacket>(packet.data);
-            Console.WriteLine("TEAM BANE PACKET");
+
             foreach (Player player in lobbies[tPacket.lobbyid].players)
             {
-                Console.WriteLine("IN THE PLAYER SERALIZE");
-                Sessions.SendTo(JsonConvert.SerializeObject(tPacket), player.socketID);
+                if (player.socketID != ID)
+                {
+                    Sessions.SendTo(JsonConvert.SerializeObject(tPacket), player.socketID);
+                }
+                else
+                {
+                    //player.currentBlock = sbp.shapeBlueprint;
+                }
             }
         }
         else
