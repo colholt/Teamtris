@@ -203,7 +203,7 @@ public class LobbyManager : WebSocketBehavior
             foreach (int[] pos in pip.shapeIndices)
             {
                 // FREEZE
-                lobbies[pip.lobbyID].game.board.board[pos[1], pos[0]] = 1;
+                lobbies[pip.lobbyID].game.board.board[pos[0], pos[1]] = pos[2];
             }
         }
         update.playerID = pip.playerID;
