@@ -70,7 +70,9 @@ class LobbyScreen {
                 gameState = 2;
                 return;
             }
-            if(e.dataType === 15) {
+            if(e.team != undefined){
+                this.team.teamName = e.team;
+            } else if(e.dataType === 15) {
                 if(!player.owner){
                     this.addAndRemoveBotButton("addbot", false);
                 }
@@ -400,7 +402,10 @@ class LobbyScreen {
                     mGameScreen.SetupSocket();
                     console.log("ID: " + player.id + " Num players: " + team.numPlayers)
                     console.log(" numbots: " + (this.playerCards.length - team.numPlayers));
-                    socket.send(JSON.stringify({"type": "14", "team": this.team.teamName, "lobbyid":this.team.lobbyToken.toLowerCase()}));
+                    // var data = JSON.stringify({"lobbyid":this.team.lobbyToken.toLowerCase()})
+                    // socket.send(JSON.stringify({"type": "14", "team": this.team.teamName, "lobbyid":this.team.lobbyToken.toLowerCase()}));
+                    var data = JSON.stringify({"lobbyid":this.team.lobbyToken.toLowerCase(), "team":this.team.teamName })
+                    socket.send(JSON.stringify({"type": "14", "data": data}));
                     gameState = 2;
                 }
                 break;
