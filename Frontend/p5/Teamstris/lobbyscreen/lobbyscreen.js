@@ -81,12 +81,14 @@ class LobbyScreen {
                 } else if(e.dataType === 8){
                     console.log("players:");
                     this.team.playersInTeam = [];
+                    this.playerCards = [];
                     for(var i = 0; i < e.players.length; i++) {
                         var ownerr = false;
                         if(e.players.id == 1) {ownerr = true}
                         var newPlayer = new Player(e.players[i].name, e.players[i].id, ownerr);
-                        if(newPlayer.id == player.id) {
+                        if(e.players[i].name == this.player.username) {
                             this.team.playersInTeam.push(newPlayer)
+                            this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
                         }
                     }
                     for(var i = 0; i < e.players.length; i++){
