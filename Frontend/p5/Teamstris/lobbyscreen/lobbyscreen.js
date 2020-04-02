@@ -62,11 +62,12 @@ class LobbyScreen {
             console.log("HERE WE GO ");
             console.log(e);
             if(e.board != undefined ){
-                mGameScreen = new GameScreen(this.team.numPlayers, this.player.id);
                 team = this.team;
                 player = this.player;
-                console.log("ID: " + player.id + " Num players: " + team.numPlayers)
+                mGameScreen = new GameScreen(this.team.numPlayers, this.player.id, (this.playerCards.length - team.numPlayers));
                 mGameScreen.SetupSocket();
+                console.log("ID: " + player.id + " Num players: " + team.numPlayers)
+                console.log(" numbots: " + (this.playerCards.length - team.numPlayers));
                 gameState = 2;
                 return;
             }
