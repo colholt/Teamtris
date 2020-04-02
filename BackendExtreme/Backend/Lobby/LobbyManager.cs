@@ -131,11 +131,13 @@ public class LobbyManager : WebSocketBehavior
             {
                 lobbies[bot.lobbyID].botCount++;
                 lobbies[bot.lobbyID].numPlayers++;
+                alertLobby(-2, bot.lobbyID, Packets.ADD_BOT);
             }
             else if (bot.action == 0)
             {
                 lobbies[bot.lobbyID].botCount--;
                 lobbies[bot.lobbyID].numPlayers--;
+                alertLobby(-2, bot.lobbyID, Packets.REMOVE_BOT);
             }
         }
         else if (packet.type == Packets.SHAPE_BLUEPRINT)
@@ -236,7 +238,7 @@ public class LobbyManager : WebSocketBehavior
             token = getToken();
         }
         // initialize a new lobby, player, and list of players
-        Lobby newLobby = new Lobby(token, maxPlayers);
+        Lobby newLobby = new Lobby(token, 4); // hard coded max players
         Player newPlayer = new Player(1, name, socketID, socketContext);
         newLobby.players = new List<Player>();
 
@@ -264,7 +266,7 @@ public class LobbyManager : WebSocketBehavior
         if (lobbies.ContainsKey(lobbyID))
         {
             lobby = lobbies[lobbyID];
-            if (lobby.numPlayers < lobby.maxPlayers & lobby.game.current_time - lobby.game.start_time < 500)
+            if (lobby.numPlayers < lobby.maxPlayers)
             {
                 int newPlayerID = lobby.players.Count + 1;
                 lobby.numPlayers += 1;
@@ -363,16 +365,6 @@ public class LobbyManager : WebSocketBehavior
         {
             Send("invalid ID");
             return lobbyInfoPacket;
-        }
-    }
-
-    public void stateUpdate(string lobbyID)
-    {
-        Console.WriteLine("state update for lobby " + lobbyID);
-        Lobby lobby = lobbies[lobbyID];
-        for (int j = 0; j < lobby.players.Count; j++)
-        {
-            // Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
         }
     }
 

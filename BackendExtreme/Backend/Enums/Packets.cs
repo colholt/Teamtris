@@ -14,4 +14,6 @@ public static class Packets
     public static readonly int SHAPE_BLUEPRINT = 11;
     public static readonly int SCORES_DIRECT = 12;
     public static readonly int TEAM_NAME = 14;
+    public static readonly int ADD_BOT  = 15;
+    public static readonly int REMOVE_BOT = 16;
 }
