@@ -392,6 +392,7 @@ public class LobbyManager : WebSocketBehavior
                 lobbyInfoPacket.lobbyID = lobbyID;
                 lobbyInfoPacket.maxPlayers = lobby.maxPlayers;
                 lobbyInfoPacket.dataType = type;
+                lobbyInfoPacket.numBots = lobby.botCount;
                 try
                 {
                     Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
@@ -410,6 +411,7 @@ public class LobbyManager : WebSocketBehavior
             lobbyInfoPacket.lobbyID = lobbyID;
             lobbyInfoPacket.maxPlayers = lobby.maxPlayers;
             lobbyInfoPacket.dataType = type;
+            lobbyInfoPacket.numBots = lobby.botCount;
             return lobbyInfoPacket;
         }
         else
