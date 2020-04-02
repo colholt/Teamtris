@@ -323,6 +323,10 @@ class Shape {
 		if (!team) {
 			return
 		}
+		if (action == "freeze") {
+			console.log("SENDING FREEZE TO SERVER")
+		}
+		
         var data = JSON.stringify({"lobbyID":team.lobbyToken.toLowerCase(),"playerID":ID,"shapeIndices": boardIndices, "move": action})
         socket.send(JSON.stringify({"type": "6", "data": data}))
 	}
