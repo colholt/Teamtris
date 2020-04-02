@@ -126,6 +126,11 @@ public class LobbyManager : WebSocketBehavior
                     lobby.game.board.board[pos[0], pos[1]] = pos[2];
                 }
                 lobby.game.board.board = board;
+                Prints prints = new Prints();
+                Console.WriteLine("LOBBY BOARD");
+                prints.PrintMultiDimArr(lobby.game.board.board);
+                Console.WriteLine("NEW BOARD CREATED");
+                prints.PrintMultiDimArr(newBoard);
                 // check for completed row
                 int rows = board.GetLength(0);
                 int cols = board.GetLength(1);
@@ -167,11 +172,7 @@ public class LobbyManager : WebSocketBehavior
                     }
                 }
                 lobby.game.board.board = newBoard;
-                Prints prints = new Prints();
-                Console.WriteLine("LOBBY BOARD");
-                prints.PrintMultiDimArr(lobby.game.board.board);
-                Console.WriteLine("NEW BOARD CREATED");
-                prints.PrintMultiDimArr(newBoard);
+
                 foreach (Player player in lobby.players)
                 {
                     if (player.socketID != ID)
