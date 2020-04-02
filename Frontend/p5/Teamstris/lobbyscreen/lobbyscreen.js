@@ -119,6 +119,9 @@ class LobbyScreen {
                             this.newPlayerJoins(newPlayer)
                         }
                     }
+                    for(var i = 0; i < e.numBots; i++){
+                        this.addAndRemoveBotButton("addbot", false)
+                    }
                 }
             } else if(e.lobbyID !== undefined) { 
                 this.team.lobbyToken = e.lobbyID.toUpperCase();
