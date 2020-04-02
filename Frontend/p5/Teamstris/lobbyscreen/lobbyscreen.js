@@ -97,7 +97,7 @@ class LobbyScreen {
                             console.log("My name is " + e.players[i].name)
                             this.player.id = e.players[i].id
                             this.team.numPlayers = e.players.length
-                            this.team.playersInTeam.push(newPlayer)
+                            // this.team.playersInTeam.push(newPlayer)
                         } else {
                             console.log("his name is " + e.players[i].name)
                             this.newPlayerJoins(newPlayer)
