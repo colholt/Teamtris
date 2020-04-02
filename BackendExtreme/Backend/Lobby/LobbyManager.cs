@@ -152,6 +152,23 @@ public class LobbyManager : WebSocketBehavior
                     //player.currentBlock = sbp.shapeBlueprint;
                 }
             }
+        } 
+        else if (packet.type == Packets.TEAM_NAME)
+        {
+            // format the packet to be a scors packet with all the team information
+            TeamPacket tPacket = JsonConvert.DeserializeObject<TeamPacket>(packet.data);
+
+            foreach (Player player in lobbies[tPacket.lobbyid].players)
+            {
+                if (player.socketID != ID)
+                {
+                    Sessions.SendTo(JsonConvert.SerializeObject(tPacket), player.socketID);
+                }
+                else
+                {
+                    //player.currentBlock = sbp.shapeBlueprint;
+                }
+            }
         }
         else
         {
