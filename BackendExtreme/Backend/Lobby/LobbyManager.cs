@@ -109,6 +109,13 @@ public class LobbyManager : WebSocketBehavior
             else
             {
                 Lobby lobby = lobbies[playerInputPacket.lobbyID];
+
+                update.shapeIndices = playerInputPacket.shapeIndices;
+                foreach (int[] pos in playerInputPacket.shapeIndices)
+                {
+                    // FREEZE
+                    lobby.game.board.board[pos[0], pos[1]] = pos[2];
+                }
                 int[,] board = lobby.game.board.board;
                 int[,] newBoard = new int[board.GetLength(0), board.GetLength(1)];
 
@@ -119,13 +126,6 @@ public class LobbyManager : WebSocketBehavior
                         newBoard[i, j] = board[i, j];
                     }
                 }
-                update.shapeIndices = playerInputPacket.shapeIndices;
-                foreach (int[] pos in playerInputPacket.shapeIndices)
-                {
-                    // FREEZE
-                    lobby.game.board.board[pos[0], pos[1]] = pos[2];
-                }
-                lobby.game.board.board = board;
                 Prints prints = new Prints();
                 Console.WriteLine("LOBBY BOARD");
                 prints.PrintMultiDimArr(lobby.game.board.board);
