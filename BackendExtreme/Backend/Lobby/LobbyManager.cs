@@ -247,7 +247,7 @@ public class LobbyManager : WebSocketBehavior
         if (lobbies.ContainsKey(lobbyID))
         {
             lobby = lobbies[lobbyID];
-            if (lobby.numPlayers < lobby.maxPlayers & lobby.game.current_time - lobby.game.start_time < 500)
+            if (lobby.numPlayers < lobby.maxPlayers)
             {
                 int newPlayerID = lobby.players.Count + 1;
                 lobby.numPlayers += 1;
