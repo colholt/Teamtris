@@ -219,7 +219,7 @@ public class LobbyManager : WebSocketBehavior
             token = getToken();
         }
         // initialize a new lobby, player, and list of players
-        Lobby newLobby = new Lobby(token, maxPlayers);
+        Lobby newLobby = new Lobby(token, 4); // hard coded max players
         Player newPlayer = new Player(1, name, socketID, socketContext);
         newLobby.players = new List<Player>();
 
@@ -346,16 +346,6 @@ public class LobbyManager : WebSocketBehavior
         {
             Send("invalid ID");
             return lobbyInfoPacket;
-        }
-    }
-
-    public void stateUpdate(string lobbyID)
-    {
-        Console.WriteLine("state update for lobby " + lobbyID);
-        Lobby lobby = lobbies[lobbyID];
-        for (int j = 0; j < lobby.players.Count; j++)
-        {
-            // Sessions.SendTo(JsonConvert.SerializeObject(lobbyInfoPacket), lobby.players[j].socketID);
         }
     }
 
