@@ -2,7 +2,7 @@
   * @classDesc A grouping of squares, used for simplifying moving/rotating shapes
   */
 class Shape {
-	constructor (ID, ShapeBlueprint=null, Color="rand") {
+	constructor (ID, ShapeBlueprint=null, Color="rand", time=1) {
 		// ID of the player who 'owns' this square
 		this.ID = ID
 
@@ -13,7 +13,7 @@ class Shape {
 		// blueprint of the shape
 		if (ShapeBlueprint == null) {
 			this.BlueprintDimensions = 4;
-			this.ShapeBlueprint = this.GenerateRandomShape()
+			this.ShapeBlueprint = this.GenerateRandomShape(time)
 		} else {
 			this.BlueprintDimensions = ShapeBlueprint.length;
 			this.ShapeBlueprint = ShapeBlueprint
@@ -352,7 +352,7 @@ class Shape {
      * 
      * @return shape blueprint (2D array)
      */
-	GenerateRandomShape(eps=0.5, max=4) {
+	GenerateRandomShape(gameTime=1, eps=0.5, max=4) {
 		var randShape = new Array(this.BlueprintDimensions)
         for (var r = 0; r < this.BlueprintDimensions; r++) {
             randShape[r] = new Array(this.BlueprintDimensions).fill(0)
@@ -360,8 +360,8 @@ class Shape {
 
 		// get the size of the shape we will generate
 		//var shapeSizes = [1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,8,8,9,9,10]
-		var shapeSizes = [2,3,4]
-		var count = shapeSizes[Math.floor(Math.random() * shapeSizes.length)]
+		var shapeSizes = [2,2,2,3,3,3,4,4,5,5,6,6]
+		var count = shapeSizes[Math.max(Math.floor(Math.random() * shapeSizes.length) * (Math.log10(gameTime / 1000.0)),shapeSizes.length-1)]
 		
 		var curri = Math.min(Math.floor(Math.random() * this.BlueprintDimensions),this.BlueprintDimensions-1)
 		var currj = Math.min(Math.floor(Math.random() * this.BlueprintDimensions),this.BlueprintDimensions-1)
