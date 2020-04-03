@@ -61,7 +61,7 @@ class LobbyScreen {
             var e = JSON.parse(event.data);
             console.log("HERE WE GO ");
             console.log(e);
-            if(e.board != undefined ){
+            if(e.board != undefined ) {
                 team = this.team;
                 player = this.player;
                 mGameScreen = new GameScreen(this.team.numPlayers, this.player.id, (this.playerCards.length - team.numPlayers));
@@ -71,7 +71,7 @@ class LobbyScreen {
                 gameState = 2;
                 return;
             }
-            if(e.team != undefined){
+            if(e.team != undefined) {
                 this.team.teamName = e.team;
             } else if(e.dataType === 15) {
                 if(!player.owner){

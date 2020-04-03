@@ -966,24 +966,24 @@ async function testPowerCubeCol() {
 async function testRunnerSetupStartScreen() {
     /* Start screen tests*/
     mStartScreen = new startScreen[0];
-    // await testDefaultUsername();
-    // await testDefaultTokenValue();
-    // await testCheckInitStartScreenValues();
-    // await testCheckTitlePosAfterTwoDraw();
-    // await testChangeUserUsername();
-    // await testChangeMaxUsername();
-    // await testDeleteUsername();
-    // await testCheckSpecialChars();
+    await testDefaultUsername();
+    await testDefaultTokenValue();
+    await testCheckInitStartScreenValues();
+    await testCheckTitlePosAfterTwoDraw();
+    await testChangeUserUsername();
+    await testChangeMaxUsername();
+    await testDeleteUsername();
+    await testCheckSpecialChars();
     // await testHighScoreButton();
-    // await testCreateGameButton();
-    // await testJoinLobbyButton();
+    await testCreateGameButton();
+    await testJoinLobbyButton();
     /* End start screen tests */
 
     /* Lobby Screen tests */
-    // await testCheckLobbyInitValues();
-    // await testCheckTokenIsBeingDisplayed();
-    // await testAddAndRemoveBotsFromLobby();
-    // await checkPlayCardValues();
+    await testCheckLobbyInitValues();
+    await testCheckTokenIsBeingDisplayed();
+    await testAddAndRemoveBotsFromLobby();
+    await checkPlayCardValues();
 
     class mockSocketGameScreen{
         constructor(){
