@@ -361,7 +361,7 @@ class Shape {
 		// get the size of the shape we will generate
 		//var shapeSizes = [1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,8,8,9,9,10]
 		var shapeSizes = [2,2,2,3,3,3,4,4,5,5]
-		var count = shapeSizes[Math.max(Math.floor(Math.random() * shapeSizes.length) + (Math.log10(gameTime)),shapeSizes.length-1)]
+		var count = shapeSizes[Math.max(Math.floor(Math.random() * shapeSizes.length) + (Math.floor(Math.log10(gameTime))),shapeSizes.length-1)]
 		
 		var curri = Math.min(Math.floor(Math.random() * this.BlueprintDimensions),this.BlueprintDimensions-1)
 		var currj = Math.min(Math.floor(Math.random() * this.BlueprintDimensions),this.BlueprintDimensions-1)
