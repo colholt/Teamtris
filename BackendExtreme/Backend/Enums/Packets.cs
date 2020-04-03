@@ -16,5 +16,6 @@ public static class Packets
     public static readonly int TEAM_NAME = 14;
     public static readonly int ADD_BOT  = 15;
     public static readonly int REMOVE_BOT = 16;
+    public static readonly int POS_UPDATE = 69;
     public static readonly int GAME_END = 666;
 }

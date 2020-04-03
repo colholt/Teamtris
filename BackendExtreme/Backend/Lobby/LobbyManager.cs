@@ -239,6 +239,17 @@ public class LobbyManager : WebSocketBehavior
                 Sessions.SendTo(JsonConvert.SerializeObject(end), player.socketID);
             }
         }
+        else if (packet.type == Packets.POS_UPDATE)
+        {
+            PositionPacket pp = JsonConvert.DeserializeObject<PositionPacket>(packet.data);
+            foreach (Player player in lobbies[pp.lobbyID].players)
+            {
+                if (player.socketID == ID)
+                {
+                    player.currentBlockPosition = pp.shapeIndices;
+                }
+            }
+        }
         else
         {
             Console.WriteLine("bad packet");
