@@ -896,6 +896,67 @@ function randomShapeHelper(arr,i,j) {
     }
 }
 
+async function testPowerCubeArea() {
+    mGameScreen = new GameScreen();
+    var gameArr = mGameScreen.GameArray.arr
+    // set bottom two rows to squares
+    for (var i = 0; i < gameArr[0].length; i++) {
+        gameArr[gameArr.length-2][i].SetFrozen(1);
+        gameArr[gameArr.length-1][i].SetFrozen(1);
+    }
+
+    // set one square to be the destroy area power cube
+    gameArr[gameArr.length-1][gameArr[0].length-2].SetFrozen(3)
+    //gameArr[gameArr.length-1][gameArr.length[0]-2].SetPowerCube(3)
+    // remove the bottom row
+    mGameScreen.GameArray.RemoveRow(gameArr.length-1)
+
+    for (var i = gameArr[0].length-2-2; i < gameArr[0].length-2+2; i++) {
+
+        CheckSame(gameArr[gameArr.length-2][i].IsEmpty(),true,"RemovedAreaCube" + i)
+
+    }
+}
+
+async function testPowerCubeCol() {
+    mGameScreen = new GameScreen();
+    var gameArr = mGameScreen.GameArray.arr
+    // set bottom two rows to squares
+    for (var i = 0; i < gameArr[0].length; i++) {
+        gameArr[gameArr.length-2][i].SetFrozen(1);
+        gameArr[gameArr.length-1][i].SetFrozen(1);
+    }
+
+    // set one square to be the destroy area power cube
+    gameArr[gameArr.length-1][gameArr[0].length-2].SetFrozen(2)
+    
+    // remove the bottom row
+    mGameScreen.GameArray.RemoveRow(gameArr.length-1)
+
+    // check the above column has been removed
+    CheckSame(gameArr[gameArr.length-2][gameArr[0].length-2].IsEmpty(), true, "RemovedColCube" + (gameArr[0].length-2))
+
+    for (var i = 0; i < gameArr.length; i++) {
+        for (var j = 0; j < gameArr[0].length; j++) {
+            gameArr[i][j].SetFrozen(1)
+        }
+    }
+
+    for (var i = 0; i < gameArr[0].length; i++) {
+        gameArr[gameArr.length-1][i].SetFrozen(2);
+    }
+
+    // remove the bottom row
+    mGameScreen.GameArray.RemoveRow(gameArr.length-1)
+
+    // check to make sure the entire board is clear
+    for (var i = 0; i < gameArr.length; i++) {
+        for (var j = 0; j < gameArr[0].length; j++) {
+            CheckSame(gameArr[i][j].IsEmpty(), true, "RemovedCube" + (i) + "_" + (j))
+        }
+    }
+}
+
 /**
  * #function FrontendTests::testRunnerSetupStartScreen |
  * @author Steven Dellamore, Richard Hansen |
@@ -931,10 +992,12 @@ async function testRunnerSetupStartScreen() {
         send(x) {
             var e = JSON.parse(x);
             var d = JSON.parse(e.data);
-            if (x != null) {
-                CheckSame(1,1,"ServerReceiving_" + d.move.toUpperCase() + "_" + this.callNumber)
-            } else {
-                CheckSame(0,1,"ServerReceiving_" + d.move.toUpperCase() + "_" + this.callNumber)
+            if (d.type == 6) {
+                if (x != null) {
+                    CheckSame(1,1,"ServerReceiving_" + d.move.toUpperCase() + "_" + this.callNumber)
+                } else {
+                    CheckSame(0,1,"ServerReceiving_" + d.move.toUpperCase() + "_" + this.callNumber)
+                }
             }
             this.callNumber += 1
         }
@@ -952,6 +1015,8 @@ async function testRunnerSetupStartScreen() {
     await testNewSquare();
     await testNumberOfPlayers();
     await testRandomGeneratedShapes();
+    await testPowerCubeArea();
+    await testPowerCubeCol();
     /* End Game Screen tests*/
 
     await integrationTest1();
