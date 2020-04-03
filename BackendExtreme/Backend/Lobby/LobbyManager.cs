@@ -234,9 +234,12 @@ public class LobbyManager : WebSocketBehavior
         else if (packet.type == Packets.GAME_END)
         {
             EndPacket end = JsonConvert.DeserializeObject<EndPacket>(packet.data);
-            foreach (Player player in lobbies[end.lobbyID].players)
+            if (checkGameEnd(end))
             {
-                Sessions.SendTo(JsonConvert.SerializeObject(end), player.socketID);
+                foreach (Player player in lobbies[end.lobbyID].players)
+                {
+                    Sessions.SendTo(JsonConvert.SerializeObject(end), player.socketID);
+                }
             }
         }
         else if (packet.type == Packets.POS_UPDATE)
@@ -323,6 +326,18 @@ public class LobbyManager : WebSocketBehavior
 
         Console.WriteLine(maxPlayers + name + id);
         Console.WriteLine("sending new lobby");
+    }
+    /**
+     * #function LobbyManager::checkGameEnd |
+     * @author columbus |
+	 * @desc determines whether or not the game has ended after receiving valid input from client |
+     * @header public bool checkGameEnd(EndPacket ep) | 
+	 * @param EndPacket ep : received EndPacket |
+	 * @returns bool ep : asserts whether or not the game has ended |
+	 */
+    public bool checkGameEnd(EndPacket ep)
+    {
+        return ep != null;
     }
 
     public LobbyInfoPacket joinLobby(string lobbyID, int playerID, string name, string socketID)

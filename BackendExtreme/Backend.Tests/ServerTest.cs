@@ -79,7 +79,14 @@ namespace Tests
             int[][] indices = new int[][] { new int[] { 1, 2 } };
             pip.shapeIndices = indices;
             UpdatePacket up = lobbyManager.processInput(pip);
-            
+        }
+
+        [Test]
+        public void EndGameDetection()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null, "five");
+            EndPacket endPacket = new EndPacket();
+            Assert.That(lobbyManager.checkGameEnd(endPacket) == true);
         }
 
 
@@ -122,7 +129,7 @@ namespace Tests
         [Test]
         public void ScoreInfoWithThreePlayers()
         {
-           String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\", \"Player3\"],\"teamScore\":3,\"timePlayed\":50}";
+            String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\", \"Player3\"],\"teamScore\":3,\"timePlayed\":50}";
             ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
 
             ScoresInfo scoresInfo = scoresManager.CreateScoresInfo(sPacket);
@@ -140,13 +147,13 @@ namespace Tests
         [Test]
         public void ScoreInfoWithAllPlayers()
         {
-           String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\", \"Player3\", \"Player4\"],\"teamScore\":3,\"timePlayed\":50}";
-        //    {
-        //     "teamName":"Team1",
-        //     "playerNames":["Player1", "Player2", "Player3", "Player4"],
-        //     "teamScorw":3,
-        //     "timePlayed":50
-        //     }
+            String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\", \"Player3\", \"Player4\"],\"teamScore\":3,\"timePlayed\":50}";
+            //    {
+            //     "teamName":"Team1",
+            //     "playerNames":["Player1", "Player2", "Player3", "Player4"],
+            //     "teamScorw":3,
+            //     "timePlayed":50
+            //     }
             ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
 
             ScoresInfo scoresInfo = scoresManager.CreateScoresInfo(sPacket);
@@ -154,7 +161,7 @@ namespace Tests
             Assert.That(scoresInfo.playerNames.Count, Is.EqualTo(4));
             Assert.That(scoresInfo.teamName, Is.EqualTo("Team1"));
             Assert.That(scoresInfo.teamScore, Is.EqualTo(3));
-            Assert.That(scoresInfo.timePlayed, Is.EqualTo(50)); 
+            Assert.That(scoresInfo.timePlayed, Is.EqualTo(50));
             Assert.That(scoresInfo.playerNames[0], Is.EqualTo("Player1"));
             Assert.That(scoresInfo.playerNames[1], Is.EqualTo("Player2"));
             Assert.That(scoresInfo.playerNames[2], Is.EqualTo("Player3"));
