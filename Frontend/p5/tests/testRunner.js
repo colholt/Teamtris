@@ -735,6 +735,8 @@ async function testFourRotate() {
                 CheckSame(0,1,"TestFourRotate")
             }
         }
+        if(lol) await new Promise(r => setTimeout(r, 200));
+
     }
     CheckSame(1,1, "TestFourRotate")
 }
@@ -786,6 +788,8 @@ async function testMove() {
     CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,temp_row+2, "testMoveRRRLLDD")
     mGameScreen.keyPressedGame()
     CheckSame(mGameScreen.GameArray.ShapeArray[0].Squares[0].i,temp_row+3, "testMoveRRRLLDDD")
+   
+    if(lol) await new Promise(r => setTimeout(r, 200));
 
     mGameScreen.GameArray.ForceChangeShape(1, custom_shape,17,0,false)
     temp_row = mGameScreen.GameArray.ShapeArray[0].Squares[0].i
@@ -869,6 +873,7 @@ async function testRandomGeneratedShapes() {
             }
         }
     }
+    if(lol) await new Promise(r => setTimeout(r, 200));
 
     var tests = 0
     for (var i = 0; i < randArr.length; i++) {
@@ -954,6 +959,7 @@ async function testPowerCubeCol() {
         for (var j = 0; j < gameArr[0].length; j++) {
             CheckSame(gameArr[i][j].IsEmpty(), true, "RemovedCube" + (i) + "_" + (j))
         }
+        if(lol) await new Promise(r => setTimeout(r, 200));
     }
 }
 
