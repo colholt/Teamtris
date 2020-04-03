@@ -338,6 +338,10 @@ public class LobbyManager : WebSocketBehavior
             lobby = lobbies[lobbyID];
             if (lobby.numPlayers < lobby.maxPlayers)
             {
+                if (lobby.lobbyState == LobbyState.PLAYING && lobby.game.current_time > 5)
+                {
+                    return (LobbyInfoPacket)null;
+                }
                 int newPlayerID = lobby.players.Count + 1;
                 lobby.numPlayers += 1;
                 Player newPlayer = new Player(newPlayerID, name, socketID, Context.WebSocket);
@@ -360,7 +364,7 @@ public class LobbyManager : WebSocketBehavior
             }
             else
             {
-                if (lobby.botCount > 0)
+                if (lobby.botCount > 0 && lobby.lobbyState != LobbyState.PLAYING)
                 {
                     lobbies[lobbyID].botCount--;
                     lobbies[lobbyID].numPlayers--;
