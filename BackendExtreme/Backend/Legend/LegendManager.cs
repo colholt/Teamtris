@@ -29,7 +29,9 @@ public class LegendManager : WebSocketBehavior
     }
 
     public void CreateLegend() {
-        
+        LegendPacket legendPacket = new LegendPacket();
+        var convertedInfo = JsonConvert.SerializeObject(legendPacket);
+        Send(convertedInfo);
     }
  
 }
