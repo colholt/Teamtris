@@ -1,0 +1,97 @@
+using System;
+using WebSocketSharp;
+using WebSocketSharp.Server;
+using System.Threading;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.IO;
+using System.Text;
+
+
+public class ShareManager : WebSocketBehavior
+{
+    private Thread thread;
+    private int count;
+    private string bean;
+
+    public ShareManager(){}
+
+    protected override void OnOpen()
+    {
+        Console.WriteLine("share info recieved");
+    }
+
+    protected override void OnMessage(MessageEventArgs e)
+    {
+        Console.WriteLine(e.Data);
+        Packet packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+        string socketID = ID;
+
+        // get the packet with the information that is needed to lookup in the db
+        SharePacket sharePacket = JsonConvert.DeserializeObject<SharePacket>(packet.data);
+        Tuple<List<ScoresInfo>, ScoresInfo> filledInfo = FillScoresInfo(sharePacket.teamName); 
+
+        CreateDetails(filledInfo);
+    }
+
+    public Tuple<List<ScoresInfo>, ScoresInfo> FillScoresInfo(string teamName) {
+        Tuple<List<ScoresInfo>, ScoresInfo> retrievedInfo = SQLConnection.GetTopTeamsAndCurrentTeam(teamName);
+        return retrievedInfo;
+    }
+
+    public void CreateDetails(Tuple<List<ScoresInfo>, ScoresInfo> filledInfo) {
+        ScoresInfo myTeam = filledInfo.Item2;
+        string teamName = myTeam.teamName;
+        int score = myTeam.teamScore;
+        string scoreInfo = "Best achieving score: " + score;
+
+        PointF firstLocation = new PointF(120f, 200f);
+        PointF secondLocation = new PointF(120f, 240f);
+
+        Bitmap bitmap = new System.Drawing.Bitmap("canvas.png");
+
+        using(Graphics graphics = Graphics.FromImage(bitmap))
+        {
+            using (Font arialFont =  new Font("Arial", 20))
+            {
+                graphics.DrawString(teamName, arialFont, Brushes.Red, firstLocation);
+                int i = teamName.Length;
+                while(i < scoreInfo.Length - 2) {
+                    graphics.DrawString(".", arialFont, Brushes.Red, new PointF((120 + teamName.Length * 8) + (10 * i), 200f));
+                    i++;
+                }
+                graphics.DrawString(scoreInfo, arialFont, Brushes.Blue, secondLocation);
+            }
+        }
+
+        // string imageFilePath = "canvas.bmp";
+        // string outputFileName = imageFilePath;
+        // using (MemoryStream memory = new MemoryStream())
+        // {
+        //     using (FileStream fs = new FileStream(outputFileName, FileMode.Create, FileAccess.ReadWrite))
+        //     {
+        //         bitmap.Save(memory, ImageFormat.Jpeg);
+        //         byte[] bytes = memory.ToArray();
+        //         fs.Write(bytes, 0, bytes.Length);
+        //     }
+        // }
+
+        
+        Bitmap bImage = bitmap;
+        System.IO.MemoryStream ms = new MemoryStream();
+        bImage.Save(ms, ImageFormat.Jpeg);
+        byte[] byteImage = ms.ToArray();
+        var encodedImage= Convert.ToBase64String(byteImage); 
+
+        ImgPacket imgPacket= new ImgPacket();
+        imgPacket.data = encodedImage;
+        var convertedInfo = JsonConvert.SerializeObject(imgPacket);
+        Send(convertedInfo);
+    }
+}
+
+    

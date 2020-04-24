@@ -706,6 +706,8 @@ namespace Tests
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -796,6 +798,8 @@ namespace Tests
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -887,6 +891,8 @@ namespace Tests
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -978,6 +984,8 @@ namespace Tests
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -1069,6 +1077,8 @@ namespace Tests
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -1161,6 +1171,8 @@ namespace Tests
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -1251,7 +1263,9 @@ namespace Tests
 
                 List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
-
+                
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -1261,6 +1275,99 @@ namespace Tests
                 int[,] expectedBoard = new int[,]{
                     {3, 3, 3, 3, 2, 2, 2, 0},
                     {1, 1, 1, 1, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 0, 0, 0, 0, 0},
+                    {1, 1, 1, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {0, 1, 0, 1, 1, 1, 1, 1},
+                    {0, 0, 1, 1, 1, 1, 1, 1}
+                };
+
+                Assert.That(allBoards.Item2, Is.EqualTo(expectedBoard));
+
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {1, 1, 0, 1, 1, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1, 1, 1}
+                };
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved " + e.Message);
+            }        
+        }
+
+
+         /*
+            Assert that the formation with the best shape is chosen
+        */
+        [Test]
+        public void ShapePlacement8() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------DOUBLE BOT SHAPE PLACEMENT 8-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {1, 1, 1, 1, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 0, 0, 0, 0, 0},
+                    {1, 1, 1, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {0, 1, 0, 1, 1, 1, 1, 1},
+                    {0, 0, 1, 1, 1, 1, 1, 1}
+                };
+
+                List<Block> newBlocksBot1 = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block bot1Block = new Block(b1, 1);
+                newBlocksBot1.Add(bot1Block);
+                TestContext.Progress.Write("Bot 1 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot1[0].data, false);
+
+                List<Block> newBlocksBot2 = new List<Block>();
+                int[][] b2 = new int[][] {
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {1, 1, 1, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    
+                };
+                Block bot2Block = new Block(b2, 1);
+                newBlocksBot2.Add(bot2Block);
+                TestContext.Progress.Write("Bot 2 Block");
+                botInfoPrinter.PrintJaggedArr(newBlocksBot2[0].data, false);
+
+                List<List<Block>> allB = new List<List<Block>>();
+                allB.Add(newBlocksBot1);
+                allB.Add(newBlocksBot2);
+                List<List<Tuple<int, int>>> piecePlaced = bot.GetMove(game.board, allB); 
+
+                List<Tuple<int, int>> bot1Pieces = piecePlaced[0];
+                List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
+                
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
+                Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
+                game.board.board = allBoards.Item2;
+                allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
+                TestContext.Progress.Write("Board AFTER bots placed");
+                botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+
+                int[,] expectedBoard = new int[,]{
+                    {2, 2, 2, 0, 0, 0, 0, 0},
+                    {1, 1, 1, 1, 3, 1, 1, 1},
                     {1, 0, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 0, 0, 0, 0, 0},
                     {1, 1, 1, 0, 0, 0, 1, 1},

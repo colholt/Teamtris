@@ -723,6 +723,8 @@ namespace Tests
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
                 List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -829,6 +831,8 @@ namespace Tests
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
                 List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -936,6 +940,8 @@ namespace Tests
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
                 List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -1043,6 +1049,8 @@ namespace Tests
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
                 List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -1151,6 +1159,8 @@ namespace Tests
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
                 List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
@@ -1259,6 +1269,8 @@ namespace Tests
                 List<Tuple<int, int>> bot2Pieces = piecePlaced[1];
                 List<Tuple<int, int>> bot3Pieces = piecePlaced[2];
 
+                TestContext.Progress.Write("Board BEFORE bots placed");
+                botInfoPrinter.PrintMultiDimArr(game.board.board, false);
                 Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, bot1Pieces, 2, false);
                 game.board.board = allBoards.Item2;
                 allBoards = PlacePieceOnBoard(game.board.board, bot2Pieces, 3, false);
