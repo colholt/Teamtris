@@ -423,6 +423,43 @@ class Shape {
 	}
 
 	/** 
+     * @description Draws the shape blueprint
+	 * 
+     * @return Void
+     */
+	DrawOnSidebar(SquareEdgeLength) {
+		push();
+        noFill();
+        stroke("orange")
+        strokeWeight(2)
+		rect(0, 0, 4*SquareEdgeLength, 4*SquareEdgeLength)
+		pop();
+
+		// draw each part of the shape blueprint
+		for (var i = 0; i < this.ShapeBlueprint.length; i++) {
+			for (var j = 0; j < this.ShapeBlueprint[0].length; j++) {
+				this.DrawSquare(i, j , this.Color, this.ShapeBlueprint[i][j], SquareEdgeLength);
+			}
+		}
+	}
+
+	/** 
+     * @description Sets the necessary variables to draw a square not on the board.
+	 * 
+     * @return Void
+     */
+	DrawSquare(row, col, color, cubeType, edgeLength) {
+
+		if (cubeType == 0) {return}
+
+		var tempSquare = new Square(edgeLength, -1, color);
+		tempSquare.SetPowerCube(cubeType);
+		tempSquare.i = row;
+		tempSquare.j = col;
+		tempSquare.Draw()
+	}
+
+	/** 
      * @description Used for testing
 	 * 
      * @return 2D array
