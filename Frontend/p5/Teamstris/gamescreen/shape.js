@@ -427,13 +427,16 @@ class Shape {
 	 * 
      * @return Void
      */
-	DrawOnSidebar(SquareEdgeLength) {
-		push();
-        noFill();
-        stroke("orange")
-        strokeWeight(2)
-		rect(0, 0, 4*SquareEdgeLength, 4*SquareEdgeLength)
-		pop();
+	DrawShape(SquareEdgeLength, ghost=false) {
+		if (!ghost) {
+			push();
+			noFill();
+			stroke("orange")
+			strokeWeight(2)
+			rect(0, 0, 4*SquareEdgeLength, 4*SquareEdgeLength)
+			pop();
+		}
+		
 
 		// draw each part of the shape blueprint
 		for (var i = 0; i < this.ShapeBlueprint.length; i++) {
@@ -448,7 +451,7 @@ class Shape {
 	 * 
      * @return Void
      */
-	DrawSquare(row, col, color, cubeType, edgeLength) {
+	DrawSquare(row, col, color, cubeType, edgeLength, alpha=255) {
 
 		if (cubeType == 0) {return}
 
@@ -456,7 +459,13 @@ class Shape {
 		tempSquare.SetPowerCube(cubeType);
 		tempSquare.i = row;
 		tempSquare.j = col;
-		tempSquare.Draw()
+		tempSquare.Draw(alpha)
+	}
+
+	DrawAtOffset(alpha, SquareEdgeLength, rowOffset, colOffset=0) {
+		for (var i = 0; i < this.Squares.length; i++) {
+			this.DrawSquare(this.Squares[i].i + rowOffset, this.Squares[i].j, this.Color, this.Squares[i].PowerCubeType, SquareEdgeLength, alpha);
+		}
 	}
 
 	/** 

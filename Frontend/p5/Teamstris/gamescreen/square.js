@@ -172,14 +172,16 @@ class Square {
 	 * 
      * @return void
      */
-	Draw() {
+	Draw(alpha=255) {
 		push();
 		stroke("silver")
 		strokeWeight(1)
 		if (this.ID == 0) {
 			noFill()
 		} else {
-			fill(this.Color)
+			let c = color(this.Color)
+			c.setAlpha(alpha)
+			fill(c)
 		}
 		rect(this.j * this.SquareEdgeLength, this.i * this.SquareEdgeLength, this.SquareEdgeLength, this.SquareEdgeLength)
 		//console.log(this.PowerCubeType)
