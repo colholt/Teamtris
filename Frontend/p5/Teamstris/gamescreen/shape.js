@@ -462,9 +462,14 @@ class Shape {
 		tempSquare.Draw(alpha)
 	}
 
+	/** 
+     * @description Draws the shape at the provided offset and opacity
+	 * 
+     * @return Void
+     */
 	DrawAtOffset(alpha, SquareEdgeLength, rowOffset, colOffset=0) {
 		for (var i = 0; i < this.Squares.length; i++) {
-			this.DrawSquare(this.Squares[i].i + rowOffset, this.Squares[i].j, this.Color, this.Squares[i].PowerCubeType, SquareEdgeLength, alpha);
+			this.DrawSquare(this.Squares[i].i + rowOffset, this.Squares[i].j + colOffset, this.Color, this.Squares[i].PowerCubeType, SquareEdgeLength, alpha);
 		}
 	}
 
