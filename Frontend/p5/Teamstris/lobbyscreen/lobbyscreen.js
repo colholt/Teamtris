@@ -31,7 +31,7 @@ class LobbyScreen {
         this.botNames = ["Arnold", "Steve", "John"];
         this.numBots = 0;
         this.playerCards = [];
-        this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
+        this.playerCards.push(new PlayerCard(this.player, windowWidth/7, (windowHeight/3), 1, windowHeight/60));
         /** @todo. Make the L in lobby fall with this thing! */
         // this.titleAnimation = [300, 500, 400, 700] //drops the peices 
         if(this.player.owner == true) { // If the player is the owner, we need to ask for the token
@@ -102,7 +102,9 @@ class LobbyScreen {
                         var newPlayer = new Player(e.players[i].name, e.players[i].id, ownerr);
                         if(e.players[i].name == this.player.username) {
                             this.team.playersInTeam.push(newPlayer)
-                            this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
+                            this.newPlayerJoins(this.player)
+                            // this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
+                            // this.playerCards.push(new PlayerCard(player, windowWidth/7, (windowHeight/3 + 2*diff), 1, windowHeight/60));
                         }
                     }
                     for(var i = 0; i < e.players.length; i++){
@@ -177,14 +179,13 @@ class LobbyScreen {
         } else {
             this.playerCards.forEach(playerCard => {
                 playerCard.draw();
-                if(playerCard.player != this.player) { // checking to see if this playerCard is me
+                // if(playerCard.player != this.player) { // checking to see if this playerCard is me
                     playerCard.drawUsername();
-                }
+                // }
             });
             Buttonloop();
         }
     }
-
 
     /**
      * #function LobbyScreen::addAndRemoveBotButton |
@@ -304,20 +305,24 @@ class LobbyScreen {
         console.log("New player joined! " + this.team.playersInTeam.length);
         if((this.team.playersInTeam.length) == 4) return false;
         this.team.playersInTeam.push(player);
+        var diff = windowHeight/15;
         switch(this.team.playersInTeam.length) {
             case 2: 
+                console.log("2");
                 // #code playerCardExp javascript
                 // add a new playercard to the playerCard array
                 this.playerCards.push(
                     new PlayerCard(
-                        player, windowWidth/6, (windowHeight/4), .6, windowHeight/60));
+                        player, windowWidth/7, (windowHeight/3 + diff), 1, windowHeight/60));
                 // |
                 break;
             case 3:
-                this.playerCards.push(new PlayerCard(player, windowWidth/6, (windowHeight/1.5), .6, windowHeight/60));
+                console.log("3");
+                this.playerCards.push(new PlayerCard(player, windowWidth/7, (windowHeight/3 + 2*diff), 1, windowHeight/60));
                 break;
             case 4:
-                this.playerCards.push(new PlayerCard(player, windowWidth/1.2, (windowHeight/2.7), .6, windowHeight/60));
+                console.log("4");
+                this.playerCards.push(new PlayerCard(player, windowWidth/7, (windowHeight/3 + 3*diff), 1, windowHeight/60));
                 break;
         }
         // add new player to playercard and team
