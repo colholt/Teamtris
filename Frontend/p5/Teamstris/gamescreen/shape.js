@@ -353,6 +353,7 @@ class Shape {
      * @return shape blueprint (2D array)
      */
 	GenerateRandomShape(gameTime=1, eps=0.5, max=4, sendToServer=true) {
+		console.log(sendToServer)
 		var randShape = new Array(this.BlueprintDimensions)
         for (var r = 0; r < this.BlueprintDimensions; r++) {
             randShape[r] = new Array(this.BlueprintDimensions).fill(0)
