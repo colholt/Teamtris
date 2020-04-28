@@ -26,8 +26,8 @@ class PlayerCard {
     draw() {
         push();
         translate(0,0);
-        fill(102,102,255,100);
-        rect(this.x, this.y, this.w+2*this.sqaureLength, this.h+2*this.sqaureLength);
+        // fill(102,102,255,100);
+        // rect(this.x, this.y, this.w+2*this.sqaureLength, this.h+2*this.sqaureLength);
         pop();
         // this.drawGrid();
     }
@@ -36,7 +36,11 @@ class PlayerCard {
         push();
         fill("white");
         textSize(this.w/5);
-        text(this.player.username, this.x, this.y - 12*this.sqaureLength);
+        text(this.player.username, this.x, this.y);
+        fill(0,0,0,0)
+        stroke("white")
+        strokeWeight(5)
+        rect(windowWidth/7,windowHeight/2.3,windowWidth/3.6,windowHeight/3.4,20);
         pop();
     }
 
