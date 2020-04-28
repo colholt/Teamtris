@@ -49,8 +49,8 @@ public class ShareManager : WebSocketBehavior
         int score = myTeam.teamScore;
         string scoreInfo = "Best achieving score: " + score;
 
-        PointF firstLocation = new PointF(120f, 200f);
-        PointF secondLocation = new PointF(120f, 240f);
+        PointF firstLocation = new PointF(320f, 400f);
+        PointF secondLocation = new PointF(320f, 490f);
 
         Bitmap bitmap;
         if(b == null) {
