@@ -188,9 +188,30 @@ namespace Tests
 
             List<ScoresInfo> scoresList = new List<ScoresInfo>();
 
-            Bitmap bitmap = new System.Drawing.Bitmap("canvas.png"); 
+            // Bitmap bitmap = new System.Drawing.Bitmap("canvas.bmp"); 
 
-            var encoded = shareManager.CreateDetails(Tuple.Create<List<ScoresInfo>, ScoresInfo>(scoresList, scoresInfo), null);
+            // var encoded = shareManager.CreateDetails(Tuple.Create<List<ScoresInfo>, ScoresInfo>(scoresList, scoresInfo), null);
+
+            PointF firstLocation = new PointF(320f, 400f);
+            PointF secondLocation = new PointF(320f, 490f);
+
+            Bitmap bitmap = new Bitmap(200, 100);
+
+            using(Graphics graphics = Graphics.FromImage(bitmap))
+                {
+                    using (Font arialFont =  new Font("Arial", 50))
+                    {
+                        graphics.DrawString("teamName", arialFont, Brushes.Red, firstLocation);
+                        graphics.DrawString("500", arialFont, Brushes.Blue, secondLocation);
+                    }
+            }
+        
+            Bitmap bImage = bitmap;
+            System.IO.MemoryStream ms = new MemoryStream();
+            bImage.Save(ms, ImageFormat.Jpeg);
+            byte[] byteImage = ms.ToArray();
+            var encodedImage= Convert.ToBase64String(byteImage); 
+
             // Assert.That(encoded, Is.Not.Contains(" ") );
         }
     }
