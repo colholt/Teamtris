@@ -5,6 +5,12 @@ using System.Linq;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using Newtonsoft.Json;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.IO;
+using System.Text;
 
 namespace Tests
 {
@@ -15,12 +21,15 @@ namespace Tests
         private Dictionary<string, Lobby> lobbies;
         private LobbyManager lobbyManager;
         private ScoresManager scoresManager;
+        private ShareManager shareManager;
+
         [SetUp]
         public void Setup()
         {
             lobbies = new Dictionary<string, Lobby>();
             lobbyManager = new LobbyManager(lobbies);
             scoresManager = new ScoresManager();
+            shareManager = new ShareManager();
         }
 
         [Test]
@@ -166,6 +175,23 @@ namespace Tests
             Assert.That(scoresInfo.playerNames[1], Is.EqualTo("Player2"));
             Assert.That(scoresInfo.playerNames[2], Is.EqualTo("Player3"));
             Assert.That(scoresInfo.playerNames[3], Is.EqualTo("Player4"));
+        }
+
+
+        [Test]
+        public void ShareInfo()
+        {
+            String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\", \"Player3\", \"Player4\"],\"teamScore\":3,\"timePlayed\":50}";
+            ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
+
+            ScoresInfo scoresInfo = scoresManager.CreateScoresInfo(sPacket);
+
+            List<ScoresInfo> scoresList = new List<ScoresInfo>();
+
+            Bitmap bitmap = new System.Drawing.Bitmap("canvas.png");
+
+            var encoded = shareManager.CreateDetails(Tuple.Create<List<ScoresInfo>, ScoresInfo>(scoresList, scoresInfo), bitmap);
+            // Assert.That(encoded, Is.Not.Contains(" ") );
         }
     }
 }

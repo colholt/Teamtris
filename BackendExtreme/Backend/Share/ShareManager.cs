@@ -35,7 +35,7 @@ public class ShareManager : WebSocketBehavior
         SharePacket sharePacket = JsonConvert.DeserializeObject<SharePacket>(packet.data);
         Tuple<List<ScoresInfo>, ScoresInfo> filledInfo = FillScoresInfo(sharePacket.teamName); 
 
-        CreateDetails(filledInfo);
+        CreateDetails(filledInfo, null);
     }
 
     public Tuple<List<ScoresInfo>, ScoresInfo> FillScoresInfo(string teamName) {
@@ -43,7 +43,7 @@ public class ShareManager : WebSocketBehavior
         return retrievedInfo;
     }
 
-    public void CreateDetails(Tuple<List<ScoresInfo>, ScoresInfo> filledInfo) {
+    public string CreateDetails(Tuple<List<ScoresInfo>, ScoresInfo> filledInfo, Bitmap b) {
         ScoresInfo myTeam = filledInfo.Item2;
         string teamName = myTeam.teamName;
         int score = myTeam.teamScore;
@@ -52,7 +52,13 @@ public class ShareManager : WebSocketBehavior
         PointF firstLocation = new PointF(120f, 200f);
         PointF secondLocation = new PointF(120f, 240f);
 
-        Bitmap bitmap = new System.Drawing.Bitmap("canvas.png");
+        Bitmap bitmap;
+        if(b == null) {
+            bitmap = new System.Drawing.Bitmap("canvas.png");
+        } else {
+            bitmap = b;
+        }
+        
 
         using(Graphics graphics = Graphics.FromImage(bitmap))
         {
@@ -86,11 +92,14 @@ public class ShareManager : WebSocketBehavior
         bImage.Save(ms, ImageFormat.Jpeg);
         byte[] byteImage = ms.ToArray();
         var encodedImage= Convert.ToBase64String(byteImage); 
+        Console.WriteLine("ENCODED IMAGE\n", encodedImage);
 
         ImgPacket imgPacket= new ImgPacket();
         imgPacket.data = encodedImage;
         var convertedInfo = JsonConvert.SerializeObject(imgPacket);
         Send(convertedInfo);
+
+        return encodedImage;
     }
 }
 
