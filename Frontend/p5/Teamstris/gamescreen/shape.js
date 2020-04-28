@@ -2,7 +2,7 @@
   * @classDesc A grouping of squares, used for simplifying moving/rotating shapes
   */
 class Shape {
-	constructor (ID, ShapeBlueprint=null, Color="rand", time=1) {
+	constructor (ID, ShapeBlueprint=null, Color="rand", time=1, sendToServer=true) {
 		// ID of the player who 'owns' this square
 		this.ID = ID
 
@@ -13,7 +13,7 @@ class Shape {
 		// blueprint of the shape
 		if (ShapeBlueprint == null) {
 			this.BlueprintDimensions = 4;
-			this.ShapeBlueprint = this.GenerateRandomShape(time)
+			this.ShapeBlueprint = this.GenerateRandomShape(time, 0.5, 4, sendToServer)
 		} else {
 			this.BlueprintDimensions = ShapeBlueprint.length;
 			this.ShapeBlueprint = ShapeBlueprint
@@ -352,7 +352,7 @@ class Shape {
      * 
      * @return shape blueprint (2D array)
      */
-	GenerateRandomShape(gameTime=1, eps=0.5, max=4) {
+	GenerateRandomShape(gameTime=1, eps=0.5, max=4, sendToServer=true) {
 		var randShape = new Array(this.BlueprintDimensions)
         for (var r = 0; r < this.BlueprintDimensions; r++) {
             randShape[r] = new Array(this.BlueprintDimensions).fill(0)
@@ -388,7 +388,10 @@ class Shape {
 			}
 			count--;
 		}
-		this.SendNewShape(this.ID, randShape)
+		if (sendToServer) {
+			this.SendNewShape(this.ID, randShape)
+		}
+		
 		// this function can potentially go back to squares that have already been visited.
 		return randShape
 	}
