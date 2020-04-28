@@ -188,9 +188,9 @@ namespace Tests
 
             List<ScoresInfo> scoresList = new List<ScoresInfo>();
 
-            Bitmap bitmap = new System.Drawing.Bitmap("canvas.png");
+            Bitmap bitmap = new System.Drawing.Bitmap("canvas.png"); 
 
-            var encoded = shareManager.CreateDetails(Tuple.Create<List<ScoresInfo>, ScoresInfo>(scoresList, scoresInfo), bitmap);
+            var encoded = shareManager.CreateDetails(Tuple.Create<List<ScoresInfo>, ScoresInfo>(scoresList, scoresInfo), null);
             // Assert.That(encoded, Is.Not.Contains(" ") );
         }
     }

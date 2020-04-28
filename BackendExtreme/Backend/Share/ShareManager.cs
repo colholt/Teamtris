@@ -61,17 +61,13 @@ public class ShareManager : WebSocketBehavior
         
 
         using(Graphics graphics = Graphics.FromImage(bitmap))
-        {
-            using (Font arialFont =  new Font("Arial", 20))
             {
-                graphics.DrawString(teamName, arialFont, Brushes.Red, firstLocation);
-                int i = teamName.Length;
-                while(i < scoreInfo.Length - 2) {
-                    graphics.DrawString(".", arialFont, Brushes.Red, new PointF((120 + teamName.Length * 8) + (10 * i), 200f));
-                    i++;
+                using (Font arialFont =  new Font("Arial", 50))
+                {
+                    graphics.DrawString(teamName, arialFont, Brushes.Red, firstLocation);
+                    int i = teamName.Length;
+                    graphics.DrawString(scoreInfo, arialFont, Brushes.Blue, secondLocation);
                 }
-                graphics.DrawString(scoreInfo, arialFont, Brushes.Blue, secondLocation);
-            }
         }
 
         // string imageFilePath = "canvas.bmp";
@@ -92,7 +88,7 @@ public class ShareManager : WebSocketBehavior
         bImage.Save(ms, ImageFormat.Jpeg);
         byte[] byteImage = ms.ToArray();
         var encodedImage= Convert.ToBase64String(byteImage); 
-        Console.WriteLine("ENCODED IMAGE " +  encodedImage);
+        // Console.WriteLine("ENCODED IMAGE " +  encodedImage);
 
         ImgPacket imgPacket= new ImgPacket();
         imgPacket.data = encodedImage;
