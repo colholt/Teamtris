@@ -92,7 +92,7 @@ public class ShareManager : WebSocketBehavior
         bImage.Save(ms, ImageFormat.Jpeg);
         byte[] byteImage = ms.ToArray();
         var encodedImage= Convert.ToBase64String(byteImage); 
-        Console.WriteLine("ENCODED IMAGE\n", encodedImage);
+        Console.WriteLine("ENCODED IMAGE " +  encodedImage);
 
         ImgPacket imgPacket= new ImgPacket();
         imgPacket.data = encodedImage;
