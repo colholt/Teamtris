@@ -22,6 +22,7 @@ namespace Tests
         private LobbyManager lobbyManager;
         private ScoresManager scoresManager;
         private ShareManager shareManager;
+        private LegendManager legendManager;
 
         [SetUp]
         public void Setup()
@@ -30,6 +31,7 @@ namespace Tests
             lobbyManager = new LobbyManager(lobbies);
             scoresManager = new ScoresManager();
             shareManager = new ShareManager();
+            legendManager = new LegendManager();
         }
 
         [Test]
@@ -179,7 +181,7 @@ namespace Tests
 
 
         [Test]
-        public void ShareInfo()
+        public void ShareInfo1()
         {
             String d = "{\"teamName\":\"Team1\",\"playerNames\":[\"Player1\", \"Player2\", \"Player3\", \"Player4\"],\"teamScore\":3,\"timePlayed\":50}";
             ScoresPacket sPacket = JsonConvert.DeserializeObject<ScoresPacket>(d);
@@ -212,7 +214,13 @@ namespace Tests
             byte[] byteImage = ms.ToArray();
             var encodedImage= Convert.ToBase64String(byteImage); 
 
-            // Assert.That(encoded, Is.Not.Contains(" ") );
+            // Assert.That(encodedImage, Is.Not.Contains(" ") );
+        }
+
+        [Test]
+        public void LegendInfo() {
+            var legendInfo = legendManager.CreateLegend();
+            Assert.That(legendInfo, Is.Not.Contains(" ") );
         }
     }
 }

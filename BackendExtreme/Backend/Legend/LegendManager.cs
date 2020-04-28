@@ -28,10 +28,11 @@ public class LegendManager : WebSocketBehavior
         CreateLegend();
     }
 
-    public void CreateLegend() {
+    public string CreateLegend() {
         LegendPacket legendPacket = new LegendPacket();
         var convertedInfo = JsonConvert.SerializeObject(legendPacket);
         Send(convertedInfo);
+        return convertedInfo;
     }
  
 }
