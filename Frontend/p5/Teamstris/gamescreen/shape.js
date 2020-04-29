@@ -13,10 +13,14 @@ class Shape {
 		// blueprint of the shape
 		if (ShapeBlueprint == null) {
 			this.BlueprintDimensions = 4;
-			this.ShapeBlueprint = this.GenerateRandomShape(time, 0.5, 4, sendToServer)
+			this.ShapeBlueprint = this.GenerateRandomShape(time)
 		} else {
 			this.BlueprintDimensions = ShapeBlueprint.length;
 			this.ShapeBlueprint = ShapeBlueprint
+		}
+
+		if (sendToServer) {
+			this.SendNewShape(this.ID, this.ShapeBlueprint)
 		}
 		
 		// calculate Dimensions of the shape in the form [rowTop, colLeft, width, height]
@@ -25,7 +29,7 @@ class Shape {
 
 		// determines if we rotateon the odd or even side of a shape
 		this.RotateSign = Math.pow(-1, Number((this.ShapeDimensions[2] > this.ShapeDimensions[3])))
-		//this.RotateSign = 1
+		
 		// color of all the squares attached to this shape
 		if (Color == "rand") {
 			this.Color = this.RandomColor()
@@ -352,8 +356,7 @@ class Shape {
      * 
      * @return shape blueprint (2D array)
      */
-	GenerateRandomShape(gameTime=1, eps=0.5, max=4, sendToServer=true) {
-		console.log(sendToServer)
+	GenerateRandomShape(gameTime=1, eps=0.05, max=4) {
 		var randShape = new Array(this.BlueprintDimensions)
         for (var r = 0; r < this.BlueprintDimensions; r++) {
             randShape[r] = new Array(this.BlueprintDimensions).fill(0)
@@ -388,9 +391,6 @@ class Shape {
 				randShape[curri][currj] = Math.random() < eps ? Math.max(2,Math.floor(Math.random() * max)) : 1
 			}
 			count--;
-		}
-		if (sendToServer) {
-			this.SendNewShape(this.ID, randShape)
 		}
 		
 		// this function can potentially go back to squares that have already been visited.
