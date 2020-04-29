@@ -3167,6 +3167,215 @@ namespace Tests
             }        
         }
 
+
+        /*
+            Assert that the formation with the best shape is chosen
+        */
+        [Test]
+        public void RandomShapeColoring1() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE COLORING 1-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 0, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block b = new Block(b1, 1);
+                newBlocks.Add(b);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+
+                List<List<Block>> allB= new List<List<Block>>();
+                allB.Add(newBlocks);
+                SingleBot singleBot= new SingleBot();
+                List<Tuple<int, int>> piecePlaced = singleBot.GetSingleMove(game.board, allB); 
+
+                Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
+                    
+                TestContext.Progress.Write("Board AFTER piece placed");
+                botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+
+                int[,] expectedBoard = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 2, 2, 1, 1, 1},
+                    {1, 2, 1, 1, 1, 1}
+                };
+
+                Assert.That(allBoards.Item2, Is.EqualTo(expectedBoard));
+                Assert.That(singleBot.getBlockColor(), Is.EqualTo(1));
+
+                 // point it to old board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 0, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved " + e.Message);
+            }        
+        }
+
+
+          /*
+            Assert that the formation with the best shape is chosen
+        */
+        [Test]
+        public void RandomShapeColoring2() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE COLORING 2-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 0, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block b = new Block(b1, 2);
+                newBlocks.Add(b);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+
+                List<List<Block>> allB= new List<List<Block>>();
+                allB.Add(newBlocks);
+                SingleBot singleBot= new SingleBot();
+                List<Tuple<int, int>> piecePlaced = singleBot.GetSingleMove(game.board, allB); 
+
+                Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
+                    
+                TestContext.Progress.Write("Board AFTER piece placed");
+                botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+
+                int[,] expectedBoard = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 2, 2, 1, 1, 1},
+                    {1, 2, 1, 1, 1, 1}
+                };
+
+                Assert.That(allBoards.Item2, Is.EqualTo(expectedBoard));
+                Assert.That(singleBot.getBlockColor(), Is.EqualTo(2));
+
+                 // point it to old board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 0, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved " + e.Message);
+            }        
+        }
+
+          /*
+            Assert that the formation with the best shape is chosen
+        */
+        [Test]
+        public void RandomShapeColoring3() {
+            TestContext.Progress.WriteLine("\n\n\n\n\n--------------------------------------SHAPE COLORING 3-------------------------------------");
+            try {
+                TestContext.Progress.WriteLine("--------------------------------------");
+
+                // point it to new board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 0, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+
+                List<Block> newBlocks = new List<Block>();
+                int[][] b1 = new int[][] {
+                    new int[] {1, 0, 0, 0}, 
+                    new int[] {1, 1, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                    new int[] {0, 0, 0, 0}, 
+                };
+                Block b = new Block(b1, 3);
+                newBlocks.Add(b);
+                TestContext.Progress.Write("Piece to be placed");
+                botInfoPrinter.PrintJaggedArr(newBlocks[0].data, false);
+
+                List<List<Block>> allB= new List<List<Block>>();
+                allB.Add(newBlocks);
+                SingleBot singleBot= new SingleBot();
+                List<Tuple<int, int>> piecePlaced = singleBot.GetSingleMove(game.board, allB); 
+
+                Tuple<int[,], int[,]> allBoards = PlacePieceOnBoard(game.board.board, piecePlaced, false);
+                    
+                TestContext.Progress.Write("Board AFTER piece placed");
+                botInfoPrinter.PrintMultiDimArr(allBoards.Item2, false);
+
+                int[,] expectedBoard = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 2, 2, 1, 1, 1},
+                    {1, 2, 1, 1, 1, 1}
+                };
+
+                Assert.That(allBoards.Item2, Is.EqualTo(expectedBoard));
+                Assert.That(singleBot.getBlockColor(), Is.EqualTo(3));
+
+                 // point it to old board
+                game.board.board = new int[,]{
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 1},
+                    {1, 0, 0, 1, 1, 1},
+                    {1, 0, 1, 1, 1, 1}
+                };
+
+                TestContext.Progress.WriteLine("--------------------------------------");
+            } catch (Exception e) {
+                Assert.Fail("Expected no exception but recieved " + e.Message);
+            }        
+        }
+
     }
 
 }
