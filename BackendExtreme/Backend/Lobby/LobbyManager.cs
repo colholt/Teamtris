@@ -108,6 +108,9 @@ public class LobbyManager : WebSocketBehavior
             }
             else
             {
+                // remove column is ID # 2
+                // remove area is   ID # 3
+                // area removes 2 up, 2 left, 2 right, 2 down
                 Lobby lobby = lobbies[playerInputPacket.lobbyID];
 
                 update.shapeIndices = playerInputPacket.shapeIndices;
@@ -119,13 +122,13 @@ public class LobbyManager : WebSocketBehavior
                 int[,] board = lobby.game.board.board;
                 int[,] newBoard = new int[board.GetLength(0), board.GetLength(1)];
 
-                for (int i = 0; i < board.GetLength(0); i++)
-                {
-                    for (int j = 0; j < board.GetLength(1); j++)
-                    {
-                        newBoard[i, j] = board[i, j];
-                    }
-                }
+                // for (int i = 0; i < board.GetLength(0); i++)
+                // {
+                //     for (int j = 0; j < board.GetLength(1); j++)
+                //     {
+                //         newBoard[i, j] = board[i, j];
+                //     }
+                // }
                 Prints prints = new Prints();
                 Console.WriteLine("LOBBY BOARD");
                 prints.PrintMultiDimArr(lobby.game.board.board);
@@ -152,25 +155,65 @@ public class LobbyManager : WebSocketBehavior
                     // everything is filled in the row, so need to shift all the rows down by 1
                     if (hasAllFilled)
                     {
-                        for (int k = i - 1; k > 0; k--)
-                        {
-                            for (int y = 0; y < cols; y++)
-                            {
-                                board[k + 1, y] = board[k, y];
-                                newBoard[k + 1, y] = newBoard[k, y];
-                            }
-                        }
-
-                        // if first row, just need to replace no need to fill again
                         for (int j = 0; j < cols; j++)
                         {
-                            board[0, j] = 0;
-                            newBoard[0, j] = 0;
+                            applySquare(i, j, lobby);
                         }
-
+                        /*
+                        for ( var j = 0; j < this.column_count; j++) {
+                            var shiftAmount = 1;
+                            for (var i = row; i >= 0; i--) {
+                                if (this.GetSquare(i,j).IsFrozen()) {
+                                    SquaresList.push([this.GetSquare(i,j), shiftAmount])
+                                } else {
+                                    shiftAmount++
+                                }
+                            }
+                        }
+                        this.ShiftSquares(SquaresList,0,0,0)
+                        */
                         i = i + 1;
                     }
                 }
+                // shift code
+                List<int[]> SquaresList = new List<int[]>();
+                for (int j = 0; j < cols; j++)
+                {
+                    int shiftAmount = 1;
+                    for (int i = lobby.game.board.board.GetLength(0); i >= 0; i--)
+                    {
+                        if (lobby.game.board.board[i, j] == 1 && i != lobby.game.board.board.GetLength(0) - 1)
+                        {
+                            int[] temp = { i, j, shiftAmount };
+                            SquaresList.Add(temp);
+                        }
+                        else
+                        {
+                            shiftAmount++;
+                        }
+                    }
+                }
+                for (int a = 0; a < SquaresList.Count; a++)
+                {
+                    int[] temp = SquaresList[a];
+                    newBoard[temp[0] - temp[2], temp[1]] = 1;
+                }
+                for (int y = 0; y < lobby.game.board.board.GetLength(0); y++)
+                {
+                    newBoard[lobby.game.board.board.GetLength(0) - 1, y] = lobby.game.board.board[lobby.game.board.board.GetLength(0) - 1, y];
+                }
+                // ShiftSquares(Squares, left, right, down) {
+                //     for (var s = 0; s < Squares.length; s++)
+                //     {
+                //         var i = Squares[s][0].i + Squares[s][1] + down
+                //         var j = Squares[s][0].j - left + right
+                //         if (this.OnBoard(i, j))
+                //         {
+                //             this.GetSquare(i, j).SetFrozen(Squares[s][0].PowerCubeType);
+                //             Squares[s][0].SetEmpty();
+                //         }
+                //     }
+                // }
                 lobby.game.board.board = newBoard;
 
                 foreach (Player player in lobby.players)
@@ -261,6 +304,43 @@ public class LobbyManager : WebSocketBehavior
         }
     }
 
+    public void applySquare(int i, int j, Lobby lobby)
+    {
+        int[,] board = lobby.game.board.board;
+        if (board[i, j] == 0)
+            return;
+        if (board[i, j] == 1) // remove cube
+        {
+            // increment score
+            // remove
+            board[i, j] = 0;
+        }
+        if (board[i, j] == 2) // remove column
+        {
+            board[i, j] = 0;
+            // the future of single letter iterable variables
+            for (int a = 0; a < board.GetLength(0); a++)
+            {
+                applySquare(a, j, lobby);
+            }
+        }
+        if (board[i, j] == 3) // remove area
+        {
+            int dim = 2;
+            board[i, j] = 0;
+            for (int ik = i - dim; ik < i + dim + 1; ik++)
+            {
+                for (int jk = j - dim; jk < j + dim + 1; jk++)
+                {
+                    if (ik > 0 && ik < board.GetLength(0) && jk > 0 && jk < board.GetLength(1) && (jk != j || ik != i))
+                    {
+                        this.applySquare(ik, jk, lobby);
+                    }
+                }
+            }
+        }
+    }
+
     public void startGame(Packet packet)
     {
         PlayPacket playPacket = JsonConvert.DeserializeObject<PlayPacket>(packet.data);
@@ -330,11 +410,11 @@ public class LobbyManager : WebSocketBehavior
     /**
      * #function LobbyManager::checkGameEnd |
      * @author columbus |
-	 * @desc determines whether or not the game has ended after receiving valid input from client |
+     * @desc determines whether or not the game has ended after receiving valid input from client |
      * @header public bool checkGameEnd(EndPacket ep) | 
-	 * @param EndPacket ep : received EndPacket |
-	 * @returns bool ep : asserts whether or not the game has ended |
-	 */
+     * @param EndPacket ep : received EndPacket |
+     * @returns bool ep : asserts whether or not the game has ended |
+     */
     public bool checkGameEnd(EndPacket ep)
     {
         return ep != null;
