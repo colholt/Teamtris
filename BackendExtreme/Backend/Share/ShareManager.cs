@@ -35,11 +35,11 @@ public class ShareManager : WebSocketBehavior
         SharePacket sharePacket = JsonConvert.DeserializeObject<SharePacket>(packet.data);
         Tuple<List<ScoresInfo>, ScoresInfo> filledInfo = FillScoresInfo(sharePacket.teamName); 
 
-        try{
-            CreateDetails(filledInfo, null);
-        } catch (Exception e) {
-            Console.WriteLine("EXCEPTION IN CREATING IMAGE");
-        }
+        // try {
+        CreateDetails(filledInfo, null);
+        // } catch (Exception e) {
+        //     Console.WriteLine("EXCEPTION IN CREATING IMAGE");
+        // }
         
     }
 
