@@ -42,7 +42,7 @@ var mGameScreen;
 
 global.gameState = 0;
 
-var lol = true;
+var lol = false;
 var numTests = 1;
 var numFailed = 0;
 
@@ -669,7 +669,7 @@ async function testGameScreenRotateKeyPress() {
                         [0,1,1,0],
                         [0,1,1,0]]
     mGameScreen.GameArray.ForceChangeShape(1, custom_shape,0,0,false)
-    global.keyCode = 65
+    global.keyCode = 82
     mGameScreen.keyPressedGame()
     CheckSame(mGameScreen.GameArray.ShapeArray[0].RotateSign, -1, "testGameScreenRotateKeyPress")
 }
@@ -963,6 +963,22 @@ async function testPowerCubeCol() {
     }
 }
 
+async function testScoring() {
+    mGameScreen = new GameScreen();
+    var gameArr = mGameScreen.GameArray.arr
+    // set bottom two rows to squares
+    for (var i = 0; i < gameArr[0].length; i++) {
+        gameArr[gameArr.length-2][i].SetFrozen(1);
+        gameArr[gameArr.length-1][i].SetFrozen(1);
+    }
+    var temp_score = mGameScreen.gameScore
+    mGameScreen.GameArray.RemoveRow(gameArr.length-1)
+    mGameScreen.GameArray.RemoveRow(gameArr.length-2)
+    var new_score = mGameScreen.gameScore
+
+    CheckSame(temp_score == new_score, true, "testRowRemovalScoring")
+}
+
 /**
  * #function FrontendTests::testRunnerSetupStartScreen |
  * @author Steven Dellamore, Richard Hansen |
@@ -1023,6 +1039,7 @@ async function testRunnerSetupStartScreen() {
     await testRandomGeneratedShapes();
     await testPowerCubeArea();
     await testPowerCubeCol();
+    await testScoring();
     /* End Game Screen tests*/
 
     await integrationTest1();
