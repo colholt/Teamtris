@@ -31,7 +31,11 @@ class LobbyScreen {
         this.botNames = ["Arnold", "Steve", "John"];
         this.numBots = 0;
         this.playerCards = [];
-        this.playerCards.push(new PlayerCard(this.player, windowWidth/7, (windowHeight/3), 1, windowHeight/60));
+        this.team.playersInTeam = [];
+        console.log("HERE")
+        this.newPlayerJoins(this.player)
+        console.log("THERE")
+        // this.playerCards.push(new PlayerCard(this.player, windowWidth/7, (windowHeight/3), 1, windowHeight/60));
         /** @todo. Make the L in lobby fall with this thing! */
         // this.titleAnimation = [300, 500, 400, 700] //drops the peices 
         if(this.player.owner == true) { // If the player is the owner, we need to ask for the token
@@ -101,7 +105,7 @@ class LobbyScreen {
                         if(e.players.id == 1) {ownerr = true}
                         var newPlayer = new Player(e.players[i].name, e.players[i].id, ownerr);
                         if(e.players[i].name == this.player.username) {
-                            this.team.playersInTeam.push(newPlayer)
+                            // this.team.playersInTeam.push(newPlayer)
                             this.newPlayerJoins(this.player)
                             // this.playerCards.push(new PlayerCard(this.player, windowWidth/2, (windowHeight/2 + windowHeight/10), 1, windowHeight/60));
                             // this.playerCards.push(new PlayerCard(player, windowWidth/7, (windowHeight/3 + 2*diff), 1, windowHeight/60));
@@ -174,7 +178,7 @@ class LobbyScreen {
     draw() {
         this.drawTitle();
         this.drawToken();
-        image(legendImg, windowWidth/2.8, windowHeight/3.5, windowWidth/2.2, windowHeight/2.2);
+        image(legendImg, windowWidth/2.8, windowHeight/3.5, windowWidth/2.2, windowWidth/2.7);
         if (this.lobbyGameState == 0 && this.player.owner) {
             teamNameAsker(this.team);
         } else {
@@ -308,6 +312,9 @@ class LobbyScreen {
         this.team.playersInTeam.push(player);
         var diff = windowHeight/15;
         switch(this.team.playersInTeam.length) {
+            case 1: 
+                this.playerCards.push(new PlayerCard(this.player, windowWidth/7, (windowHeight/3), 1, windowHeight/60));
+                break;
             case 2: 
                 console.log("2");
                 // #code playerCardExp javascript
