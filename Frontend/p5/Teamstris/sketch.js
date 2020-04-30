@@ -12,6 +12,12 @@ var mGameScreen;
 var team;
 var player;
 
+var legendImg;
+
+function preload() {
+  legendImg = loadImage('./lobbyscreen/legend.jpg');
+}
+
 function setup() {
   /* Create our canvas with the max windowWidth and windowHeight */
   createCanvas(windowWidth, windowHeight)
