@@ -364,6 +364,7 @@ public class LobbyManager : WebSocketBehavior
                 gameLobby.bot = null;
                 break;
         }
+        // gameLobby.bot = new SingleBot();
         for (int i = 0; i < gameLobby.players.Count; i++)
         {
             players[gameLobby.players[i].id] = gameLobby.players[i];
