@@ -345,6 +345,7 @@ class Shape {
      */
     SendNewShape(ID, shapeBlueprint) {
         if (!team) {
+			console.log("no team")
             return
         }
         var data = JSON.stringify({"lobbyID":team.lobbyToken.toLowerCase(),"playerID":ID,"shapeBlueprint": shapeBlueprint})
