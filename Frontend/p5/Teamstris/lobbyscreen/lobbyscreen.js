@@ -174,6 +174,7 @@ class LobbyScreen {
     draw() {
         this.drawTitle();
         this.drawToken();
+        image(legendImg, windowWidth/2.8, windowHeight/3.5, windowWidth/2.2, windowHeight/2.2);
         if (this.lobbyGameState == 0 && this.player.owner) {
             teamNameAsker(this.team);
         } else {
