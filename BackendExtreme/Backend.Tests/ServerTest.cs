@@ -19,6 +19,7 @@ namespace Tests
         private WebSocket webSocket;
         private string lastMsg;
         private Dictionary<string, Lobby> lobbies;
+        private Lobby lobby;
         private LobbyManager lobbyManager;
         private ScoresManager scoresManager;
         private ShareManager shareManager;
@@ -199,28 +200,389 @@ namespace Tests
 
             Bitmap bitmap = new Bitmap(200, 100);
 
-            using(Graphics graphics = Graphics.FromImage(bitmap))
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                using (Font arialFont = new Font("Arial", 50))
                 {
-                    using (Font arialFont =  new Font("Arial", 50))
-                    {
-                        graphics.DrawString("teamName", arialFont, Brushes.Red, firstLocation);
-                        graphics.DrawString("500", arialFont, Brushes.Blue, secondLocation);
-                    }
+                    graphics.DrawString("teamName", arialFont, Brushes.Red, firstLocation);
+                    graphics.DrawString("500", arialFont, Brushes.Blue, secondLocation);
+                }
             }
-        
+
             Bitmap bImage = bitmap;
             System.IO.MemoryStream ms = new MemoryStream();
             bImage.Save(ms, ImageFormat.Jpeg);
             byte[] byteImage = ms.ToArray();
-            var encodedImage= Convert.ToBase64String(byteImage); 
+            var encodedImage = Convert.ToBase64String(byteImage);
 
             // Assert.That(encodedImage, Is.Not.Contains(" ") );
         }
 
         [Test]
-        public void LegendInfo() {
+        public void RemoveFirstRow()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {1, 1, 0, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {1, 1, 0, 1, 1, 1, 1, 1}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemoveMultipleRows()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemovePowerCubeColumn()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 1},
+                    {1, 0, 0, 1, 0, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 1, 1, 2},
+                    {1, 1, 1, 1, 1, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 0},
+                    {1, 0, 0, 1, 0, 1, 1, 0}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemovePowerCubeMultipleColumns()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 1, 1},
+                    {1, 1, 0, 1, 0, 1, 1, 1},
+                    {1, 2, 1, 1, 1, 1, 1, 2},
+                    {1, 1, 1, 1, 0, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 1, 0},
+                    {1, 0, 0, 1, 0, 1, 1, 0},
+                    {1, 0, 1, 1, 0, 1, 1, 0}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemovePowerCubeSecondRowColumn()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {1, 2, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 0, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {1, 0, 1, 1, 0, 1, 1, 1}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemovePowerCubeArea()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {1, 3, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 0, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 1, 1, 1}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemovePowerCubeAreaChainReaction()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {1, 3, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 3, 0, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 0, 0, 0, 0, 1, 1}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemovePowerCubeAreaColumnReaction()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 1, 0, 0, 0, 0},
+                    {0, 1, 0, 1, 0, 0, 0, 0},
+                    {0, 3, 0, 1, 0, 0, 0, 0},
+                    {0, 1, 0, 1, 0, 0, 0, 0},
+                    {0, 1, 0, 1, 0, 0, 0, 0},
+                    {0, 1, 0, 1, 0, 0, 0, 0},
+                    {1, 2, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 0, 1, 1, 1}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 1, 0, 0, 0, 0},
+                    {1, 0, 1, 1, 0, 1, 1, 1}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void RemovePowerCubeAreaManyCubes()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(8, 8);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 1, 1, 1, 0},
+                    {0, 0, 0, 0, 1, 3, 1, 0},
+                    {0, 0, 0, 0, 1, 1, 1, 0},
+                    {0, 1, 1, 1, 1, 1, 0, 0},
+                    {0, 1, 1, 1, 1, 1, 0, 0},
+                    {1, 1, 1, 3, 1, 1, 1, 1},
+                    {0, 1, 1, 1, 1, 2, 0, 0},
+                    {0, 1, 1, 1, 1, 1, 0, 0}};
+            int[,] resBoard = lobbyManager.checkRows(lobby);
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void LegendInfo()
+        {
             var legendInfo = legendManager.CreateLegend();
-            Assert.That(legendInfo, Is.Not.Contains(" ") );
+            Assert.That(legendInfo, Is.Not.Contains(" "));
         }
     }
 }
