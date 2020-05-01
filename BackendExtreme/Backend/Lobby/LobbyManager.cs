@@ -119,8 +119,8 @@ public class LobbyManager : WebSocketBehavior
                     // FREEZE
                     lobby.game.board.board[pos[0], pos[1]] = pos[2];
                 }
-                int[,] board = lobby.game.board.board;
-                int[,] newBoard = new int[board.GetLength(0), board.GetLength(1)];
+                // int[,] board = lobby.game.board.board;
+                // int[,] newBoard = new int[board.GetLength(0), board.GetLength(1)];
 
                 // for (int i = 0; i < board.GetLength(0); i++)
                 // {
@@ -132,89 +132,10 @@ public class LobbyManager : WebSocketBehavior
                 Prints prints = new Prints();
                 Console.WriteLine("LOBBY BOARD");
                 prints.PrintMultiDimArr(lobby.game.board.board);
-                Console.WriteLine("NEW BOARD CREATED");
-                prints.PrintMultiDimArr(newBoard);
-                // check for completed row
-                int rows = board.GetLength(0);
-                int cols = board.GetLength(1);
+                // Console.WriteLine("NEW BOARD CREATED");
+                // prints.PrintMultiDimArr(newBoard);
 
-                // remove the line completed
-                for (int i = rows - 1; i >= 0; i--)
-                {
-                    // check to see if all the columns have a value of 1
-                    bool hasAllFilled = true;
-                    for (int j = 0; j < cols; j++)
-                    {
-                        if (board[i, j] == 0)
-                        {
-                            hasAllFilled = false;
-                            break;
-                        }
-                    }
-
-                    // everything is filled in the row, so need to shift all the rows down by 1
-                    if (hasAllFilled)
-                    {
-                        for (int j = 0; j < cols; j++)
-                        {
-                            applySquare(i, j, lobby);
-                        }
-                        /*
-                        for ( var j = 0; j < this.column_count; j++) {
-                            var shiftAmount = 1;
-                            for (var i = row; i >= 0; i--) {
-                                if (this.GetSquare(i,j).IsFrozen()) {
-                                    SquaresList.push([this.GetSquare(i,j), shiftAmount])
-                                } else {
-                                    shiftAmount++
-                                }
-                            }
-                        }
-                        this.ShiftSquares(SquaresList,0,0,0)
-                        */
-                        i = i + 1;
-                    }
-                }
-                // shift code
-                List<int[]> SquaresList = new List<int[]>();
-                for (int j = 0; j < cols; j++)
-                {
-                    int shiftAmount = 1;
-                    for (int i = lobby.game.board.board.GetLength(0); i >= 0; i--)
-                    {
-                        if (lobby.game.board.board[i, j] == 1 && i != lobby.game.board.board.GetLength(0) - 1)
-                        {
-                            int[] temp = { i, j, shiftAmount };
-                            SquaresList.Add(temp);
-                        }
-                        else
-                        {
-                            shiftAmount++;
-                        }
-                    }
-                }
-                for (int a = 0; a < SquaresList.Count; a++)
-                {
-                    int[] temp = SquaresList[a];
-                    newBoard[temp[0] - temp[2], temp[1]] = 1;
-                }
-                for (int y = 0; y < lobby.game.board.board.GetLength(0); y++)
-                {
-                    newBoard[lobby.game.board.board.GetLength(0) - 1, y] = lobby.game.board.board[lobby.game.board.board.GetLength(0) - 1, y];
-                }
-                // ShiftSquares(Squares, left, right, down) {
-                //     for (var s = 0; s < Squares.length; s++)
-                //     {
-                //         var i = Squares[s][0].i + Squares[s][1] + down
-                //         var j = Squares[s][0].j - left + right
-                //         if (this.OnBoard(i, j))
-                //         {
-                //             this.GetSquare(i, j).SetFrozen(Squares[s][0].PowerCubeType);
-                //             Squares[s][0].SetEmpty();
-                //         }
-                //     }
-                // }
-                lobby.game.board.board = newBoard;
+                checkRows(lobby);
 
                 foreach (Player player in lobby.players)
                 {
@@ -304,12 +225,101 @@ public class LobbyManager : WebSocketBehavior
         }
     }
 
+    public int[,] checkRows(Lobby lobby)
+    {
+        int[,] board = lobby.game.board.board;
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        bool bottomColumnFilled = true;
+        // remove the line completed
+        for (int i = rows - 1; i >= 0; i--)
+        {
+            // check to see if all the columns have a value of 1
+            bool hasAllFilled = true;
+            for (int j = 0; j < cols; j++)
+            {
+                if (board[i, j] == 0)
+                {
+                    hasAllFilled = false;
+                    if (i == rows - 1)
+                        bottomColumnFilled = false;
+                    break;
+                }
+            }
+
+            // everything is filled in the row, so need to shift all the rows down by 1
+            if (hasAllFilled)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    applySquare(i, j, lobby);
+                }
+                // i = i + 1; //idk what this does
+            }
+        }
+        return shiftRows(lobby, bottomColumnFilled);
+    }
+
+    public int[,] shiftRows(Lobby lobby, bool bottomColumnFilled)
+    {
+        int[,] board = lobby.game.board.board;
+        Prints prints = new Prints();
+        Console.WriteLine("APPLIED BOARD");
+        prints.PrintMultiDimArr(lobby.game.board.board);
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        // shift code
+        List<int[]> SquaresList = new List<int[]>();
+        for (int j = 0; j < cols; j++)
+        {
+            int shiftAmount = (board[rows - 1, j] == 0) ? 1 : 0;
+            for (int i = board.GetLength(1) - 2; i >= 0; i--)
+            {
+                if (board[i, j] == 1)
+                {
+                    int[] temp = { i, j, shiftAmount };
+                    SquaresList.Add(temp);
+                }
+                else
+                {
+                    shiftAmount++;
+                }
+            }
+        }
+
+        if (!bottomColumnFilled)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (board[rows - 1, j] != 0)
+                {
+                    int[] temp = { rows - 1, j, 0 };
+                    SquaresList.Add(temp);
+                }
+            }
+        }
+
+        int[,] newBoard = new int[board.GetLength(0), board.GetLength(1)];
+
+        for (int a = 0; a < SquaresList.Count; a++)
+        {
+            int[] temp = SquaresList[a];
+            newBoard[temp[0] + temp[2], temp[1]] = 1;
+        }
+        // for (int y = 0; y < lobby.game.board.board.GetLength(0) - 1; y++)
+        // {
+        //     newBoard[lobby.game.board.board.GetLength(0) - 1, y] = lobby.game.board.board[lobby.game.board.board.GetLength(0) - 1, y];
+        // }
+        lobby.game.board.board = newBoard;
+        return newBoard;
+    }
+
     public void applySquare(int i, int j, Lobby lobby)
     {
         int[,] board = lobby.game.board.board;
         if (board[i, j] == 0)
             return;
-        if (board[i, j] == 1) // remove cube
+        if (board[i, j] == 1) // remove square
         {
             // increment score
             // remove
@@ -332,7 +342,7 @@ public class LobbyManager : WebSocketBehavior
             {
                 for (int jk = j - dim; jk < j + dim + 1; jk++)
                 {
-                    if (ik > 0 && ik < board.GetLength(0) && jk > 0 && jk < board.GetLength(1) && (jk != j || ik != i))
+                    if (ik > -1 && ik < board.GetLength(0) && jk > -1 && jk < board.GetLength(1) && (jk != j || ik != i))
                     {
                         this.applySquare(ik, jk, lobby);
                     }
