@@ -278,7 +278,7 @@ public class LobbyManager : WebSocketBehavior
             int shiftAmount = (board[rows - 1, j] == 0) ? 1 : 0;
             for (int i = board.GetLength(1) - 2; i >= 0; i--)
             {
-                if (board[i, j] == 1)
+                if (board[i, j] > 0)
                 {
                     int[] temp = { i, j, shiftAmount };
                     SquaresList.Add(temp);
@@ -307,7 +307,7 @@ public class LobbyManager : WebSocketBehavior
         for (int a = 0; a < SquaresList.Count; a++)
         {
             int[] temp = SquaresList[a];
-            newBoard[temp[0] + temp[2], temp[1]] = 1;
+            newBoard[temp[0] + temp[2], temp[1]] = board[temp[0], temp[1]];
         }
         // for (int y = 0; y < lobby.game.board.board.GetLength(0) - 1; y++)
         // {
