@@ -298,6 +298,8 @@ public class LobbyManager : WebSocketBehavior
             int[] temp = SquaresList[a];
             newBoard[temp[0] + temp[2], temp[1]] = board[temp[0], temp[1]];
         }
+        Console.WriteLine("NEW BOARDTM");
+        prints.PrintMultiDimArr(newBoard);
         lobby.game.board.board = newBoard;
         Console.WriteLine("SHIFTED BOARD");
         prints.PrintMultiDimArr(lobby.game.board.board);
