@@ -233,7 +233,8 @@ namespace Tests
                     {1, 0, 0, 1, 0, 1, 1, 1},
                     {1, 1, 0, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -273,7 +274,8 @@ namespace Tests
                     {1, 0, 0, 1, 0, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -313,7 +315,8 @@ namespace Tests
                     {1, 0, 0, 1, 0, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 2},
                     {1, 1, 1, 1, 1, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -353,7 +356,8 @@ namespace Tests
                     {1, 1, 0, 1, 0, 1, 1, 1},
                     {1, 2, 1, 1, 1, 1, 1, 2},
                     {1, 1, 1, 1, 0, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -393,7 +397,8 @@ namespace Tests
                     {0, 1, 0, 0, 0, 0, 0, 0},
                     {1, 2, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 0, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -433,7 +438,8 @@ namespace Tests
                     {0, 1, 0, 0, 0, 0, 0, 0},
                     {1, 3, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 0, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -473,7 +479,8 @@ namespace Tests
                     {0, 1, 0, 0, 0, 0, 0, 0},
                     {1, 3, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 3, 0, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -513,7 +520,8 @@ namespace Tests
                     {0, 1, 0, 1, 0, 0, 0, 0},
                     {1, 2, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 0, 1, 1, 1}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
@@ -553,7 +561,8 @@ namespace Tests
                     {1, 1, 1, 3, 1, 1, 1, 1},
                     {0, 1, 1, 1, 1, 2, 0, 0},
                     {0, 1, 1, 1, 1, 1, 0, 0}};
-            int[,] resBoard = lobbyManager.checkRows(lobby);
+            lobbyManager.checkRows(lobby);
+            int[,] resBoard = lobby.game.board.board;
             int[,] testBoard = new int[,] {
                     {0, 0, 0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0},
