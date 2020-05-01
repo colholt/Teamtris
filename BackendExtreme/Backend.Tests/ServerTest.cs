@@ -633,6 +633,51 @@ namespace Tests
         }
 
         [Test]
+        public void SpecificShiftSituation()
+        {
+            lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
+            Lobby lobby = new Lobby("1", 0);
+            lobby.game = new GameState(10, 10);
+            lobby.game.board.board = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 1, 3, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+                    {1, 1, 1, 2, 3, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+            lobbyManager.shiftRows(lobby, true);
+            int[,] resBoard = lobby.game.board.board;
+            int[,] testBoard = new int[,] {
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 1, 3, 0, 0, 0, 0, 0, 0},
+                    {0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+                    {1, 1, 1, 2, 3, 0, 0, 0, 0, 0}};
+            bool isSameBoard = true;
+            for (int i = 0; i < testBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < testBoard.GetLength(1); j++)
+                {
+                    if (resBoard[i, j] != testBoard[i, j])
+                        isSameBoard = false;
+                }
+            }
+            Prints prints = new Prints();
+            Console.WriteLine("RESULTING BOARD");
+            prints.PrintMultiDimArr(lobby.game.board.board);
+            Assert.That(isSameBoard, Is.EqualTo(true));
+        }
+
+        [Test]
         public void LegendInfo()
         {
             var legendInfo = legendManager.CreateLegend();
