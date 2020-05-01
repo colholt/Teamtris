@@ -225,7 +225,7 @@ public class LobbyManager : WebSocketBehavior
         }
     }
 
-    public int[,] checkRows(Lobby lobby)
+    public void checkRows(Lobby lobby)
     {
         int[,] board = lobby.game.board.board;
         int rows = board.GetLength(0);
@@ -257,10 +257,10 @@ public class LobbyManager : WebSocketBehavior
                 // i = i + 1; //idk what this does
             }
         }
-        return shiftRows(lobby, bottomColumnFilled);
+        shiftRows(lobby, bottomColumnFilled);
     }
 
-    public int[,] shiftRows(Lobby lobby, bool bottomColumnFilled)
+    public void shiftRows(Lobby lobby, bool bottomColumnFilled)
     {
         int[,] board = lobby.game.board.board;
         Prints prints = new Prints();
@@ -311,7 +311,6 @@ public class LobbyManager : WebSocketBehavior
         //     newBoard[lobby.game.board.board.GetLength(0) - 1, y] = lobby.game.board.board[lobby.game.board.board.GetLength(0) - 1, y];
         // }
         lobby.game.board.board = newBoard;
-        return newBoard;
     }
 
     public void applySquare(int i, int j, Lobby lobby)
