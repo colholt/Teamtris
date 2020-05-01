@@ -27,7 +27,7 @@ public class LobbyManager : WebSocketBehavior
 
     protected override void OnMessage(MessageEventArgs e)
     {
-        Console.WriteLine(e.Data);
+        // Console.WriteLine(e.Data);
         Packet packet = JsonConvert.DeserializeObject<Packet>(e.Data);
         string socketID = ID;
         // join packet -- 0
@@ -117,9 +117,9 @@ public class LobbyManager : WebSocketBehavior
                     lobby.game.board.board[pos[0], pos[1]] = pos[2];
                 }
 
-                Prints prints = new Prints();
-                Console.WriteLine("LOBBY BOARD");
-                prints.PrintMultiDimArr(lobby.game.board.board);
+                // Prints prints = new Prints();
+                // Console.WriteLine("LOBBY BOARD");
+                // prints.PrintMultiDimArr(lobby.game.board.board);
 
                 checkRows(lobby);
 
