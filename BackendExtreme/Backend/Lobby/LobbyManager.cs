@@ -94,9 +94,6 @@ public class LobbyManager : WebSocketBehavior
             if (playerInputPacket.move != "freeze")
             {
                 currentPlayer.currentBlockPosition = playerInputPacket.shapeIndices;
-                // UpdatePacket update = new UpdatePacket();
-                // update.playerID = currentPlayer.id;
-                // update.move = playerInputPacket.move;
                 playerInputPacket.playerID = currentPlayer.id;
                 foreach (Player player in lobbies[playerInputPacket.lobbyID].players)
                 {
@@ -119,21 +116,10 @@ public class LobbyManager : WebSocketBehavior
                     // FREEZE
                     lobby.game.board.board[pos[0], pos[1]] = pos[2];
                 }
-                // int[,] board = lobby.game.board.board;
-                // int[,] newBoard = new int[board.GetLength(0), board.GetLength(1)];
 
-                // for (int i = 0; i < board.GetLength(0); i++)
-                // {
-                //     for (int j = 0; j < board.GetLength(1); j++)
-                //     {
-                //         newBoard[i, j] = board[i, j];
-                //     }
-                // }
                 Prints prints = new Prints();
                 Console.WriteLine("LOBBY BOARD");
                 prints.PrintMultiDimArr(lobby.game.board.board);
-                // Console.WriteLine("NEW BOARD CREATED");
-                // prints.PrintMultiDimArr(newBoard);
 
                 checkRows(lobby);
 
@@ -260,7 +246,10 @@ public class LobbyManager : WebSocketBehavior
             }
         }
         if (rowRemove)
+        {
+            Console.WriteLine("SHIFTING ROWS SHIFTING ROWS\n\n\n\n\nSHOFITING ROWJEOWS");
             shiftRows(lobby, bottomColumnFilled);
+        }
     }
 
     public void shiftRows(Lobby lobby, bool bottomColumnFilled)
