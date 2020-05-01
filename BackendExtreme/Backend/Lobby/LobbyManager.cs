@@ -265,7 +265,7 @@ public class LobbyManager : WebSocketBehavior
         for (int j = 0; j < cols; j++)
         {
             int shiftAmount = (board[rows - 1, j] == 0) ? 1 : 0;
-            for (int i = board.GetLength(1) - 2; i >= 0; i--)
+            for (int i = board.GetLength(0) - 2; i >= 0; i--)
             {
                 if (board[i, j] > 0)
                 {

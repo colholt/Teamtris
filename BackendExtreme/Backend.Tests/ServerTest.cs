@@ -632,6 +632,7 @@ namespace Tests
             Assert.That(isSameBoard, Is.EqualTo(true));
         }
 
+        [Test]
         public void SpecificSituation2()
         {
             lobbyManager.createLobby(4, "bob", 5, "no", (WebSocketSharp.WebSocket)null);
@@ -678,9 +679,9 @@ namespace Tests
                     {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
                     {0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
                     {0, 0, 0, 0, 0, 0, 0, 0, 1, 2},
-                    {0, 0, 1, 1, 1, 1, 0, 0, 2, 2},
-                    {1, 2, 1, 1, 2, 1, 0, 0, 1, 2},
-                    {2, 2, 1, 2, 0, 1, 0, 0, 1, 3}};
+                    {0, 0, 1, 1, 0, 1, 0, 0, 2, 2},
+                    {1, 2, 1, 1, 1, 1, 0, 0, 1, 2},
+                    {2, 2, 1, 2, 2, 1, 0, 0, 1, 3}};
             bool isSameBoard = true;
             for (int i = 0; i < testBoard.GetLength(0); i++)
             {
