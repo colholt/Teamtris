@@ -135,7 +135,7 @@ public class LobbyManager : WebSocketBehavior
                 // Console.WriteLine("NEW BOARD CREATED");
                 // prints.PrintMultiDimArr(newBoard);
 
-                // checkRows(lobby);
+                checkRows(lobby);
 
                 foreach (Player player in lobby.players)
                 {
