@@ -231,6 +231,7 @@ public class LobbyManager : WebSocketBehavior
         int rows = board.GetLength(0);
         int cols = board.GetLength(1);
         bool bottomColumnFilled = true;
+        bool rowRemove = false;
         // remove the line completed
         for (int i = rows - 1; i >= 0; i--)
         {
@@ -250,6 +251,7 @@ public class LobbyManager : WebSocketBehavior
             // everything is filled in the row, so need to shift all the rows down by 1
             if (hasAllFilled)
             {
+                rowRemove = true;
                 for (int j = 0; j < cols; j++)
                 {
                     applySquare(i, j, lobby);
@@ -257,7 +259,8 @@ public class LobbyManager : WebSocketBehavior
                 // i = i + 1; //idk what this does
             }
         }
-        shiftRows(lobby, bottomColumnFilled);
+        if (rowRemove)
+            shiftRows(lobby, bottomColumnFilled);
     }
 
     public void shiftRows(Lobby lobby, bool bottomColumnFilled)
